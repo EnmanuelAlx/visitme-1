@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">VisitMe</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <string name="title_activity_code">CodeActivity</string>
+    <string name="title_activity_create_visit">CreateVisitActivity</string>
+
+    <string-array name="meridian">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
+
+    <string-array name="days">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sabado</item>
+        <item>Domingo</item>
+    </string-array>
+
+
+</resources>
