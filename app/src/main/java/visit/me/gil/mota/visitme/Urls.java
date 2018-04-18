@@ -14,4 +14,5 @@ public class Urls
     public static final String USER_VISITS_SPORADIC = USER_PROFILE + "/visits/SPORADIC";
     public static final String USER_COMMUNITIES = USER_PROFILE + "/communities";
     public static final String CREATE_ALERT = "/alerts";
+    public static final String USER_DEVICES = USER_PROFILE + "/devices";
 }

@@ -1,7 +1,5 @@
 package visit.me.gil.mota.visitme.managers;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -15,7 +13,6 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import visit.me.gil.mota.visitme.Consts;
 import visit.me.gil.mota.visitme.MyApplication;
 import visit.me.gil.mota.visitme.Urls;
 import visit.me.gil.mota.visitme.utils.CustomMultipartRequest;
@@ -124,5 +121,15 @@ public class RequestManager {
 
     public Observable<JSONObject> createAlert(JSONObject params) {
         return request(Request.Method.POST, urlBase + Urls.CREATE_ALERT, params);
+    }
+
+    public Observable<JSONObject> addDevice(String device) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("device",device);
+        return request(Request.Method.POST, urlBase + Urls.USER_DEVICES, obj);
+    }
+
+    public Observable<JSONObject> removeDevice(String device) {
+        return request(Request.Method.DELETE, urlBase + Urls.USER_DEVICES+"/"+device, null);
     }
 }

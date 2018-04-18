@@ -38,14 +38,12 @@ public class UserManager
     }
 
 
-    public void saveUserCredentials(User user) throws JSONException {
+    public void saveUserCredentials(User user, String auth, String deviceID) throws JSONException {
         PreferencesHelper.writeString(MyApplication.getInstance(), Consts.USER, Functions.toJSON(user).toString());
+        PreferencesHelper.writeString(MyApplication.getInstance(), Consts.AUTH, auth);
+        PreferencesHelper.writeString(MyApplication.getInstance(), Consts.DEVICE_ID, deviceID);
     }
 
-    public void saveAuth(String auth)
-    {
-        PreferencesHelper.writeString(MyApplication.getInstance(), Consts.AUTH, auth);
-    }
 
     public User getUser(Context context) throws JSONException {
         String jsonStr = PreferencesHelper.readString(context,Consts.USER,"");
@@ -63,6 +61,7 @@ public class UserManager
         PreferencesHelper.deleteKey(MyApplication.getInstance(),Consts.PASSWORD);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.USER_ID);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.AUTH);
+        PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.DEVICE_ID);
     }
 
 
@@ -76,5 +75,9 @@ public class UserManager
         JSONArray arry = obj.getJSONArray(Consts.COMMUNITIES);
         Community [] communities = Functions.parse(arry,Community[].class);
         return Arrays.asList(communities);
+    }
+
+    public String getDevice() {
+        return PreferencesHelper.readString(MyApplication.getInstance(), Consts.DEVICE_ID,"");
     }
 }

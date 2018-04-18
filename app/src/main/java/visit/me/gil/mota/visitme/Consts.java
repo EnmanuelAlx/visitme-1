@@ -18,5 +18,6 @@ public class Consts
     public static final String AUTH = "auth";
     public static final String USER = "user";
     public static final String COMMUNITIES = "communities";
+    public static final String DEVICE_ID = "device_id";
     public static String SHARED_PREF_NAME = "visit_me_pref";
 }

@@ -2,11 +2,15 @@ package visit.me.gil.mota.visitme.useCases;
 
 import android.content.Context;
 
+import com.onesignal.OneSignal;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import visit.me.gil.mota.visitme.managers.RequestManager;
 import visit.me.gil.mota.visitme.managers.UserManager;
 import visit.me.gil.mota.visitme.models.User;
@@ -33,9 +37,14 @@ public abstract class Auth extends UseCase implements Observer<JSONObject> {
     public void onNext(JSONObject obj) {
         try {
             onSuccess(obj);
+            runAddDevice();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void runAddDevice() {
+        new AddDevice(null).run();
     }
 
 
@@ -54,9 +63,10 @@ public abstract class Auth extends UseCase implements Observer<JSONObject> {
 
     public void onSuccess(JSONObject obj) throws JSONException {
         User u = Functions.parse(obj.getJSONObject("user"),User.class);
-        UserManager.getInstance().saveUserCredentials(u);
-        UserManager.getInstance().saveAuth(obj.getString("token"));
-
+        String deviceId = OneSignal.getPermissionSubscriptionState()
+                                   .getSubscriptionStatus()
+                                   .getUserId();
+        UserManager.getInstance().saveUserCredentials(u, obj.getString("token"), deviceId);
         resultSetter.onSuccess();
     }
 }
