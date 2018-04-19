@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
         android:name=".MyApplication"
@@ -35,12 +37,16 @@
         <activity
             android:name=".views.activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:parentActivityName=".views.activities.BindeableActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="visit.me.gil.mota.visitme.views.activities.BindeableActivity" />
-        </activity>
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".views.activities.UnexpectedVisitorActivity"
+            android:label="@string/title_activity_unexpected_visitor"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".views.activities.MainActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"/>
         <activity
             android:name=".views.activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
@@ -52,7 +58,24 @@
         <activity
             android:name=".views.activities.CreateVisitActivity"
             android:label="@string/title_activity_create_visit"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- EXTRA METADATA -->
+        <meta-data
+            android:name="com.onesignal.NotificationOpened.DEFAULT"
+            android:value="DISABLE" />
+
+        <!-- - SERVICES -->
+        <service
+            android:name=".services.NotificationExtender"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+            <intent-filter>
+                <action android:name="com.onesignal.NotificationExtender" />
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

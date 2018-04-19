@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 
 import com.onesignal.OneSignal;
 
+import visit.me.gil.mota.visitme.managers.NotificationManager;
 import visit.me.gil.mota.visitme.managers.UserManager;
 import visit.me.gil.mota.visitme.views.activities.LoginActivity;
 
@@ -23,9 +24,11 @@ public class MyApplication extends android.app.Application
     {
         super.onCreate();
         instance = this;
+        NotificationManager.getInstance().init(this);
         OneSignal.startInit(this)
                 .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                 .unsubscribeWhenNotificationsAreDisabled(true)
+                .setNotificationOpenedHandler(NotificationManager.getInstance())
                 .init();
     }
 
@@ -40,7 +43,6 @@ public class MyApplication extends android.app.Application
         context.startActivity(i);
         if(context instanceof Activity)
             ((Activity)context).finish();
-
     }
 
 }

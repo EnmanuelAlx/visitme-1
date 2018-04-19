@@ -12,6 +12,7 @@ public class Visit {
     private String kind;
     private Date dayOfVisit;
     private User guest;
+    private User resident;
     private Community community;
     private Interval[] intervals;
 
@@ -77,5 +78,13 @@ public class Visit {
 
     public String getKindString() {
         return kind;
+    }
+
+    public User getResident() {
+        return resident;
+    }
+
+    public void setResident(User resident) {
+        this.resident = resident;
     }
 }

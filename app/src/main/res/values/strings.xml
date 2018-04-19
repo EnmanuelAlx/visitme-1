@@ -25,6 +25,8 @@
         <item>Sabado</item>
         <item>Domingo</item>
     </string-array>
+    <string name="title_activity_unexpected_visitor">UnexpectedVisitorActivity</string>
+    <string name="action_settings">Settings</string>
 
 
 </resources>
