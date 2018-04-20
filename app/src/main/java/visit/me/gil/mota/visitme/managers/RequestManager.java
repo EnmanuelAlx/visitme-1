@@ -38,32 +38,6 @@ public class RequestManager {
         return instance;
     }
 
-    public Observable<JSONObject> login(JSONObject obj) {
-        return request(Request.Method.POST, urlBase + Urls.LOGIN, obj);
-    }
-
-    public Observable<JSONObject> register(HashMap<String, String> data, String image) {
-        HashMap<String, String> images = new HashMap<>();
-        images.put("image", image);
-        return multipartRequest(Request.Method.POST, urlBase + Urls.REGISTER, data, images, null, null);
-    }
-
-    public Observable<JSONObject> getScheduledVisits(int skip, int limit) {
-        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SCHEDULED + "?skip=" + skip + "&limit=" + limit, null);
-    }
-
-    public Observable<JSONObject> getFrequentVisits(int skip, int limit) {
-        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_FREQUENT + "?skip=" + skip + "&limit=" + limit, null);
-    }
-
-    public Observable<JSONObject> getSporadicVisits(int skip, int limit) {
-        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SPORADIC+ "?skip=" + skip + "&limit=" + limit, null);
-    }
-
-    public Observable<JSONObject> getCommunities() {
-        return request(Request.Method.GET, urlBase + Urls.USER_COMMUNITIES, null);
-    }
-
     private Observable<JSONObject> request(int method, String url, JSONObject obj) {
         try {
             RxRequestAdapter<JSONObject> adapter = new RxRequestAdapter<>();
@@ -91,9 +65,9 @@ public class RequestManager {
         }
     }
 
-    public Observable<JSONObject> multipartRequest(int method, String url, Map<String, String> data,
-                                                   Map<String, String> files, Map<String, JSONArray> arrays,
-                                                   Map<String, JSONObject> jsons) {
+    private Observable<JSONObject> multipartRequest(int method, String url, Map<String, String> data,
+                                                    Map<String, String> files, Map<String, JSONArray> arrays,
+                                                    Map<String, JSONObject> jsons) {
         try {
             RxRequestAdapter<JSONObject> adapter = new RxRequestAdapter<>();
             CustomMultipartRequest request = new CustomMultipartRequest(method, url, adapter, adapter);
@@ -119,6 +93,34 @@ public class RequestManager {
     }
 
 
+
+    public Observable<JSONObject> login(JSONObject obj) {
+        return request(Request.Method.POST, urlBase + Urls.LOGIN, obj);
+    }
+
+    public Observable<JSONObject> register(HashMap<String, String> data, String image) {
+        HashMap<String, String> images = new HashMap<>();
+        images.put("image", image);
+        return multipartRequest(Request.Method.POST, urlBase + Urls.REGISTER, data, images, null, null);
+    }
+
+    public Observable<JSONObject> getScheduledVisits(int skip, int limit) {
+        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SCHEDULED + "?skip=" + skip + "&limit=" + limit, null);
+    }
+
+    public Observable<JSONObject> getFrequentVisits(int skip, int limit) {
+        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_FREQUENT + "?skip=" + skip + "&limit=" + limit, null);
+    }
+
+    public Observable<JSONObject> getSporadicVisits(int skip, int limit) {
+        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SPORADIC+ "?skip=" + skip + "&limit=" + limit, null);
+    }
+
+    public Observable<JSONObject> getCommunities() {
+        return request(Request.Method.GET, urlBase + Urls.USER_COMMUNITIES, null);
+    }
+
+
     public Observable<JSONObject> createAlert(JSONObject params) {
         return request(Request.Method.POST, urlBase + Urls.CREATE_ALERT, params);
     }
@@ -132,4 +134,18 @@ public class RequestManager {
     public Observable<JSONObject> removeDevice(String device) {
         return request(Request.Method.DELETE, urlBase + Urls.USER_DEVICES+"/"+device, null);
     }
+
+
+    public Observable<JSONObject> getIncidentAlerts(int skip, int limit) {
+        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_INCIDENT + "?skip=" + skip + "&limit=" + limit, null);
+    }
+
+    public Observable<JSONObject> getInformationAlerts(int skip, int limit) {
+        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_INFORMATION+ "?skip=" + skip + "&limit=" + limit, null);
+    }
+
+    public Observable<JSONObject> getOtherAlerts(int skip, int limit) {
+        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_OTHER+ "?skip=" + skip + "&limit=" + limit, null);
+    }
+
 }

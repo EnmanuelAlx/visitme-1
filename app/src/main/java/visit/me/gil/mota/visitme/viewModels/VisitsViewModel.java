@@ -12,29 +12,19 @@ import visit.me.gil.mota.visitme.useCases.UseCase;
  * Created by mota on 15/4/2018.
  */
 
-public class VisitsViewModel extends Observable implements UseCase.Result {
-    private Interactor interactor;
-    private int currentTab;
+public class VisitsViewModel extends TabedListViewModel<Visit> {
+
     private List<Visit> sporadics, scheduleds, frequents;
     private GetVisits getVisits;
     private int skipScheduleds = 0, skipSporadics = 0,  skipFrequents = 0;
 
-    public VisitsViewModel(Interactor interactor) {
-        this.interactor = interactor;
-        currentTab = 0;
-        sporadics = new ArrayList<>();
-        scheduleds = new ArrayList<>();
-        frequents = new ArrayList<>();
-        getVisits = new GetVisits(this);
-        runGetByCurrentTab();
+    public VisitsViewModel(TabedListViewModel.Interactor interactor) {
+        super(interactor);
     }
 
-    public void refresh() {
-        refreshByCurrentTab();
-        runGetByCurrentTab();
-    }
 
-    private void runGetByCurrentTab() {
+    @Override
+    protected void runGetByCurrentTab() {
         switch (currentTab) {
             case 0:
                 getVisits.setParams(currentTab, skipScheduleds, scheduleds);
@@ -53,7 +43,8 @@ public class VisitsViewModel extends Observable implements UseCase.Result {
         getVisits.run();
     }
 
-    private void refreshByCurrentTab() {
+    @Override
+    protected void refreshByCurrentTab() {
         switch (currentTab) {
             case 0:
                 skipScheduleds = 0;
@@ -70,21 +61,16 @@ public class VisitsViewModel extends Observable implements UseCase.Result {
         }
     }
 
-    public void changeTab(int position) {
-        currentTab = position;
-        List<Visit> currentList = getListByCurrentTab();
-        if (currentList.size() > 0)
-            changeListByCurrentTab();
-        else
-            runGetByCurrentTab();
+    @Override
+    protected void init() {
+        sporadics = new ArrayList<>();
+        scheduleds = new ArrayList<>();
+        frequents = new ArrayList<>();
+        getVisits = new GetVisits(this);
     }
 
-    private void changeListByCurrentTab() {
-        List<Visit> toChange = getListByCurrentTab();
-        interactor.changeList(toChange);
-    }
-
-    private List<Visit> getListByCurrentTab()
+    @Override
+    protected List<Visit> getListByCurrentTab()
     {
         switch (currentTab) {
             case 0:
@@ -98,19 +84,5 @@ public class VisitsViewModel extends Observable implements UseCase.Result {
         }
     }
 
-    @Override
-    public void onError(String error) {
-        interactor.showError(error);
-    }
 
-    @Override
-    public void onSuccess() {
-        changeListByCurrentTab();
-    }
-
-    public interface Interactor {
-        void changeList(List<Visit> visit);
-        void loading(boolean loading);
-        void showError(String error);
-    }
 }

@@ -1,9 +1,5 @@
 package visit.me.gil.mota.visitme.useCases;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,16 +14,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import visit.me.gil.mota.visitme.managers.RequestManager;
+import visit.me.gil.mota.visitme.models.Alert;
 import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
- * Created by mota on 16/4/2018.
+ * Created by mota on 19/4/2018.
  */
 
-public class GetVisits extends FillListByType<Visit> {
+public class GetAlerts extends FillListByType<Alert> {
 
-    public GetVisits(Result result) {
+    public GetAlerts(Result result) {
         super(result);
     }
 
@@ -35,13 +32,13 @@ public class GetVisits extends FillListByType<Visit> {
     protected Observable<JSONObject> getPromiseByType() {
         switch (type) {
             case 0:
-                return RequestManager.getInstance().getScheduledVisits(skip, 30);
+                return RequestManager.getInstance().getIncidentAlerts(skip, 30);
 
             case 1:
-                return RequestManager.getInstance().getFrequentVisits(skip, 30);
+                return RequestManager.getInstance().getInformationAlerts(skip, 30);
 
             case 2:
-                return RequestManager.getInstance().getSporadicVisits(skip, 30);
+                return RequestManager.getInstance().getOtherAlerts(skip, 30);
         }
         return new Observable<JSONObject>() {
             @Override
@@ -52,10 +49,9 @@ public class GetVisits extends FillListByType<Visit> {
     }
 
     @Override
-    protected Collection<? extends Visit> parseList(JSONObject obj) throws JSONException {
-        JSONArray arry = obj.getJSONArray("visits");
-        Visit[] visits = Functions.parse(arry, Visit[].class);
-        return Arrays.asList(visits);
+    protected Collection<? extends Alert> parseList(JSONObject obj) throws JSONException {
+        JSONArray arry = obj.getJSONArray("alerts");
+        Alert[] alerts = Functions.parse(arry, Alert[].class);
+        return Arrays.asList(alerts);
     }
-
 }

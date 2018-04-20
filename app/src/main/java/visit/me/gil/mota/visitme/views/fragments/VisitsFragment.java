@@ -20,13 +20,14 @@ import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.FragmentVisitsBinding;
 import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.utils.Pnotify;
+import visit.me.gil.mota.visitme.viewModels.TabedListViewModel;
 import visit.me.gil.mota.visitme.viewModels.VisitsViewModel;
 import visit.me.gil.mota.visitme.views.adapters.VisitAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VisitsFragment extends Fragment implements Observer, TabLayout.OnTabSelectedListener, VisitsViewModel.Interactor {
+public class VisitsFragment extends Fragment implements Observer, TabLayout.OnTabSelectedListener, TabedListViewModel.Interactor {
 
     private FragmentVisitsBinding binding;
     private VisitsViewModel viewModel;
@@ -100,7 +101,7 @@ public class VisitsFragment extends Fragment implements Observer, TabLayout.OnTa
         });
     }
 
-    public void changeList(List<Visit> list){
+    public void changeList(List list){
         visitAdapter.setList(list);
         binding.swipe.setRefreshing(false);
     }

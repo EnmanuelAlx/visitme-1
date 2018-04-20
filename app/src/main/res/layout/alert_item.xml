@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="visit.me.gil.mota.visitme.viewModels.ItemAlertViewModel"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical"
+        android:id="@+id/item_alert"
+        android:onClick="@{viewModel::abrir}">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
+            android:weightSum="100"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_weight="20"
+                android:layout_height="match_parent"
+                android:src="@drawable/guy"
+                android:padding="3dp"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="70"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingStart="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.title}"
+                    android:textColor="#333"
+                    android:textSize="18dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.time}"
+                    android:textColor="@color/gray_4"
+                    android:textSize="14dp"/>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="10"
+                android:layout_height="match_parent"
+                android:src="@drawable/vertical_dots"
+                android:onClick="@{viewModel::menu}"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_4" />
+    </LinearLayout>
+</layout>
+

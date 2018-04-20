@@ -5,28 +5,36 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.FragmentDashboardBinding;
 import visit.me.gil.mota.visitme.databinding.FragmentVisitsBinding;
+import visit.me.gil.mota.visitme.models.Alert;
+import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.viewModels.DashboardViewModel;
+import visit.me.gil.mota.visitme.viewModels.TabedListViewModel;
 import visit.me.gil.mota.visitme.viewModels.VisitsViewModel;
+import visit.me.gil.mota.visitme.views.adapters.AlertAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DashboardFragment extends Fragment implements Observer, TabLayout.OnTabSelectedListener {
+public class DashboardFragment extends Fragment implements Observer, TabLayout.OnTabSelectedListener, TabedListViewModel.Interactor {
 
     private FragmentDashboardBinding binding;
     private DashboardViewModel viewModel;
     private TabLayout tabLayout;
-
+    private AlertAdapter adapter;
     public DashboardFragment() {
         // Required empty public constructor
     }
@@ -37,10 +45,11 @@ public class DashboardFragment extends Fragment implements Observer, TabLayout.O
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
-        viewModel = new DashboardViewModel(getContext());
+        viewModel = new DashboardViewModel(this);
         binding.setViewModel(viewModel);
         setupObserver(viewModel);
         setupTabs();
+        setupListView();
         return binding.getRoot();
     }
 
@@ -60,15 +69,46 @@ public class DashboardFragment extends Fragment implements Observer, TabLayout.O
 
     @Override
     public void update(Observable observable, Object o) {
-        if (observable instanceof VisitsViewModel)
+        if (observable instanceof DashboardViewModel)
         {
-            VisitsViewModel appViewModel = (VisitsViewModel) observable;
+            DashboardViewModel viewModel = (DashboardViewModel) observable;
         }
+    }
+
+
+    private void setupListView()
+    {
+        adapter = new AlertAdapter();
+        adapter.setHasStableIds(true);
+        binding.list.setAdapter(adapter);
+        binding.list.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        binding.swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.refresh();
+            }
+        });
+    }
+
+    public void changeList(List list){
+        adapter.setList((List<Alert>)list);
+        binding.swipe.setRefreshing(false);
+    }
+
+    @Override
+    public void loading(boolean loading) {
+        binding.swipe.setRefreshing(loading);
+    }
+
+    @Override
+    public void showError(String error) {
+        Pnotify.makeText(getContext(),error, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
+        binding.swipe.setRefreshing(false);
     }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-
+        viewModel.changeTab(tab.getPosition());
     }
 
     @Override

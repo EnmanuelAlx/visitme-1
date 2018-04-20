@@ -15,4 +15,7 @@ public class Urls
     public static final String USER_COMMUNITIES = USER_PROFILE + "/communities";
     public static final String CREATE_ALERT = "/alerts";
     public static final String USER_DEVICES = USER_PROFILE + "/devices";
+    public static final String USER_ALERTS_INCIDENT = USER_PROFILE + "/alerts/INCIDENT";
+    public static final String USER_ALERTS_INFORMATION = USER_PROFILE + "/alerts/INFORMATION";
+    public static final String USER_ALERTS_OTHER = USER_PROFILE + "/alerts/OTHER";
 }
