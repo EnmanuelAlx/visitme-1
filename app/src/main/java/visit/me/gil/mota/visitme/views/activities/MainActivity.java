@@ -1,5 +1,6 @@
 package visit.me.gil.mota.visitme.views.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,11 +19,13 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityLoginBinding;
 import visit.me.gil.mota.visitme.databinding.ActivityMainBinding;
+import visit.me.gil.mota.visitme.useCases.CreateVisit;
 import visit.me.gil.mota.visitme.viewModels.LoginViewModel;
 import visit.me.gil.mota.visitme.viewModels.MainViewModel;
 import visit.me.gil.mota.visitme.views.adapters.PageAdapter;
 
-public class MainActivity extends BindeableActivity implements TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends BindeableActivity implements TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener, MainViewModel.Contract {
+    public static final int UPDATE_VISITS = 777;
     private MainViewModel viewModel;
     private ViewPager pager;
     private TabLayout tabLayout;
@@ -45,7 +48,7 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     @Override
     public void initDataBinding() {
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        viewModel = new MainViewModel(this);
+        viewModel = new MainViewModel(this,this);
         binding.setViewModel(viewModel);
         initFragments(binding);
     }
@@ -104,5 +107,23 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void createVisit(){
+        Intent i = new Intent(this, CreateVisitActivity.class);
+        startActivityForResult(i,UPDATE_VISITS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == UPDATE_VISITS)
+            viewModel.updateVisits();
+    }
+
+    @Override
+    public void onBackPressed() {
+        viewModel.signOut();
     }
 }

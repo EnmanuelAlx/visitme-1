@@ -18,4 +18,5 @@ public class Urls
     public static final String USER_ALERTS_INCIDENT = USER_PROFILE + "/alerts/INCIDENT";
     public static final String USER_ALERTS_INFORMATION = USER_PROFILE + "/alerts/INFORMATION";
     public static final String USER_ALERTS_OTHER = USER_PROFILE + "/alerts/OTHER";
+    public static final String VISITS = "/visits";
 }

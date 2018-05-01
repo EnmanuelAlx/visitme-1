@@ -17,13 +17,13 @@
     </string-array>
 
     <string-array name="days">
-        <item>Lunes</item>
-        <item>Martes</item>
-        <item>Miercoles</item>
-        <item>Jueves</item>
-        <item>Viernes</item>
-        <item>Sabado</item>
-        <item>Domingo</item>
+        <item>Lun</item>
+        <item>Mar</item>
+        <item>Mie</item>
+        <item>Jue</item>
+        <item>Vie</item>
+        <item>Sab</item>
+        <item>Dom</item>
     </string-array>
     <string name="title_activity_unexpected_visitor">UnexpectedVisitorActivity</string>
     <string name="action_settings">Settings</string>

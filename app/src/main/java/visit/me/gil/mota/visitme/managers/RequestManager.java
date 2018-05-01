@@ -29,7 +29,7 @@ public class RequestManager {
     private String urlBase;
 
     private RequestManager() {
-        urlBase = "http://192.168.1.101:3000/api";
+        urlBase = "https://visitme1.herokuapp.com/api";
     }
 
     public static RequestManager getInstance() {
@@ -148,4 +148,7 @@ public class RequestManager {
         return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_OTHER+ "?skip=" + skip + "&limit=" + limit, null);
     }
 
+    public Observable<JSONObject> createVisit(JSONObject params) {
+        return request(Request.Method.POST, urlBase + Urls.VISITS, params);
+    }
 }

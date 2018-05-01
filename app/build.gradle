@@ -55,4 +55,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.onesignal:OneSignal:3.8.4'
     compile 'com.github.ganfra:material-spinner:2.0.0'
+    compile 'in.shadowfax:proswipebutton:1.1'
+    compile 'com.wdullaer:materialdatetimepicker:3.5.1'
+    compile 'com.xiaofeng.android:flowlayoutmanager:1.2.3.2'
+    compile 'com.android.support:recyclerview-v7:26.3.1'
+
 }

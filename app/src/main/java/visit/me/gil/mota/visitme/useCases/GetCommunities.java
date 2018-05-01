@@ -1,5 +1,7 @@
 package visit.me.gil.mota.visitme.useCases;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,6 +47,7 @@ public class GetCommunities extends UseCase implements Observer<JSONObject> {
     {
         if (obj.has("communities"))
         {
+            Log.i("COM","GET COM " + obj.toString());
             UserManager.getInstance().saveCommunities(obj);
             if (resultSetter != null)
                 resultSetter.onSuccess();

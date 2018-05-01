@@ -18,6 +18,7 @@ import visit.me.gil.mota.visitme.useCases.SignOut;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.Functions;
 import visit.me.gil.mota.visitme.utils.Pnotify;
+import visit.me.gil.mota.visitme.views.activities.CreateVisitActivity;
 import visit.me.gil.mota.visitme.views.dialogs.CreateAlertDialog;
 
 /**
@@ -31,12 +32,14 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
     private SignOut signOut;
     private GetCommunities getCommunities;
     private CreateAlert createAlert;
-    public MainViewModel(@NonNull Context context) {
+    private Contract contract;
+    public MainViewModel(@NonNull Context context, Contract contract) {
         this.context = context;
         signOut = new SignOut(context);
         getCommunities = new GetCommunities(null);
         getCommunities.run();
         createAlert = new CreateAlert(createAlertResult);
+        this.contract = contract;
     }
 
     public void signOut() {
@@ -49,8 +52,7 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
     }
 
     public void createVisit(View view) {
-       /* Intent i = new Intent(context, CreateVisitActivity.class);
-        context.startActivity(i);*/
+        contract.createVisit();
     }
 
     @Override
@@ -67,6 +69,14 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
             createAlertResult.onError("Error Inesperado");
         }
 
+    }
+
+    public void updateVisits() {
+
+    }
+
+    public interface Contract {
+        void createVisit();
     }
 
     private final UseCase.Result createAlertResult = new UseCase.Result() {

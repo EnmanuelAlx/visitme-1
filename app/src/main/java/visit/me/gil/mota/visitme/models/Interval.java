@@ -9,6 +9,12 @@ public class Interval {
     private int to;
     private int day;
 
+    public Interval(int day, int from, int to) {
+        this.day = day;
+        this.from = from;
+        this.to = to;
+    }
+
     public int getFrom() {
         return from;
     }

@@ -4,7 +4,7 @@
     >
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="visit.me.gil.mota.visitme.viewModels.GuestDataViewModel" />
@@ -35,19 +35,17 @@
             />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:weightSum="100"
             android:orientation="horizontal"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="10dp">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
                 android:src="@drawable/guy"
                 />
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="60"
                 android:orientation="vertical"
@@ -55,21 +53,77 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Cedula de Identidad"/>
+                    android:hint="Cedula de Identidad"
+                    android:text="@={viewModel.cedula}"/>
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre y Apellido"/>
+                    android:hint="Nombre y Apellido"
+                    android:text="@={viewModel.name}"/>
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Horario"
+            android:textAlignment="center"
+            android:visibility='@{viewModel.visitType.equalsIgnoreCase("SPORADIC") ? View.GONE: View.VISIBLE}'
+            android:layout_marginBottom="2dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility='@{viewModel.visitType.equalsIgnoreCase("SCHEDULED") ? View.VISIBLE: View.GONE}'>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.day}"
+                style="@style/VisitMeButtonText"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:onClick="@{viewModel::selectDay}"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.hour}"
+                style="@style/VisitMeButtonText"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:onClick="@{viewModel::selectHour}"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility='@{viewModel.visitType.equalsIgnoreCase("FREQUENT") ? View.VISIBLE: View.GONE}'
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/intervals"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textColor="@color/white"
+                android:text="Modificar"
+                style="@style/VisitMeButton"
+                android:onClick="@{viewModel::modifyIntervals}"/>
+        </LinearLayout>
         <Button
             android:id="@+id/button"
             style="@style/VisitMeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:text="Continuar"
+            android:onClick="@{viewModel::register}"
+            android:text="Registrar"
             android:textColor="@color/white"
             android:layout_marginBottom="20dp"/>
     </LinearLayout>

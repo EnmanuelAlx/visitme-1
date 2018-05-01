@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
+        android:padding="25dp"
         >
 
         <ImageView
@@ -28,19 +28,17 @@
             />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:weightSum="100"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:layout_weight="40"
+
                 android:src="@drawable/house"/>
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="60"
                 android:orientation="vertical"
                 android:paddingTop="30dp">
                 <TextView
@@ -53,6 +51,7 @@
                     android:textAlignment="center"
                     />
                 <Spinner
+                    android:id="@+id/spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -64,6 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Continuar"
+            android:onClick="@{viewModel::select}"
             android:textColor="@color/white"
             android:layout_marginBottom="20dp"/>
     </LinearLayout>
