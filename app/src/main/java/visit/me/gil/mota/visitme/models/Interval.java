@@ -38,4 +38,13 @@ public class Interval {
     public void setDay(int day) {
         this.day = day;
     }
+
+    @Override
+    public String toString() {
+        return "Interval{" +
+                "from=" + from +
+                ", to=" + to +
+                ", day=" + day +
+                '}';
+    }
 }

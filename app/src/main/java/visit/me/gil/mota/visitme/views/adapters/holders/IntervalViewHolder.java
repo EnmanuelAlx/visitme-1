@@ -12,19 +12,45 @@ import visit.me.gil.mota.visitme.viewModels.ItemIntervalViewModel;
  */
 
 public class IntervalViewHolder extends BaseViewHolder<Interval> {
+    private ItemIntervalViewModel.IntervalItemInteractor interactor;
     private ItemIntervalViewModel viewModel;
-    private IntervalItemBinding binding;
+    private IntervalItemBinding binding1;
+    private IntervalItem1Binding binding2;
 
     public IntervalViewHolder(IntervalItemBinding itemView) {
         super(itemView.getRoot());
-        binding = itemView;
+        binding1 = itemView;
     }
+
+
+    public IntervalViewHolder(IntervalItem1Binding itemView, ItemIntervalViewModel.IntervalItemInteractor interactor) {
+        super(itemView.getRoot());
+        binding2 = itemView;
+        this.interactor = interactor;
+    }
+
 
     @Override
     public void onBind() {
-        if (binding.getViewModel() == null)
-            binding.setViewModel(new ItemIntervalViewModel(itemView.getContext(), item));
-        else
-            binding.getViewModel().setInterval(item);
+
+        bindByNotNull();
+
+    }
+
+    private void bindByNotNull() {
+        if(binding1 != null)
+        {
+
+            if (binding1.getViewModel() == null)
+                binding1.setViewModel(new ItemIntervalViewModel(itemView.getContext(), item));
+            else
+                binding1.getViewModel().setInterval(item);
+        }
+        else {
+            if (binding2.getViewModel() == null)
+                binding2.setViewModel(new ItemIntervalViewModel(itemView.getContext(), item, interactor));
+            else
+                binding2.getViewModel().setInterval(item);
+        }
     }
 }

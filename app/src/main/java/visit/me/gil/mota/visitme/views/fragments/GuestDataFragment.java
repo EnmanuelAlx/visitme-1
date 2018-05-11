@@ -3,6 +3,7 @@ package visit.me.gil.mota.visitme.views.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -105,6 +106,16 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
     @Override
     public void register(String cedula, String name, String dayOfVisit, List<Interval> intervals) {
         contract.onFillGuestData(cedula,name,dayOfVisit,intervals);
+    }
+
+    @Override
+    public Context giveContext() {
+        return getActivity();
+    }
+
+    @Override
+    public void refreshIntervalsData() {
+        adapter.notifyDataSetChanged();
     }
 
     @Override

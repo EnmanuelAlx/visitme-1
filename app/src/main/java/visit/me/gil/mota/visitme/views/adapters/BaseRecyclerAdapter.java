@@ -51,8 +51,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
 
     public void setList(List<T> items)
     {
-        list.clear();
-        list.addAll(items);
+        list = items;
+        /*list.clear(); // VER BIEN ESTO, por que estaba asi?
+        list.addAll(items);*/
         notifyDataSetChanged();
     }
 

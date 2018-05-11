@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -55,7 +56,6 @@ public class IntervalsDialog {
                     public void onClick(View v) {
 
                         if (validateIntervals()) {
-
                             result.onClose(intervals);
                             d.dismiss();
                         }
@@ -69,12 +69,12 @@ public class IntervalsDialog {
     }
 
     private void setupAdapter(View view) {
-        RecyclerView list = view.findViewById(R.id.intervals);
+        RecyclerView recyler = view.findViewById(R.id.intervals);
         adapter = new IntervalAdapter(IntervalAdapter.EDITABLE_TYPE);
         adapter.setList(intervals);
         adapter.setHasStableIds(true);
-        list.setAdapter(adapter);
-        list.setLayoutManager(new LinearLayoutManager(context));
+        recyler.setAdapter(adapter);
+        recyler.setLayoutManager(new LinearLayoutManager(context));
     }
 
     private boolean validateIntervals() {

@@ -52,7 +52,6 @@ public class RequestManager {
                 }
             };
 
-            //request.getHeaders().put("Authentication",auth);
             SingletonRequester.getInstance(MyApplication.getInstance()).addToRequestQueue(request);
             return adapter.getObservable();
         } catch (Exception e) {

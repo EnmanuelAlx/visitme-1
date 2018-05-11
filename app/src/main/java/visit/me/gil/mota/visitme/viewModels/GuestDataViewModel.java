@@ -1,7 +1,9 @@
 package visit.me.gil.mota.visitme.viewModels;
 
+import android.content.Context;
 import android.databinding.ObservableField;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -11,12 +13,13 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.models.Interval;
 import visit.me.gil.mota.visitme.useCases.CreateVisit;
 import visit.me.gil.mota.visitme.useCases.UseCase;
+import visit.me.gil.mota.visitme.views.dialogs.IntervalsDialog;
 
 /**
  * Created by mota on 17/4/2018.
  */
 
-public class GuestDataViewModel extends Observable {
+public class GuestDataViewModel extends Observable implements IntervalsDialog.Result {
 
     private Contract contract;
     public ObservableField<String> cedula;
@@ -84,11 +87,18 @@ public class GuestDataViewModel extends Observable {
 
 
     public void modifyIntervals(View view){
-
+        IntervalsDialog dialog = new IntervalsDialog(contract.giveContext(), this, intervals);
+        dialog.show();
     }
 
     public List<Interval> getIntervals() {
         return intervals;
+    }
+
+    @Override
+    public void onClose(List<Interval> intervals) {
+        Log.i("INTERVAL","II"+intervals.toString() + "III"+this.intervals);
+        contract.refreshIntervalsData();
     }
 
     public interface Contract {
@@ -99,6 +109,10 @@ public class GuestDataViewModel extends Observable {
         void showGetTime();
 
         void register(String cedula, String name, String dayOfVisit, List<Interval> intervals);
+
+        Context giveContext();
+
+        void refreshIntervalsData();
     }
 
     private android.databinding.Observable.OnPropertyChangedCallback cedulaChanged =
