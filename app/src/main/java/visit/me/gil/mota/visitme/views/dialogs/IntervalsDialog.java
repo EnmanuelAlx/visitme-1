@@ -1,7 +1,9 @@
 package visit.me.gil.mota.visitme.views.dialogs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,22 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
+
+import java.util.Calendar;
 import java.util.List;
 
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.models.Alert;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.viewModels.ItemIntervalViewModel;
 import visit.me.gil.mota.visitme.views.adapters.IntervalAdapter;
 
 /**
  * Created by mota on 29/4/2018.
  */
 
-public class IntervalsDialog {
+public class IntervalsDialog implements ItemIntervalViewModel.IntervalItemInteractor {
     private Context context;
     private Result result;
     private List<Interval> intervals;
     private IntervalAdapter adapter;
+
     public IntervalsDialog(Context contxt, Result result, List<Interval> intervals) {
         this.context = contxt;
         this.result = result;
@@ -36,14 +43,15 @@ public class IntervalsDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final View view = LayoutInflater.from(context).inflate(R.layout.intervals_dialog, null);
         setupAdapter(view);
-        builder.setView(view);
-        builder.setPositiveButton("OK", null);
-        builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+        FloatingActionButton button = view.findViewById(R.id.add);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View view) {
+                addInterval();
             }
         });
+        builder.setView(view);
+        builder.setPositiveButton("OK", null);
         builder.setCancelable(false);
         final AlertDialog d = builder.create();
 
@@ -68,9 +76,14 @@ public class IntervalsDialog {
         d.show();
     }
 
+    private void addInterval() {
+        intervals.add(new Interval(0,0,2400));
+        adapter.notifyDataSetChanged();
+    }
+
     private void setupAdapter(View view) {
         RecyclerView recyler = view.findViewById(R.id.intervals);
-        adapter = new IntervalAdapter(IntervalAdapter.EDITABLE_TYPE);
+        adapter = new IntervalAdapter(IntervalAdapter.EDITABLE_TYPE, this);
         adapter.setList(intervals);
         adapter.setHasStableIds(true);
         recyler.setAdapter(adapter);
@@ -82,8 +95,36 @@ public class IntervalsDialog {
     }
 
 
+    @Override
+    public void remove(Interval interval) {
+        this.intervals.remove(interval);
+        this.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showTimeDialog(TimePickerDialog.OnTimeSetListener listener) {
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog dialog = TimePickerDialog.newInstance(listener,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE), true);
+        try {
+            final Activity activity = (Activity) context;
+            dialog.show(activity.getFragmentManager(), "timeDialogItem");
+        } catch (ClassCastException e) {
+
+        }
+    }
+
+    @Override
+    public void showError(String err) {
+        result.showError(err);
+    }
+
+
     public interface Result {
         void onClose(List<Interval> intervals);
+
+        void showError(String err);
     }
 
 }

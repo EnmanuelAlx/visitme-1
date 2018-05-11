@@ -41,15 +41,8 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
         visitType = new ObservableField<>("");
         cedula.addOnPropertyChangedCallback(cedulaChanged);
         intervals  = new ArrayList<>();
-        intervals.add(new Interval(1,1200, 1800));
-        intervals.add(new Interval(3,1200, 1800));
-        intervals.add(new Interval(5,1200, 1800));
-        intervals.add(new Interval(1,1200, 1800));
-        intervals.add(new Interval(3,1200, 1800));
-        intervals.add(new Interval(5,1200, 1800));
-        intervals.add(new Interval(1,1200, 1800));
-        intervals.add(new Interval(3,1200, 1800));
-        intervals.add(new Interval(5,1200, 1800));
+        intervals.add(new Interval(0,0, 2400));
+
     }
 
     public void register(View view) {
@@ -99,6 +92,11 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
     public void onClose(List<Interval> intervals) {
         Log.i("INTERVAL","II"+intervals.toString() + "III"+this.intervals);
         contract.refreshIntervalsData();
+    }
+
+    @Override
+    public void showError(String err) {
+        contract.setError(err);
     }
 
     public interface Contract {

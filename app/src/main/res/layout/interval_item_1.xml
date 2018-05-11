@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:entries="@array/days"
             android:selectedItemPosition="@={viewModel.daySelected}"
-            android:layout_weight="10"/>
+            android:layout_weight="10"
+            android:onItemSelected="@{viewModel::onDaySelected}"
+            />
 
         <TextView
             android:textAlignment="center"

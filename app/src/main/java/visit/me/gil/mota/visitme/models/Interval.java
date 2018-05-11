@@ -1,5 +1,9 @@
 package visit.me.gil.mota.visitme.models;
 
+import android.util.Log;
+
+import visit.me.gil.mota.visitme.utils.Functions;
+
 /**
  * Created by mota on 16/4/2018.
  */
@@ -39,6 +43,15 @@ public class Interval {
         this.day = day;
     }
 
+    public String getFromStr() {
+        return Functions.intHourToStr(from);
+    }
+
+    public String getToStr() {
+        return Functions.intHourToStr(to);
+    }
+
+
     @Override
     public String toString() {
         return "Interval{" +
@@ -46,5 +59,26 @@ public class Interval {
                 ", to=" + to +
                 ", day=" + day +
                 '}';
+    }
+
+    public void setTo(String s) {
+        try {
+            if (s != null)
+                to = Integer.valueOf(s.replace(":", ""));
+        } catch (Exception e) {
+            Log.i("INTERVAL" , "SET TO EX" + s + " " + s.replace(":", ""));
+        }
+
+    }
+
+    public void setFrom(String s) {
+        try {
+            if (s != null)
+                from = Integer.valueOf(s.replace(":", ""));
+        } catch (Exception e) {
+            Log.i("INTERVAL" , "SET FROM EX" + s + " " + s.replace(":", ""));
+        }
+
+
     }
 }

@@ -17,16 +17,22 @@ import visit.me.gil.mota.visitme.views.adapters.holders.IntervalViewHolder;
  * Created by mota on 28/4/2018.
  */
 
-public class IntervalAdapter extends BaseRecyclerAdapter<Interval> implements ItemIntervalViewModel.IntervalItemInteractor {
+public class IntervalAdapter extends BaseRecyclerAdapter<Interval> {
 
     public static final int SHOWABLE_TYPE = 0;
     public static final int EDITABLE_TYPE = 1;
     private int type;
+    private ItemIntervalViewModel.IntervalItemInteractor interactor;
 
     public IntervalAdapter(int type) {
         this.type = type;
-
     }
+
+    public IntervalAdapter(int type, ItemIntervalViewModel.IntervalItemInteractor interactor) {
+        this.type = type;
+        this.interactor = interactor;
+    }
+
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,15 +43,9 @@ public class IntervalAdapter extends BaseRecyclerAdapter<Interval> implements It
         } else {
             IntervalItem1Binding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.interval_item_1,
                     parent, false);
-            return new IntervalViewHolder(binding, this);
+            return new IntervalViewHolder(binding, interactor);
         }
 
     }
 
-
-    @Override
-    public void remove(Interval interval) {
-        this.list.remove(interval);
-        notifyDataSetChanged();
-    }
 }
