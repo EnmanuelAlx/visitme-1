@@ -10,6 +10,7 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.managers.UserManager;
 import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.useCases.CreateVisit;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 
@@ -17,14 +18,13 @@ import visit.me.gil.mota.visitme.useCases.UseCase;
  * Created by mota on 22/4/2018.
  */
 
-public class CreateVisitViewModel extends Observable implements UseCase.Result {
+public class CreateVisitViewModel extends Observable implements CreateVisit.Result {
 
     private Contract contract;
     private String visitType;
     private Community community;
     private Bundle actualInfo;
     private CreateVisit createVisit;
-
     public CreateVisitViewModel(Contract contract) {
         this.contract = contract;
         actualInfo = new Bundle();
@@ -49,8 +49,7 @@ public class CreateVisitViewModel extends Observable implements UseCase.Result {
             try {
                 setCommunity(UserManager.getInstance().getCommunities().get(0));
                 contract.selectStep(2);
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 contract.setError("No estas en una comunidad aun!");
             }
 
@@ -69,7 +68,7 @@ public class CreateVisitViewModel extends Observable implements UseCase.Result {
     }
 
     public void fillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
-        createVisit.setParams(cedula, name, dayOfVisit, intervals,partOfDay, companions, community, visitType);
+        createVisit.setParams(cedula, name, dayOfVisit, intervals, partOfDay, companions, community, visitType);
         createVisit.run();
     }
 
@@ -80,11 +79,13 @@ public class CreateVisitViewModel extends Observable implements UseCase.Result {
 
     @Override
     public void onSuccess() {
-        contract.finishSuccess();
+
     }
 
-    public int getStep() {
-        return 0;
+
+    @Override
+    public void onVisitCreated(Visit visit) {
+        contract.finishSuccess(visit);
     }
 
     public interface Contract {
@@ -94,6 +95,6 @@ public class CreateVisitViewModel extends Observable implements UseCase.Result {
 
         void setError(String error);
 
-        void finishSuccess();
+        void finishSuccess(Visit visit);
     }
 }

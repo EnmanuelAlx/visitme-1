@@ -92,7 +92,6 @@ public class RequestManager {
     }
 
 
-
     public Observable<JSONObject> login(JSONObject obj) {
         return request(Request.Method.POST, urlBase + Urls.LOGIN, obj);
     }
@@ -112,7 +111,7 @@ public class RequestManager {
     }
 
     public Observable<JSONObject> getSporadicVisits(int skip, int limit) {
-        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SPORADIC+ "?skip=" + skip + "&limit=" + limit, null);
+        return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SPORADIC + "?skip=" + skip + "&limit=" + limit, null);
     }
 
     public Observable<JSONObject> getCommunities() {
@@ -126,12 +125,12 @@ public class RequestManager {
 
     public Observable<JSONObject> addDevice(String device) throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("device",device);
+        obj.put("device", device);
         return request(Request.Method.POST, urlBase + Urls.USER_DEVICES, obj);
     }
 
     public Observable<JSONObject> removeDevice(String device) {
-        return request(Request.Method.DELETE, urlBase + Urls.USER_DEVICES+"/"+device, null);
+        return request(Request.Method.DELETE, urlBase + Urls.USER_DEVICES + "/" + device, null);
     }
 
 
@@ -140,14 +139,18 @@ public class RequestManager {
     }
 
     public Observable<JSONObject> getInformationAlerts(int skip, int limit) {
-        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_INFORMATION+ "?skip=" + skip + "&limit=" + limit, null);
+        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_INFORMATION + "?skip=" + skip + "&limit=" + limit, null);
     }
 
     public Observable<JSONObject> getOtherAlerts(int skip, int limit) {
-        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_OTHER+ "?skip=" + skip + "&limit=" + limit, null);
+        return request(Request.Method.GET, urlBase + Urls.USER_ALERTS_OTHER + "?skip=" + skip + "&limit=" + limit, null);
     }
 
     public Observable<JSONObject> createVisit(JSONObject params) {
         return request(Request.Method.POST, urlBase + Urls.VISITS, params);
+    }
+
+    public Observable<JSONObject> deleteVisit(String visit) throws JSONException {
+        return request(Request.Method.DELETE, urlBase + Urls.VISITS + "/" + visit, null);
     }
 }

@@ -7,33 +7,86 @@
     tools:context="visit.me.gil.mota.visitme.views.activities.UnexpectedVisitorActivity"
     android:orientation="vertical"
     android:weightSum="100">
-    <android.support.v4.view.ViewPager
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_weight="90"
         android:layout_height="0dp"
-        android:layout_weight="80"/>
+        android:weightSum="100"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:padding="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile"
+                android:padding="5dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="30"
+                android:src="@drawable/guy" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="70"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="15dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:textColor="@color/white"
+                    android:text="John Doe"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:text="Visitante Inesperado"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70" />
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="20"
+        android:layout_weight="10"
         android:orientation="horizontal"
-        android:padding="5dp"
         android:weightSum="100">
-        <LinearLayout
+
+        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/colorPrimary"
+            android:text="Aceptar"
+            android:textColor="@color/white"
+            android:layout_margin="2dp"/>
 
-        </LinearLayout>
-
-        <LinearLayout
+        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="50"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical"
+            android:text="Rechazar"
+            android:background="@color/error"
+            android:textColor="@color/white"
+            android:layout_margin="2dp"/>
 
     </LinearLayout>
 

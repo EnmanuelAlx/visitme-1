@@ -1,10 +1,13 @@
 package visit.me.gil.mota.visitme.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mota on 12/4/2018.
  */
 
-public class User {
+public class User implements Parcelable{
 
     private String _id;
     private String email;
@@ -12,6 +15,27 @@ public class User {
     private String identification;
     private String password;
     private String image;
+
+    protected User(Parcel in) {
+        _id = in.readString();
+        email = in.readString();
+        name = in.readString();
+        identification = in.readString();
+        password = in.readString();
+        image = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String get_id() {
         return _id;
@@ -75,6 +99,21 @@ public class User {
 
     public String getImage() {
         return image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(_id);
+        parcel.writeString(email);
+        parcel.writeString(name);
+        parcel.writeString(identification);
+        parcel.writeString(password);
+        parcel.writeString(image);
     }
 }
 

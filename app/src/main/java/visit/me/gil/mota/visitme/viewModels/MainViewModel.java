@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import java.util.Observable;
 
 import visit.me.gil.mota.visitme.models.Alert;
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.useCases.CreateAlert;
 import visit.me.gil.mota.visitme.useCases.GetCommunities;
 import visit.me.gil.mota.visitme.useCases.SignOut;
@@ -71,12 +73,14 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
 
     }
 
-    public void updateVisits() {
-
+    public void addVisit(Visit visit) {
+        contract.addVisit(visit);
     }
 
     public interface Contract {
         void createVisit();
+        void addVisit(Visit visit);
+        void updateAlerts();
     }
 
     private final UseCase.Result createAlertResult = new UseCase.Result() {
@@ -89,5 +93,7 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
         public void onSuccess() {
             Pnotify.makeText(context,"Creacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
         }
+
+
     };
 }

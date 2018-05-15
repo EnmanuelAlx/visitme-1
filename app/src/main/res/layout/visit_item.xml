@@ -31,15 +31,19 @@
             android:layout_weight="70"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingLeft="5dp"
-            android:paddingStart="5dp">
+            android:gravity="center">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.username}"
                 android:textColor="#333"
                 android:textSize="18dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.community}"
+                android:textSize="14dp"
+                style="@style/VisitMeButtonText"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +57,6 @@
             android:layout_height="match_parent"
             android:src="@drawable/vertical_dots"
             android:onClick="@{viewModel::menu}"/>
-
     </LinearLayout>
 
         <View

@@ -1,5 +1,7 @@
 package visit.me.gil.mota.visitme.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -16,7 +18,7 @@ import visit.me.gil.mota.visitme.utils.Functions;
  * Created by mota on 16/4/2018.
  */
 
-public class Visit {
+public class Visit implements Parcelable {
     private String _id;
     private String kind;
     private Date dayOfVisit;
@@ -24,6 +26,27 @@ public class Visit {
     private User resident;
     private Community community;
     private Interval[] intervals;
+
+    protected Visit(Parcel in) {
+        _id = in.readString();
+        kind = in.readString();
+        guest = in.readParcelable(User.class.getClassLoader());
+        resident = in.readParcelable(User.class.getClassLoader());
+        community = in.readParcelable(Community.class.getClassLoader());
+        intervals = in.createTypedArray(Interval.CREATOR);
+    }
+
+    public static final Creator<Visit> CREATOR = new Creator<Visit>() {
+        @Override
+        public Visit createFromParcel(Parcel in) {
+            return new Visit(in);
+        }
+
+        @Override
+        public Visit[] newArray(int size) {
+            return new Visit[size];
+        }
+    };
 
     public String get_id() {
         return _id;
@@ -141,5 +164,21 @@ public class Visit {
 
     public void setResident(User resident) {
         this.resident = resident;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(_id);
+        parcel.writeString(kind);
+        parcel.writeParcelable(guest, i);
+        parcel.writeParcelable(resident, i);
+        parcel.writeParcelable(community, i);
+        parcel.writeTypedArray(intervals, i);
     }
 }

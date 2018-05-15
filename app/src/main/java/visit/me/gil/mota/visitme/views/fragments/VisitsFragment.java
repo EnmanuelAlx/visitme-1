@@ -27,7 +27,8 @@ import visit.me.gil.mota.visitme.views.adapters.VisitAdapter;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VisitsFragment extends Fragment implements Observer, TabLayout.OnTabSelectedListener, TabedListViewModel.Interactor {
+public class VisitsFragment extends Fragment implements Observer, TabLayout.OnTabSelectedListener,
+                                                        TabedListViewModel.Interactor {
 
     private FragmentVisitsBinding binding;
     private VisitsViewModel viewModel;
@@ -115,5 +116,10 @@ public class VisitsFragment extends Fragment implements Observer, TabLayout.OnTa
     public void showError(String error) {
         Pnotify.makeText(getContext(),error, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
         binding.swipe.setRefreshing(false);
+    }
+
+    public void add(Visit visit) {
+        viewModel.add(visit);
+        visitAdapter.notifyDataSetChanged();
     }
 }

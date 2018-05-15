@@ -84,5 +84,18 @@ public class VisitsViewModel extends TabedListViewModel<Visit> {
         }
     }
 
+    public void add(Visit visit) {
+        switch (visit.getKind()){
+            case "FREQUENT":
+                frequents.add(visit);
+                break;
+            case "SPORADIC":
+                sporadics.add(visit);
+                break;
+            case "SCHEDULED":
+                scheduleds.add(visit);
+                break;
+        }
 
+    }
 }

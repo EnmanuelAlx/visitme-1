@@ -1,5 +1,7 @@
 package visit.me.gil.mota.visitme.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import visit.me.gil.mota.visitme.MyApplication;
@@ -10,7 +12,7 @@ import visit.me.gil.mota.visitme.utils.Functions;
  * Created by mota on 16/4/2018.
  */
 
-public class Interval {
+public class Interval implements Parcelable {
     private int from;
     private int to;
     private int day;
@@ -20,6 +22,24 @@ public class Interval {
         this.from = from;
         this.to = to;
     }
+
+    protected Interval(Parcel in) {
+        from = in.readInt();
+        to = in.readInt();
+        day = in.readInt();
+    }
+
+    public static final Creator<Interval> CREATOR = new Creator<Interval>() {
+        @Override
+        public Interval createFromParcel(Parcel in) {
+            return new Interval(in);
+        }
+
+        @Override
+        public Interval[] newArray(int size) {
+            return new Interval[size];
+        }
+    };
 
     public int getFrom() {
         return from;
@@ -79,5 +99,17 @@ public class Interval {
         }
 
 
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(day);
+        parcel.writeInt(from);
+        parcel.writeInt(to);
     }
 }

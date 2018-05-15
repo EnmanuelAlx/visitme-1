@@ -1,5 +1,7 @@
 package visit.me.gil.mota.visitme.useCases;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 import visit.me.gil.mota.visitme.managers.RequestManager;
 import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
@@ -81,7 +84,10 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     @Override
     public void onNext(JSONObject jsonObject) {
-        resultSetter.onSuccess();
+        Result result = (Result) resultSetter;
+        Log.i("CREATE VISIT","JS "+jsonObject);
+        Visit v = Functions.parse(jsonObject, Visit.class);
+        result.onVisitCreated(v);
     }
 
     @Override
@@ -92,5 +98,9 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
     @Override
     public void onComplete() {
 
+    }
+
+    public interface Result extends UseCase.Result {
+        void onVisitCreated(Visit visit);
     }
 }
