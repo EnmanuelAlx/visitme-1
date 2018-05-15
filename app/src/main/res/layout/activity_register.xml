@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{viewModel::register}"
                     android:layout_marginBottom="15dp"
-                    android:text="Registrarse"
+                    android:text='@{viewModel.edit ? "Editar" : "Registrarse"}'
                     android:textColor="@color/white" />
 
                 <LinearLayout
