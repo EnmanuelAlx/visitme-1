@@ -1,7 +1,16 @@
 package visit.me.gil.mota.visitme.models;
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
+
+import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
  * Created by mota on 16/4/2018.
@@ -33,7 +42,53 @@ public class Visit {
     }
 
     public String getDayOfVisit() {
-        return dayOfVisit.toString();
+        if (kind.equals("SPORADIC"))
+            return "";
+
+
+        int day  = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        return dayOfVisit != null ? new SimpleDateFormat("dd/MM/yyyy").format(dayOfVisit) : getNextInterval(day);
+    }
+
+    private String getNextInterval(int day) {
+        List<Interval> intrvl = findIntervalsInDay(day);
+
+        if(intrvl.isEmpty())
+            return getNextInterval(day == 6 ? 0 : ++day);
+        else
+            return intrvl.size() == 1 ? intrvl.get(0).toString() : findNearIntervalWithHours(intrvl);
+
+    }
+
+    private String findNearIntervalWithHours(List<Interval> intrvl) {
+        int hour  = Calendar.getInstance().get(Calendar.HOUR);
+        int min = Calendar.getInstance().get(Calendar.MINUTE);
+        Interval minimun = null;
+        Log.i("VISIT","HOUR!"+ hour);
+        int rest = 100;
+        int op = 0;
+        for (Interval i : intrvl)
+        {
+           op = i.getTo() - (hour * 100 + hour);
+           if(op >= 0 && op <= rest)
+           {
+               rest = op;
+               minimun = i;
+           }
+
+        }
+        return minimun != null ? minimun.toString() : intrvl.get(0).toString();
+    }
+
+    private List<Interval> findIntervalsInDay(int day)
+    {
+        List<Interval> intrvls = new ArrayList<>();
+
+        for (Interval i : intervals)
+            if(i.getDay() == day)
+                intrvls.add(i);
+
+        return intrvls;
     }
 
     public void setDayOfVisit(Date dayOfVisit) {

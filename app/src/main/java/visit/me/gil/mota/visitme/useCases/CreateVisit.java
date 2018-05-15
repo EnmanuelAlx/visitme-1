@@ -38,17 +38,24 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     public void setParams(String cedula, String name,
                           String dayOfVisit, List<Interval> intervals,
-                          String partOfDay, int companions, Community community, String visitType)
-    {
+                          String partOfDay, int companions, Community community, String visitType) {
         try {
-            params.put("identification",cedula);
-            params.put("name",name);
-            params.put("dayOfVisit",dayOfVisit);
-            params.put("community",community.get_id());
-            params.put("kind",visitType);
-            params.put("intervals",intervalToJsonArray(intervals));
-            params.put("partOfDay",partOfDay);
-            params.put("companions",companions);
+            if (visitType.equals("FREQUENT") || visitType.equals("SCHEDULED"))
+                params.put("identification", cedula);
+
+            params.put("name", name);
+            params.put("community", community.get_id());
+            params.put("kind", visitType);
+
+            if (visitType.equals("FREQUENT"))
+                params.put("intervals", intervalToJsonArray(intervals));
+
+
+            if (visitType.equals("SCHEDULED")) {
+                params.put("partOfDay", partOfDay);
+                params.put("companions", companions);
+                params.put("dayOfVisit", dayOfVisit);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,8 +64,8 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     private JSONArray intervalToJsonArray(List<Interval> intervals) throws JSONException {
         JSONArray arry = new JSONArray();
-        if (intervals == null) return  arry;
-        for(Interval i : intervals)
+        if (intervals == null) return arry;
+        for (Interval i : intervals)
             arry.put(intervalToJSONObject(i));
         return arry;
     }

@@ -2,6 +2,8 @@ package visit.me.gil.mota.visitme.models;
 
 import android.util.Log;
 
+import visit.me.gil.mota.visitme.MyApplication;
+import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
@@ -54,11 +56,8 @@ public class Interval {
 
     @Override
     public String toString() {
-        return "Interval{" +
-                "from=" + from +
-                ", to=" + to +
-                ", day=" + day +
-                '}';
+        return MyApplication.getInstance().getResources().getStringArray(R.array.days)[day] + " "
+                                                                + getFromStr() + " - " + getToStr();
     }
 
     public void setTo(String s) {

@@ -1,5 +1,7 @@
 package visit.me.gil.mota.visitme.models;
 
+import visit.me.gil.mota.visitme.utils.Functions;
+
 /**
  * Created by mota on 18/4/2018.
  */
@@ -84,7 +86,7 @@ public class Alert {
     }
 
     public String getCreated_at() {
-        return created_at;
+        return Functions.formatDate(created_at);
     }
 
     public void setCreated_at(String created_at) {

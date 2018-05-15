@@ -50,7 +50,10 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
     }
 
     public void register(View view) {
-        contract.register(cedula.get(),name.get(),dayF, Consts.PART_OF_DAYS[partOfDay.get()], Integer.valueOf(companions.get()), intervals);
+        contract.register(cedula.get(),name.get(),dayF,
+                          Consts.PART_OF_DAYS[partOfDay.get()],
+                          Integer.valueOf(companions.get().equals("") ? "0": companions.get()),
+                          intervals);
     }
 
 
