@@ -20,10 +20,12 @@ import visit.me.gil.mota.visitme.viewModels.RegisterViewModel;
 public class RegisterActivity extends BindeableActivity implements RegisterViewModel.SelectImage {
     private RegisterViewModel viewModel;
     private String image;
+    private boolean edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        edit = this.getIntent().getBooleanExtra("edit", false);
         initDataBinding();
         setupObserver(viewModel);
     }
@@ -39,7 +41,7 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
     @Override
     public void initDataBinding() {
         ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        viewModel = new RegisterViewModel(this,this);
+        viewModel = new RegisterViewModel(this,this, edit);
         binding.setViewModel(viewModel);
     }
 

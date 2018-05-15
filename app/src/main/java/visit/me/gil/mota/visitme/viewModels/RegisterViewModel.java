@@ -43,11 +43,12 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     public ObservableField<String> homePhone;
     public ObservableField<Drawable> image;
     public SelectImage imageInterface;
+    public ObservableField<Boolean> edit;
     private Uri imageSelected;
     private Context context;
     private Register register;
 
-    public RegisterViewModel(@NonNull Context context, SelectImage imageSelector) {
+    public RegisterViewModel(@NonNull Context context, SelectImage imageSelector, boolean edit) {
         this.context = context;
         this.cedula = new ObservableField<>("");
         this.password = new ObservableField<>("");
@@ -57,8 +58,10 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.name = new ObservableField<>("");
         this.email = new ObservableField<>("");
         this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy));
+        this.edit = new ObservableField<>(edit);
         imageInterface = imageSelector;
         register = new Register(this,context);
+
     }
 
 
