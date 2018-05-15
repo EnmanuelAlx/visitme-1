@@ -1,7 +1,6 @@
 package visit.me.gil.mota.visitme.viewModels;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import org.json.JSONException;
 
@@ -69,8 +68,8 @@ public class CreateVisitViewModel extends Observable implements UseCase.Result {
         return actualInfo;
     }
 
-    public void fillGuestData(String cedula, String name, String dayOfVisit, List<Interval> intervals) {
-        createVisit.setParams(cedula, name, dayOfVisit, intervals, community, visitType);
+    public void fillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
+        createVisit.setParams(cedula, name, dayOfVisit, intervals,partOfDay, companions, community, visitType);
         createVisit.run();
     }
 

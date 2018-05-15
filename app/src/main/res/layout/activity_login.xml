@@ -27,17 +27,16 @@
                 />
 
 
-            <EditText
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:id="@+id/editText"
-                android:ems="10"
-                android:text="@={viewModel.username}"
-                android:hint="Cedula de Identidad"
-                android:inputType="textPersonName"
-                android:layout_marginBottom="30dp"
-                style="@style/VisitMeField"
-                />
+        <EditText
+            android:id="@+id/editText"
+            style="@style/VisitMeField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:ems="10"
+            android:hint="Correo Electronico"
+            android:inputType="textEmailAddress"
+            android:text="@={viewModel.username}" />
 
             <EditText
                 android:layout_height="wrap_content"

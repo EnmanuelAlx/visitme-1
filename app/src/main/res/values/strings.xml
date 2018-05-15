@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">VisitMe</string>
+    <string name="app_name">Visit Me!</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_splash">Visit Me!</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_main">MainActivity</string>
 
@@ -25,6 +25,13 @@
         <item>Sab</item>
         <item>Dom</item>
     </string-array>
+
+    <string-array name="dayParts">
+        <item>Mañana</item>
+        <item>Tarde</item>
+        <item>Noche</item>
+    </string-array>
+
     <string name="title_activity_unexpected_visitor">UnexpectedVisitorActivity</string>
     <string name="action_settings">Settings</string>
 

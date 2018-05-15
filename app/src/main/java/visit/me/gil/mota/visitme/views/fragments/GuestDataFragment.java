@@ -6,11 +6,9 @@ import android.app.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -18,7 +16,6 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import visit.me.gil.mota.visitme.R;
@@ -104,8 +101,8 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
     }
 
     @Override
-    public void register(String cedula, String name, String dayOfVisit, List<Interval> intervals) {
-        contract.onFillGuestData(cedula,name,dayOfVisit,intervals);
+    public void register(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
+        contract.onFillGuestData(cedula,name,dayOfVisit,partOfDay, companions, intervals);
     }
 
     @Override
@@ -130,7 +127,7 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
 
 
     public interface Contract {
-        void onFillGuestData(String cedula, String name, String dayOfVisit, List<Interval> intervals);
+        void onFillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals);
     }
 
 }

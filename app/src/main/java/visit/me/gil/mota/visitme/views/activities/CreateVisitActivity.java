@@ -4,13 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
@@ -114,7 +108,7 @@ public class CreateVisitActivity extends BindeableActivity implements CreateVisi
 
 
     @Override
-    public void onFillGuestData(String cedula, String name, String dayOfVisit, List<Interval> intervals) {
-        viewModel.fillGuestData(cedula, name, dayOfVisit, intervals);
+    public void onFillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
+        viewModel.fillGuestData(cedula, name, dayOfVisit,partOfDay, companions, intervals);
     }
 }

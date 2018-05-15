@@ -32,7 +32,7 @@ public class Login extends Auth {
     }
 
     public void setParams(String username, String password) throws JSONException {
-        params.put("identification", username);
+        params.put("email", username);
         params.put("password", password);
     }
 

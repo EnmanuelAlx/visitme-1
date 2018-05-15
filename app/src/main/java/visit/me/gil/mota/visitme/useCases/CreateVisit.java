@@ -38,7 +38,7 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     public void setParams(String cedula, String name,
                           String dayOfVisit, List<Interval> intervals,
-                          Community community, String visitType)
+                          String partOfDay, int companions, Community community, String visitType)
     {
         try {
             params.put("identification",cedula);
@@ -47,6 +47,8 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
             params.put("community",community.get_id());
             params.put("kind",visitType);
             params.put("intervals",intervalToJsonArray(intervals));
+            params.put("partOfDay",partOfDay);
+            params.put("companions",companions);
         } catch (JSONException e) {
             e.printStackTrace();
         }
