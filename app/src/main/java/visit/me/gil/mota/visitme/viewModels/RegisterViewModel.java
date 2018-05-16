@@ -74,7 +74,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.cellPhone = new ObservableField<>(user.getCellPhone());
         this.name = new ObservableField<>(user.getName());
         this.email = new ObservableField<>(user.getEmail());
-        this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy));
+        this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy)); //TODO: cambiar a glide
         this.edit = new ObservableField<>(true);
         imageInterface = imageSelector;
         register = new Register(this,context);
