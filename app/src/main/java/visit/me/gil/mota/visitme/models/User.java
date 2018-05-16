@@ -45,9 +45,7 @@ public class User {
 
     public String getCellPhone() { return cellPhone; }
 
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
+    public void setCellPhone(String cellPhone) { this.cellPhone = cellPhone; }
 
     public String getPassword() {
         return password;
