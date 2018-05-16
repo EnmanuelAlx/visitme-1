@@ -4,24 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableField;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 
 import visit.me.gil.mota.visitme.R;
+import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.useCases.Register;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.FilePath;
@@ -42,12 +38,13 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     public ObservableField<String> cellPhone;
     public ObservableField<String> homePhone;
     public ObservableField<Drawable> image;
-    public SelectImage imageInterface;
+    public Contract contract;
+    public ObservableField<Boolean> edit;
     private Uri imageSelected;
     private Context context;
     private Register register;
 
-    public RegisterViewModel(@NonNull Context context, SelectImage imageSelector) {
+    public RegisterViewModel(@NonNull Context context, Contract contract) {
         this.context = context;
         this.cedula = new ObservableField<>("");
         this.password = new ObservableField<>("");
@@ -57,8 +54,28 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.name = new ObservableField<>("");
         this.email = new ObservableField<>("");
         this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy));
-        imageInterface = imageSelector;
+        this.edit = new ObservableField<>(false);
+        this.contract = contract;
         register = new Register(this,context);
+
+    }
+
+    public RegisterViewModel(@NonNull Context context, Contract contract, User user) {
+        this.context = context;
+        this.cedula = new ObservableField<>(user.getIdentification());
+        this.password = new ObservableField<>("");
+        this.confirmPassword = new ObservableField<>("");
+        this.homePhone = new ObservableField<>(user.getHomePhone());
+        this.cellPhone = new ObservableField<>(user.getCellPhone());
+        this.name = new ObservableField<>(user.getName());
+        this.email = new ObservableField<>(user.getEmail());
+        //this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy)); //TODO: cambiar a glide
+
+        this.edit = new ObservableField<>(true);
+        this.contract = contract;
+        contract.changeImage(user.getImage());
+        register = new Register(this,context);
+
     }
 
 
@@ -90,7 +107,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     }
 
     public void selectImage(View view) {
-        imageInterface.select();
+        contract.select();
     }
 
     public void changeImage(Uri image) {
@@ -117,6 +134,11 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     }
 
     public interface SelectImage {
+
+    }
+
+    public interface Contract {
+        void changeImage(String image);
         void select();
     }
 

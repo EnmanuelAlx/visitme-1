@@ -61,10 +61,12 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
         pager = binding.content;
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.hashtag));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.edit_profile));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.off));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount() - 1);
+        adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount() - 2);
+
 
         //Adding adapter to pager
         lastTab = tabLayout.getTabAt(0);
@@ -75,10 +77,16 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        if (tab.getPosition() == 2) {
+        if (tab.getPosition() == 3) {
             viewModel.signOut();
             lastTab.select();
-        } else {
+        } else if(tab.getPosition() == 2) {
+            lastTab.select();
+            Intent i = new Intent(MainActivity.this, RegisterActivity.class);
+            i.putExtra("edit", true);
+            MainActivity.this.startActivity(i);
+        }
+        else {
             pager.setCurrentItem(tab.getPosition());
             lastTab = tab;
         }

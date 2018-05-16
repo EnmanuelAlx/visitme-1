@@ -12,18 +12,27 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+
 import java.util.Observable;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityRegisterBinding;
+import visit.me.gil.mota.visitme.managers.UserManager;
+import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.viewModels.RegisterViewModel;
 
-public class RegisterActivity extends BindeableActivity implements RegisterViewModel.SelectImage {
+public class RegisterActivity extends BindeableActivity implements RegisterViewModel.Contract {
     private RegisterViewModel viewModel;
+    private ActivityRegisterBinding binding;
     private String image;
+    private boolean edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        edit = this.getIntent().getBooleanExtra("edit", false);
         initDataBinding();
         setupObserver(viewModel);
     }
@@ -38,9 +47,27 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
 
     @Override
     public void initDataBinding() {
-        ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        viewModel = new RegisterViewModel(this,this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
+        if (edit) {
+            User user = null;
+            try {
+                user = UserManager.getInstance().getUser(this);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            viewModel = new RegisterViewModel(this,this, user);
+
+        } else {
+            viewModel = new RegisterViewModel(this,this);
+        }
+
         binding.setViewModel(viewModel);
+    }
+
+    @Override
+    public void changeImage(String image) {
+        Glide.with(this).load(image).placeholder(R.drawable.guy)
+                .error(R.drawable.guy).into(binding.profileImage);
     }
 
     @Override

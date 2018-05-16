@@ -15,6 +15,8 @@ public class User implements Parcelable{
     private String identification;
     private String password;
     private String image;
+    private String homePhone;
+    private String cellPhone;
 
     protected User(Parcel in) {
         _id = in.readString();
@@ -61,7 +63,13 @@ public class User implements Parcelable{
         this.identification = identification;
     }
 
+    public String getHomePhone() { return homePhone; }
 
+    public void setHomePhone(String homePhone) { this.homePhone = homePhone; }
+
+    public String getCellPhone() { return cellPhone; }
+
+    public void setCellPhone(String cellPhone) { this.cellPhone = cellPhone; }
 
     public String getPassword() {
         return password;

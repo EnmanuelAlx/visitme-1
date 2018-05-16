@@ -38,15 +38,15 @@
             android:name=".views.activities.MainActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activities.UnexpectedVisitorActivity"
+            android:excludeFromRecents="true"
             android:label="@string/title_activity_unexpected_visitor"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".views.activities.MainActivity"
             android:launchMode="singleTask"
+            android:parentActivityName=".views.activities.MainActivity"
             android:taskAffinity=""
-            android:excludeFromRecents="true"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activities.ForgotPasswordActivity"
             android:label="@string/title_activity_forgot_password"
@@ -74,7 +74,6 @@
                 <action android:name="com.onesignal.NotificationExtender" />
             </intent-filter>
         </service>
-
 
     </application>
 

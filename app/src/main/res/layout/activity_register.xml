@@ -4,7 +4,7 @@
     >
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="visit.me.gil.mota.visitme.viewModels.RegisterViewModel" />
@@ -138,14 +138,15 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{viewModel::register}"
                     android:layout_marginBottom="15dp"
-                    android:text="Registrarse"
+                    android:text='@{viewModel.edit ? "Editar" : "Registrarse"}'
                     android:textColor="@color/white" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="@{viewModel.edit ? View.GONE : View.VISIBLE}">
 
                     <TextView
                         android:id="@+id/textView4"
