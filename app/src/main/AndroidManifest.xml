@@ -75,6 +75,10 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".views.activities.ChangePasswordActivity"
+            android:label="@string/title_activity_change_password"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

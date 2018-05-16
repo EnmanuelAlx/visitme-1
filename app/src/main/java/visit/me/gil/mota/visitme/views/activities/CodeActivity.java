@@ -1,5 +1,6 @@
 package visit.me.gil.mota.visitme.views.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -37,5 +38,17 @@ public class CodeActivity extends BindeableActivity {
         if (observable instanceof CodeViewModel) {
             CodeViewModel viewModel = (CodeViewModel) observable;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ChangePasswordActivity.CLOSE)
+            finishSuccessful();
+    }
+
+    private void finishSuccessful() {
+        setResult(ChangePasswordActivity.CLOSE);
+        finish();
     }
 }

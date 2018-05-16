@@ -21,4 +21,5 @@ public class Urls
     public static final String VISITS = "/visits";
     public static final String FORGOT_PASSWORD = "/forgotPassword";
     public static final String FORGOT_PASSWORD_CODE = "/forgotPassword/code";
+    public static final String CHANGE_PASSWORD = "/forgotPassword/changePassword";
 }
