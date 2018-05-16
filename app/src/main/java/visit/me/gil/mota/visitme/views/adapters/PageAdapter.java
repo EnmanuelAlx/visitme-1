@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.views.fragments.DashboardFragment;
 import visit.me.gil.mota.visitme.views.fragments.VisitsFragment;
 
@@ -14,13 +15,16 @@ import visit.me.gil.mota.visitme.views.fragments.VisitsFragment;
 public class PageAdapter extends FragmentStatePagerAdapter {
 
     //integer to count number of tabs
-    int tabCount;
-
+    private int tabCount;
+    private VisitsFragment visits;
+    private DashboardFragment alerts;
     //Constructor to the class
     public PageAdapter(FragmentManager fm, int tabCount) {
         super(fm);
         //Initializing tab count
         this.tabCount = tabCount;
+        visits = new VisitsFragment();
+        alerts = new DashboardFragment();
     }
 
     //Overriding method getItem
@@ -29,9 +33,9 @@ public class PageAdapter extends FragmentStatePagerAdapter {
         //Returning the current tabs
         switch (position) {
             case 0:
-                return new VisitsFragment();
+                return visits;
             case 1:
-                return new DashboardFragment();
+                return alerts;
             default:
                 return null;
         }
@@ -41,5 +45,9 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return tabCount;
+    }
+
+    public void addVisit(Visit visit) {
+        visits.add(visit);
     }
 }

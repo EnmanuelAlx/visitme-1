@@ -1,5 +1,7 @@
 package visit.me.gil.mota.visitme.useCases;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 import visit.me.gil.mota.visitme.managers.RequestManager;
 import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
@@ -38,17 +41,24 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     public void setParams(String cedula, String name,
                           String dayOfVisit, List<Interval> intervals,
-                          String partOfDay, int companions, Community community, String visitType)
-    {
+                          String partOfDay, int companions, Community community, String visitType) {
         try {
-            params.put("identification",cedula);
-            params.put("name",name);
-            params.put("dayOfVisit",dayOfVisit);
-            params.put("community",community.get_id());
-            params.put("kind",visitType);
-            params.put("intervals",intervalToJsonArray(intervals));
-            params.put("partOfDay",partOfDay);
-            params.put("companions",companions);
+            if (visitType.equals("FREQUENT") || visitType.equals("SCHEDULED"))
+                params.put("identification", cedula);
+
+            params.put("name", name);
+            params.put("community", community.get_id());
+            params.put("kind", visitType);
+
+            if (visitType.equals("FREQUENT"))
+                params.put("intervals", intervalToJsonArray(intervals));
+
+
+            if (visitType.equals("SCHEDULED")) {
+                params.put("partOfDay", partOfDay);
+                params.put("companions", companions);
+                params.put("dayOfVisit", dayOfVisit);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,8 +67,8 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     private JSONArray intervalToJsonArray(List<Interval> intervals) throws JSONException {
         JSONArray arry = new JSONArray();
-        if (intervals == null) return  arry;
-        for(Interval i : intervals)
+        if (intervals == null) return arry;
+        for (Interval i : intervals)
             arry.put(intervalToJSONObject(i));
         return arry;
     }
@@ -74,7 +84,10 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     @Override
     public void onNext(JSONObject jsonObject) {
-        resultSetter.onSuccess();
+        Result result = (Result) resultSetter;
+        Log.i("CREATE VISIT","JS "+jsonObject);
+        Visit v = Functions.parse(jsonObject, Visit.class);
+        result.onVisitCreated(v);
     }
 
     @Override
@@ -85,5 +98,9 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
     @Override
     public void onComplete() {
 
+    }
+
+    public interface Result extends UseCase.Result {
+        void onVisitCreated(Visit visit);
     }
 }

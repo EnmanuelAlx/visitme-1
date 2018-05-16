@@ -15,16 +15,17 @@ import visit.me.gil.mota.visitme.viewModels.ItemVisitViewModel;
 
 public class VisitViewHolder extends BaseViewHolder<Visit> {
     private VisitItemBinding binding;
-
-    public VisitViewHolder(VisitItemBinding itemView) {
+    private ItemVisitViewModel.Contract contract;
+    public VisitViewHolder(VisitItemBinding itemView, ItemVisitViewModel.Contract contract) {
         super(itemView.itemVisit);
         binding = itemView;
+        this.contract = contract;
     }
 
     @Override
     public void onBind() {
         if (binding.getViewModel() == null)
-            binding.setViewModel(new ItemVisitViewModel(item, itemView.getContext()));
+            binding.setViewModel(new ItemVisitViewModel(item, itemView.getContext(), contract));
         else
             binding.getViewModel().setVisit(item);
 

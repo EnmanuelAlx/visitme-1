@@ -1,13 +1,24 @@
 package visit.me.gil.mota.visitme.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Predicate;
+
+import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
  * Created by mota on 16/4/2018.
  */
 
-public class Visit {
+public class Visit implements Parcelable {
     private String _id;
     private String kind;
     private Date dayOfVisit;
@@ -15,6 +26,27 @@ public class Visit {
     private User resident;
     private Community community;
     private Interval[] intervals;
+
+    protected Visit(Parcel in) {
+        _id = in.readString();
+        kind = in.readString();
+        guest = in.readParcelable(User.class.getClassLoader());
+        resident = in.readParcelable(User.class.getClassLoader());
+        community = in.readParcelable(Community.class.getClassLoader());
+        intervals = in.createTypedArray(Interval.CREATOR);
+    }
+
+    public static final Creator<Visit> CREATOR = new Creator<Visit>() {
+        @Override
+        public Visit createFromParcel(Parcel in) {
+            return new Visit(in);
+        }
+
+        @Override
+        public Visit[] newArray(int size) {
+            return new Visit[size];
+        }
+    };
 
     public String get_id() {
         return _id;
@@ -33,7 +65,53 @@ public class Visit {
     }
 
     public String getDayOfVisit() {
-        return dayOfVisit.toString();
+        if (kind.equals("SPORADIC"))
+            return "";
+
+
+        int day  = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        return dayOfVisit != null ? new SimpleDateFormat("dd/MM/yyyy").format(dayOfVisit) : getNextInterval(day);
+    }
+
+    private String getNextInterval(int day) {
+        List<Interval> intrvl = findIntervalsInDay(day);
+
+        if(intrvl.isEmpty())
+            return getNextInterval(day == 6 ? 0 : ++day);
+        else
+            return intrvl.size() == 1 ? intrvl.get(0).toString() : findNearIntervalWithHours(intrvl);
+
+    }
+
+    private String findNearIntervalWithHours(List<Interval> intrvl) {
+        int hour  = Calendar.getInstance().get(Calendar.HOUR);
+        int min = Calendar.getInstance().get(Calendar.MINUTE);
+        Interval minimun = null;
+        Log.i("VISIT","HOUR!"+ hour);
+        int rest = 100;
+        int op = 0;
+        for (Interval i : intrvl)
+        {
+           op = i.getTo() - (hour * 100 + hour);
+           if(op >= 0 && op <= rest)
+           {
+               rest = op;
+               minimun = i;
+           }
+
+        }
+        return minimun != null ? minimun.toString() : intrvl.get(0).toString();
+    }
+
+    private List<Interval> findIntervalsInDay(int day)
+    {
+        List<Interval> intrvls = new ArrayList<>();
+
+        for (Interval i : intervals)
+            if(i.getDay() == day)
+                intrvls.add(i);
+
+        return intrvls;
     }
 
     public void setDayOfVisit(Date dayOfVisit) {
@@ -86,5 +164,21 @@ public class Visit {
 
     public void setResident(User resident) {
         this.resident = resident;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(_id);
+        parcel.writeString(kind);
+        parcel.writeParcelable(guest, i);
+        parcel.writeParcelable(resident, i);
+        parcel.writeParcelable(community, i);
+        parcel.writeTypedArray(intervals, i);
     }
 }

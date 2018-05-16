@@ -19,18 +19,20 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityLoginBinding;
 import visit.me.gil.mota.visitme.databinding.ActivityMainBinding;
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.useCases.CreateVisit;
 import visit.me.gil.mota.visitme.viewModels.LoginViewModel;
 import visit.me.gil.mota.visitme.viewModels.MainViewModel;
 import visit.me.gil.mota.visitme.views.adapters.PageAdapter;
 
-public class MainActivity extends BindeableActivity implements TabLayout.OnTabSelectedListener, ViewPager.OnPageChangeListener, MainViewModel.Contract {
+public class MainActivity extends BindeableActivity implements TabLayout.OnTabSelectedListener,
+                                        ViewPager.OnPageChangeListener, MainViewModel.Contract {
     public static final int UPDATE_VISITS = 777;
     private MainViewModel viewModel;
     private ViewPager pager;
     private TabLayout tabLayout;
     private TabLayout.Tab lastTab;
-
+    private PageAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,8 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.off));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        PagerAdapter adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount() - 2);
+        adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount() - 2);
+
 
         //Adding adapter to pager
         lastTab = tabLayout.getTabAt(0);
@@ -123,10 +126,25 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     }
 
     @Override
+    public void addVisit(Visit visit) {
+        adapter.addVisit(visit);
+    }
+
+
+    @Override
+    public void updateAlerts() {
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == UPDATE_VISITS)
-            viewModel.updateVisits();
+            viewModel.addVisit(createVisitFromData(data));
+    }
+
+    private Visit createVisitFromData(Intent data) {
+        return data.getParcelableExtra("visit");
     }
 
     @Override

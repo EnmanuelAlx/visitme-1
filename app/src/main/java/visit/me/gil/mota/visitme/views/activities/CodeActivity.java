@@ -17,24 +17,24 @@ import visit.me.gil.mota.visitme.viewModels.CodeViewModel;
 public class CodeActivity extends BindeableActivity {
 
     public CodeViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDataBinding();
     }
 
-    @Override public void initDataBinding()
-    {
+    @Override
+    public void initDataBinding() {
         ActivityCodeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
-        viewModel = new CodeViewModel(this);
+        viewModel = new CodeViewModel(this, getIntent().getStringExtra("email"));
         binding.setViewModel(viewModel);
     }
 
 
-    @Override public void update(Observable observable, Object o)
-    {
-        if(observable instanceof CodeViewModel)
-        {
+    @Override
+    public void update(Observable observable, Object o) {
+        if (observable instanceof CodeViewModel) {
             CodeViewModel viewModel = (CodeViewModel) observable;
         }
     }

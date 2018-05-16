@@ -2,6 +2,7 @@ package visit.me.gil.mota.visitme.views.activities;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityCreateVisitBinding;
 import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.viewModels.CreateVisitViewModel;
 import visit.me.gil.mota.visitme.views.fragments.GuestDataFragment;
@@ -90,9 +92,11 @@ public class CreateVisitActivity extends BindeableActivity implements CreateVisi
     }
 
     @Override
-    public void finishSuccess() {
+    public void finishSuccess(Visit visit) {
         Pnotify.makeText(this, "Creacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
-        setResult(MainActivity.UPDATE_VISITS);
+        Intent data = new Intent();
+        data.putExtra("visit",visit);
+        setResult(MainActivity.UPDATE_VISITS,data);
         finish();
     }
 
