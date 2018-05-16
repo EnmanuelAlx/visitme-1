@@ -12,9 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import org.json.JSONException;
+
 import java.util.Observable;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityRegisterBinding;
+import visit.me.gil.mota.visitme.managers.UserManager;
+import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.viewModels.RegisterViewModel;
 
 public class RegisterActivity extends BindeableActivity implements RegisterViewModel.SelectImage {
@@ -41,7 +45,19 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
     @Override
     public void initDataBinding() {
         ActivityRegisterBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        viewModel = new RegisterViewModel(this,this, edit);
+        if (edit) {
+            User user = null;
+            try {
+                user = UserManager.getInstance().getUser(this);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            viewModel = new RegisterViewModel(this,this, user);
+
+        } else {
+            viewModel = new RegisterViewModel(this,this);
+        }
+
         binding.setViewModel(viewModel);
     }
 

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Observable;
 
 import visit.me.gil.mota.visitme.R;
+import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.useCases.Register;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.FilePath;
@@ -48,7 +49,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     private Context context;
     private Register register;
 
-    public RegisterViewModel(@NonNull Context context, SelectImage imageSelector, boolean edit) {
+    public RegisterViewModel(@NonNull Context context, SelectImage imageSelector) {
         this.context = context;
         this.cedula = new ObservableField<>("");
         this.password = new ObservableField<>("");
@@ -58,7 +59,23 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.name = new ObservableField<>("");
         this.email = new ObservableField<>("");
         this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy));
-        this.edit = new ObservableField<>(edit);
+        this.edit = new ObservableField<>(false);
+        imageInterface = imageSelector;
+        register = new Register(this,context);
+
+    }
+
+    public RegisterViewModel(@NonNull Context context, SelectImage imageSelector, User user) {
+        this.context = context;
+        this.cedula = new ObservableField<>(user.getIdentification());
+        this.password = new ObservableField<>("");
+        this.confirmPassword = new ObservableField<>("");
+        this.homePhone = new ObservableField<>(user.getHomePhone());
+        this.cellPhone = new ObservableField<>(user.getCellPhone());
+        this.name = new ObservableField<>(user.getName());
+        this.email = new ObservableField<>(user.getEmail());
+        this.image = new ObservableField<>(context.getResources().getDrawable(R.drawable.guy));
+        this.edit = new ObservableField<>(true);
         imageInterface = imageSelector;
         register = new Register(this,context);
 

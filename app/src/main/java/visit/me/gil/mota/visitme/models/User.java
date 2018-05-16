@@ -12,6 +12,8 @@ public class User {
     private String identification;
     private String password;
     private String image;
+    private String homePhone;
+    private String cellPhone;
 
     public String get_id() {
         return _id;
@@ -37,7 +39,15 @@ public class User {
         this.identification = identification;
     }
 
+    public String getHomePhone() { return homePhone; }
 
+    public void setHomePhone(String homePhone) { this.homePhone = homePhone; }
+
+    public String getCellPhone() { return cellPhone; }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
 
     public String getPassword() {
         return password;
@@ -76,5 +86,7 @@ public class User {
     public String getImage() {
         return image;
     }
+
+
 }
 
