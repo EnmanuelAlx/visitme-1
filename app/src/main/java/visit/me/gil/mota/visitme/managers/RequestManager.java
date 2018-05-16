@@ -153,4 +153,17 @@ public class RequestManager {
     public Observable<JSONObject> deleteVisit(String visit) throws JSONException {
         return request(Request.Method.DELETE, urlBase + Urls.VISITS + "/" + visit, null);
     }
+
+    public Observable<JSONObject> forgotPassword(String email) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("email",email);
+        return request(Request.Method.POST, urlBase + Urls.FORGOT_PASSWORD, obj);
+    }
+
+    public Observable<JSONObject> sendPasswordCode(String code, String email) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("email",email);
+        obj.put("code", code);
+        return request(Request.Method.POST, urlBase + Urls.FORGOT_PASSWORD_CODE, obj);
+    }
 }

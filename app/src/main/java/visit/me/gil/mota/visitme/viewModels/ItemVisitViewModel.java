@@ -91,12 +91,12 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
 
     @Override
     public void onError(String error) {
-        Pnotify.makeText(context, "Hubo un Error", Pnotify.ERROR, Toast.LENGTH_SHORT).show();
+        Pnotify.makeText(context, "Hubo un Error", Toast.LENGTH_SHORT, Pnotify.ERROR).show();
     }
 
     @Override
     public void onSuccess() {
-        Pnotify.makeText(context, "Eliminado Satisfactoriamente", Pnotify.INFO, Toast.LENGTH_SHORT).show();
+        Pnotify.makeText(context, "Eliminado Satisfactoriamente", Toast.LENGTH_SHORT, Pnotify.INFO).show();
         contract.remove(visit);
     }
 
