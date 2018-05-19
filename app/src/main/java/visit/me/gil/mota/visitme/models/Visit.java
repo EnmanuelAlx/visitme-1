@@ -77,7 +77,7 @@ public class Visit implements Parcelable {
         List<Interval> intrvl = findIntervalsInDay(day);
 
         if(intrvl.isEmpty())
-            return getNextInterval(day == 6 ? 0 : ++day);
+            return getNextInterval(day >= 6 ? 0 : ++day);
         else
             return intrvl.size() == 1 ? intrvl.get(0).toString() : findNearIntervalWithHours(intrvl);
 
@@ -87,12 +87,11 @@ public class Visit implements Parcelable {
         int hour  = Calendar.getInstance().get(Calendar.HOUR);
         int min = Calendar.getInstance().get(Calendar.MINUTE);
         Interval minimun = null;
-        Log.i("VISIT","HOUR!"+ hour);
         int rest = 100;
         int op = 0;
         for (Interval i : intrvl)
         {
-           op = i.getTo() - (hour * 100 + hour);
+           op = i.getTo() - (hour * 100 + min);
            if(op >= 0 && op <= rest)
            {
                rest = op;
