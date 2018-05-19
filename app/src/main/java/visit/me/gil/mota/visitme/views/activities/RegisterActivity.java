@@ -94,7 +94,7 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
                 image = u.getPath();
 
                 Glide.with(this).load(u).into(binding.profileImage);
-
+                viewModel.changeImage(u);
 
             }
         }
