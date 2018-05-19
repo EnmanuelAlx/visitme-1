@@ -33,6 +33,7 @@ public class CodeViewModel extends Observable implements UseCase.Result {
     public void enviar(View view) {
         SendChangePasswordCode useCase = new SendChangePasswordCode(this);
         useCase.setCode(code.get());
+        useCase.setEmail(email);
         useCase.run();
     }
 

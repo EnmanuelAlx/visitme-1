@@ -27,7 +27,7 @@ public class CodeActivity extends BindeableActivity {
 
     @Override
     public void initDataBinding() {
-        ActivityCodeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
+        ActivityCodeBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_code);
         viewModel = new CodeViewModel(this, getIntent().getStringExtra("email"));
         binding.setViewModel(viewModel);
     }

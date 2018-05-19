@@ -25,7 +25,7 @@ public class SendChangePasswordCode extends UseCase implements Observer<JSONObje
 
     @Override
     public void onNext(JSONObject jsonObject) {
-
+        resultSetter.onSuccess();
     }
 
     @Override
