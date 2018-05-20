@@ -3,8 +3,12 @@ package visit.me.gil.mota.visitme.viewModels;
 import android.content.Context;
 import android.databinding.ObservableField;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+
+import com.otaliastudios.autocomplete.Autocomplete;
+import com.otaliastudios.autocomplete.AutocompleteCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +16,14 @@ import java.util.Observable;
 
 import visit.me.gil.mota.visitme.Consts;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.views.dialogs.IntervalsDialog;
 
 /**
  * Created by mota on 17/4/2018.
  */
 
-public class GuestDataViewModel extends Observable implements IntervalsDialog.Result {
+public class GuestDataViewModel extends Observable implements IntervalsDialog.Result, ItemUserViewModel.Contract {
 
     private Contract contract;
     public ObservableField<String> cedula;
@@ -31,7 +36,7 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
     private String dayF;
     private Bundle arguments;
     private List<Interval> intervals;
-
+    private Autocomplete autoComplete;
 
 
     public GuestDataViewModel(Contract contract) {
@@ -44,25 +49,24 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
         companions = new ObservableField<>("");
         visitType = new ObservableField<>("");
         cedula.addOnPropertyChangedCallback(cedulaChanged);
-        intervals  = new ArrayList<>();
-        intervals.add(new Interval(0,0, 2400));
+        intervals = new ArrayList<>();
+        intervals.add(new Interval(0, 0, 2400));
 
     }
 
     public void register(View view) {
-        contract.register(cedula.get(),name.get(),dayF,
-                          Consts.PART_OF_DAYS[partOfDay.get()],
-                          Integer.valueOf(companions.get().equals("") ? "0": companions.get()),
-                          intervals);
+        contract.register(cedula.get(), name.get(), dayF,
+                Consts.PART_OF_DAYS[partOfDay.get()],
+                Integer.valueOf(companions.get().equals("") ? "0" : companions.get()),
+                intervals);
     }
 
 
-
-    public void selectDay(View view){
+    public void selectDay(View view) {
         contract.showGetDay();
     }
 
-    public void selectHour(View view){
+    public void selectHour(View view) {
         contract.showGetTime();
     }
 
@@ -73,20 +77,24 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
 
     public void setDay(int year, int monthOfYear, int dayOfMonth) {
         monthOfYear++;
-        String d = dayOfMonth > 9 ? ""+dayOfMonth : "0"+dayOfMonth;
-        String m = monthOfYear > 9 ? ""+monthOfYear : "0"+monthOfYear;
-        day.set(d+"/"+m+"/"+year);
-        dayF = m+"-"+d+"-"+year;
+        String d = dayOfMonth > 9 ? "" + dayOfMonth : "0" + dayOfMonth;
+        String m = monthOfYear > 9 ? "" + monthOfYear : "0" + monthOfYear;
+        day.set(d + "/" + m + "/" + year);
+        dayF = m + "-" + d + "-" + year;
     }
 
     public void setTime(int hourOfDay, int minute) {
-        String h = hourOfDay > 9 ? ""+hourOfDay : "0"+hourOfDay;
-        String m = minute > 9 ? ""+minute : "0"+minute;
-        hour.set(""+h+":"+m);
+        String h = hourOfDay > 9 ? "" + hourOfDay : "0" + hourOfDay;
+        String m = minute > 9 ? "" + minute : "0" + minute;
+        hour.set("" + h + ":" + m);
     }
 
 
-    public void modifyIntervals(View view){
+    public boolean isSporadic() {
+        return visitType.get().equals("SPORADIC");
+    }
+
+    public void modifyIntervals(View view) {
         IntervalsDialog dialog = new IntervalsDialog(contract.giveContext(), this, intervals);
         dialog.show();
     }
@@ -97,13 +105,25 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
 
     @Override
     public void onClose(List<Interval> intervals) {
-        Log.i("INTERVAL","II"+intervals.toString() + "III"+this.intervals);
+        Log.i("INTERVAL", "II" + intervals.toString() + "III" + this.intervals);
         contract.refreshIntervalsData();
     }
 
     @Override
     public void showError(String err) {
         contract.setError(err);
+    }
+
+
+    @Override
+    public void onClick(User u) {
+        name.set(u.getName());
+        if (autoComplete != null)
+            autoComplete.dismissPopup();
+    }
+
+    public void setAutoComplete(Autocomplete autoComplete) {
+        this.autoComplete = autoComplete;
     }
 
     public interface Contract {
@@ -128,8 +148,7 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
                 }
             };
 
-    private void onCedulaChanged()
-    {
+    private void onCedulaChanged() {
 
     }
 }

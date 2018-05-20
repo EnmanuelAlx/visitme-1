@@ -3,8 +3,12 @@ package visit.me.gil.mota.visitme.views.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +20,9 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.Observable;
+
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityRegisterBinding;
 import visit.me.gil.mota.visitme.managers.UserManager;
@@ -39,8 +45,7 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
 
     @Override
     public void update(Observable observable, Object o) {
-        if(observable instanceof RegisterViewModel)
-        {
+        if (observable instanceof RegisterViewModel) {
             RegisterViewModel viewModel = (RegisterViewModel) observable;
         }
     }
@@ -55,10 +60,10 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            viewModel = new RegisterViewModel(this,this, user);
+            viewModel = new RegisterViewModel(this, this, user);
 
         } else {
-            viewModel = new RegisterViewModel(this,this);
+            viewModel = new RegisterViewModel(this, this);
         }
 
         binding.setViewModel(viewModel);
@@ -77,18 +82,20 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
         Intent chooserIntent = Intent.createChooser(getIntent, "Selecciona una Imagen de Perfil");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
         startActivityForResult(chooserIntent, 222);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
             Uri u = data.getData();
             if (u != null) {
                 image = u.getPath();
+
+                Glide.with(this).load(u).into(binding.profileImage);
                 viewModel.changeImage(u);
+
             }
         }
     }

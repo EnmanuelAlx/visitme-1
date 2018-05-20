@@ -1,5 +1,6 @@
 package visit.me.gil.mota.visitme.viewModels;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.ObservableField;
@@ -11,6 +12,7 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.useCases.ForgotPassword;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.Pnotify;
+import visit.me.gil.mota.visitme.views.activities.ChangePasswordActivity;
 import visit.me.gil.mota.visitme.views.activities.CodeActivity;
 import visit.me.gil.mota.visitme.views.activities.ForgotPasswordActivity;
 
@@ -37,7 +39,7 @@ public class ForgotPasswordViewModel extends Observable implements UseCase.Resul
     private void goToCodeActivity() {
         Intent i = new Intent(context, CodeActivity.class);
         i.putExtra("email", email.get());
-        context.startActivity(i);
+        ((Activity)context).startActivityForResult(i, ChangePasswordActivity.CLOSE);
     }
 
     @Override

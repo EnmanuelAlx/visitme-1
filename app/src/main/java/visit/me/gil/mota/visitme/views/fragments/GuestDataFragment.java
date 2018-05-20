@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.otaliastudios.autocomplete.Autocomplete;
+import com.otaliastudios.autocomplete.AutocompletePolicy;
+import com.otaliastudios.autocomplete.AutocompletePresenter;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager;
@@ -21,14 +24,19 @@ import java.util.List;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.FragmentGuestDataBinding;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.models.User;
+import visit.me.gil.mota.visitme.utils.CompaniesPresenter;
 import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.viewModels.GuestDataViewModel;
+import visit.me.gil.mota.visitme.views.adapters.UserAdapter;
 import visit.me.gil.mota.visitme.views.adapters.IntervalAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuestDataFragment extends Fragment implements GuestDataViewModel.Contract, com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class GuestDataFragment extends Fragment implements GuestDataViewModel.Contract,
+        com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener,
+        DatePickerDialog.OnDateSetListener {
 
 
     private FragmentGuestDataBinding binding;
@@ -49,7 +57,15 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
         viewModel.setArguments(getArguments());
         binding.setViewModel(viewModel);
         setupAdapter(binding);
+        if(viewModel.isSporadic())
+            setupAutoComplete();
         return binding.getRoot();
+    }
+
+    private void setupAutoComplete() {
+        CompaniesPresenter  presenter = new CompaniesPresenter(this.getActivity(), viewModel);
+        Autocomplete c =  Autocomplete.on(binding.nameField).with(presenter).build();
+        viewModel.setAutoComplete(c);
     }
 
     private void setupAdapter(FragmentGuestDataBinding binding) {

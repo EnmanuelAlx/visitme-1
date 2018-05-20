@@ -43,7 +43,7 @@
                         android:id="@+id/profile_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@{viewModel.image}"
+                        android:src="@drawable/guy"
                         app:civ_border_color="@color/colorPrimaryDark"
                         app:civ_border_width="4dp"
                         android:onClick="@{viewModel::selectImage}"/>

@@ -172,4 +172,16 @@ public class RequestManager {
         obj.put("code", code);
         return request(Request.Method.POST, urlBase + Urls.FORGOT_PASSWORD_CODE, obj);
     }
+
+    public Observable<JSONObject> changePassword(String password, String email, String code) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("email",email);
+        obj.put("password",password);
+        obj.put("code", code);
+        return request(Request.Method.POST, urlBase + Urls.CHANGE_PASSWORD, obj);
+    }
+
+    public Observable<JSONObject> getCompanies(String query) {
+        return request(Request.Method.GET, urlBase + Urls.COMPANIES + "?query=" + query, null);
+    }
 }

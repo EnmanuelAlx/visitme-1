@@ -9,12 +9,13 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import visit.me.gil.mota.visitme.managers.RequestManager;
 
-public class SendChangePasswordCode extends UseCase implements Observer<JSONObject> {
+public class ChangePassword extends UseCase implements Observer<JSONObject> {
 
-    private String code;
+    private String password;
     private String email;
+    private String code;
 
-    public SendChangePasswordCode(Result result) {
+    public ChangePassword(Result result) {
         super(result);
     }
 
@@ -41,7 +42,7 @@ public class SendChangePasswordCode extends UseCase implements Observer<JSONObje
     @Override
     public void run() {
         try {
-            RequestManager.getInstance().sendPasswordCode(code, email).subscribeOn(Schedulers.io())
+            RequestManager.getInstance().changePassword(password,email, code).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this);
         } catch (JSONException e) {
@@ -49,11 +50,15 @@ public class SendChangePasswordCode extends UseCase implements Observer<JSONObje
         }
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
