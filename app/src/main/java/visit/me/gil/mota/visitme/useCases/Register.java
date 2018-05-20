@@ -41,6 +41,14 @@ public class Register extends Auth {
                 .subscribe(this);
     }
 
+    public void runEdit() {
+        RequestManager.getInstance()
+                .editProfile(data,image)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this);
+    }
+
     public void setParams(String cedula, String nombre, String email, String password,String cellPhone, String homePhone, String image)
     {
         data.put("identification",cedula);
