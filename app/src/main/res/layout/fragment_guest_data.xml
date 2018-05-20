@@ -59,6 +59,7 @@
                     android:visibility='@{viewModel.visitType.equalsIgnoreCase("SPORADIC") ? View.GONE: View.VISIBLE}'
                     android:text="@={viewModel.cedula}"/>
                 <EditText
+                    android:id="@+id/nameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint='@{viewModel.visitType.equalsIgnoreCase("SPORADIC") ? "Nombre de la Empresa": "Nombre y Apellido"}'

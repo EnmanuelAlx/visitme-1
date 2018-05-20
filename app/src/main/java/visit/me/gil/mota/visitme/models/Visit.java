@@ -154,7 +154,16 @@ public class Visit implements Parcelable {
     }
 
     public String getKindString() {
-        return kind;
+        switch (kind)
+        {
+            case "SPORADIC":
+                return "Esporadica";
+            case "FREQUENT":
+                return "Frecuente";
+            case "SCHEDULED":
+                return "Esperada";
+        }
+        return "";
     }
 
     public User getResident() {

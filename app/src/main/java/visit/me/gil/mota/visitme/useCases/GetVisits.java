@@ -54,6 +54,7 @@ public class GetVisits extends FillListByType<Visit> {
     @Override
     protected Collection<? extends Visit> parseList(JSONObject obj) throws JSONException {
         JSONArray arry = obj.getJSONArray("visits");
+        Log.i("MOTA","VISIT JSON"+  obj.toString());
         Visit[] visits = Functions.parse(arry, Visit[].class);
         return Arrays.asList(visits);
     }

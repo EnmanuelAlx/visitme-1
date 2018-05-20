@@ -174,4 +174,8 @@ public class RequestManager {
         obj.put("code", code);
         return request(Request.Method.POST, urlBase + Urls.CHANGE_PASSWORD, obj);
     }
+
+    public Observable<JSONObject> getCompanies(String query) {
+        return request(Request.Method.GET, urlBase + Urls.COMPANIES + "?query=" + query, null);
+    }
 }
