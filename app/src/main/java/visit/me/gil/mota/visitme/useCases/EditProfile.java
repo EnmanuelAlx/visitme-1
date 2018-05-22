@@ -1,6 +1,5 @@
 package visit.me.gil.mota.visitme.useCases;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -17,28 +16,53 @@ import visit.me.gil.mota.visitme.managers.UserManager;
 import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.utils.Functions;
 
-/**
- * Created by mota on 14/4/2018.
- */
-
-public class Register extends Auth {
+public class EditProfile  extends UseCase implements Observer<JSONObject> {
 
     private HashMap<String, String> data;
     private String image;
 
-    public Register(Result result, Context context) {
-        super(result, context);
+    public EditProfile(Result result) {
+        super(result);
         data = new HashMap<>();
 
     }
 
+
     @Override
     public void run() {
         RequestManager.getInstance()
-                .register(data, image)
+                .editProfile(data, image)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onNext(JSONObject obj) {
+        User u = null;
+        try {
+            u = Functions.parse(obj.getJSONObject("user"),User.class);
+            UserManager.getInstance().saveUserCredentials(u);
+            resultSetter.onSuccess();
+        } catch (JSONException e) {
+            onError( new Throwable("Error Inesperado"));
+        }
+
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        resultSetter.onError(e.getMessage());
+    }
+
+    @Override
+    public void onComplete() {
+
     }
 
     public void setParams(String cedula, String nombre, String email, String password, String cellPhone, String homePhone, String image) {
@@ -57,6 +81,4 @@ public class Register extends Auth {
         this.image = image;
         Log.i("REGISTER", "SET PARAMS" + data.toString() + image);
     }
-
-
 }
