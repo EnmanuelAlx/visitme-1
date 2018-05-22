@@ -25,6 +25,7 @@ import java.util.Observable;
 
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.models.User;
+import visit.me.gil.mota.visitme.useCases.EditProfile;
 import visit.me.gil.mota.visitme.useCases.Register;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.FilePath;
@@ -36,6 +37,7 @@ import visit.me.gil.mota.visitme.views.activities.MainActivity;
  */
 
 public class RegisterViewModel extends Observable implements UseCase.Result {
+
 
     public ObservableField<String> cedula;
     public ObservableField<String> name;
@@ -50,6 +52,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     private Uri imageSelected;
     private Context context;
     private Register register;
+    private EditProfile editProfile;
     private User user;
 
     public RegisterViewModel(@NonNull Context context, Contract contract) {
@@ -65,9 +68,11 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.edit = new ObservableField<>(false);
         this.contract = contract;
         register = new Register(this, context);
+
     }
 
     public RegisterViewModel(@NonNull Context context, Contract contract, User user) {
+        Log.i("EDIT USER", "USer u:" + user.toString());
         this.context = context;
         this.cedula = new ObservableField<>(user.getIdentification());
         this.password = new ObservableField<>("");
@@ -80,7 +85,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.edit = new ObservableField<>(true);
         this.contract = contract;
         contract.changeImage(user.getImage());
-        register = new Register(this, context);
+        editProfile = new EditProfile(onEditResult);
 
     }
 
@@ -124,17 +129,16 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         }
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            register.setParams(
-                    cedula.get().isEmpty() ? user.getIdentification() : cedula.get(),
-                    name.get().isEmpty() ? user.getName() : name.get(),
-                    email.get().isEmpty() ? user.getEmail() : email.get(),
-                    password.get().isEmpty() ? user.getPassword() : password.get(),
-                    cellPhone.get().isEmpty() ? user.getCellPhone() : cellPhone.get(),
-                    homePhone.get().isEmpty() ? user.getHomePhone() : homePhone.get(),
-                    "");
-            register.runEdit();
-        }
+        editProfile.setParams(
+                cedula.get().isEmpty() ? null : cedula.get(),
+                name.get().isEmpty() ? null : name.get(),
+                email.get().isEmpty() ? null : email.get(),
+                password.get().isEmpty() ? null : password.get(),
+                cellPhone.get().isEmpty() ? null : cellPhone.get(),
+                homePhone.get().isEmpty() ? null : homePhone.get(),
+                "");
+        editProfile.run();
+
 
     }
 
@@ -160,7 +164,20 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
 
     public interface Contract {
         void changeImage(String image);
+
         void select();
     }
+
+    private final UseCase.Result onEditResult = new UseCase.Result() {
+        @Override
+        public void onError(String error) {
+            Pnotify.makeText(context,error,Toast.LENGTH_SHORT, Pnotify.ERROR).show();
+        }
+
+        @Override
+        public void onSuccess() {
+            Pnotify.makeText(context,"Actualizacion Satisfactoria",Toast.LENGTH_SHORT, Pnotify.INFO).show();
+        }
+    };
 
 }

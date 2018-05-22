@@ -3,6 +3,8 @@ package visit.me.gil.mota.visitme.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import visit.me.gil.mota.visitme.managers.RequestManager;
+
 /**
  * Created by mota on 12/4/2018.
  */
@@ -106,7 +108,7 @@ public class User implements Parcelable{
     }
 
     public String getImage() {
-        return image;
+        return RequestManager.getInstance().getUrl() + "/" + image;
     }
 
     @Override
@@ -122,6 +124,20 @@ public class User implements Parcelable{
         parcel.writeString(identification);
         parcel.writeString(password);
         parcel.writeString(image);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "_id='" + _id + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", identification='" + identification + '\'' +
+                ", password='" + password + '\'' +
+                ", image='" + image + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", cellPhone='" + cellPhone + '\'' +
+                '}';
     }
 }
 

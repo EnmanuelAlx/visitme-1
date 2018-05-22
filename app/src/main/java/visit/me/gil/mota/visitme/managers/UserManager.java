@@ -44,6 +44,11 @@ public class UserManager
         PreferencesHelper.writeString(MyApplication.getInstance(), Consts.DEVICE_ID, deviceID);
     }
 
+    public void saveUserCredentials(User user) throws JSONException {
+        PreferencesHelper.writeString(MyApplication.getInstance(), Consts.USER, Functions.toJSON(user).toString());
+    }
+
+
 
     public User getUser(Context context) throws JSONException {
         String jsonStr = PreferencesHelper.readString(context,Consts.USER,"");

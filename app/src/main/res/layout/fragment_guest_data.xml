@@ -52,12 +52,14 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
                 android:paddingTop="15dp">
+
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Cedula de Identidad"
-                    android:visibility='@{viewModel.visitType.equalsIgnoreCase("SPORADIC") ? View.GONE: View.VISIBLE}'
-                    android:text="@={viewModel.cedula}"/>
+                    android:inputType="number"
+                    android:text="@={viewModel.cedula}"
+                    android:visibility='@{viewModel.visitType.equalsIgnoreCase("SPORADIC") ? View.GONE: View.VISIBLE}' />
                 <EditText
                     android:id="@+id/nameField"
                     android:layout_width="match_parent"

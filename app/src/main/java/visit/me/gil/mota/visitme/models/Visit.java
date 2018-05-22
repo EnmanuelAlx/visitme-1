@@ -24,7 +24,9 @@ public class Visit implements Parcelable {
     private Date dayOfVisit;
     private User guest;
     private User resident;
+    private int companions;
     private Community community;
+    private String partOfDay;
     private Interval[] intervals;
 
     protected Visit(Parcel in) {
@@ -67,11 +69,15 @@ public class Visit implements Parcelable {
     public String getDayOfVisit() {
         if (kind.equals("SPORADIC"))
             return "";
-
-
         int day  = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        return dayOfVisit != null ? new SimpleDateFormat("dd/MM/yyyy").format(dayOfVisit) : getNextInterval(day);
+        return dayOfVisit != null ? showAsScheduled() : getNextInterval(day);
     }
+
+    private String showAsScheduled() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(dayOfVisit) + " " +  getDayPartString();
+    }
+
+
 
     private String getNextInterval(int day) {
         List<Interval> intrvl = findIntervalsInDay(day);
@@ -188,5 +194,21 @@ public class Visit implements Parcelable {
         parcel.writeParcelable(resident, i);
         parcel.writeParcelable(community, i);
         parcel.writeTypedArray(intervals, i);
+    }
+
+    public String getDayPartString() {
+
+        switch (partOfDay)
+        {
+            case "AFTERNOON":
+                return "Tarde";
+            case "MORNING":
+                return "Mañana";
+            case "NIGHT":
+                return "Noche";
+
+                default:
+                    return "Mañana";
+        }
     }
 }

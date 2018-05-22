@@ -71,7 +71,7 @@ public class RequestManager {
             RxRequestAdapter<JSONObject> adapter = new RxRequestAdapter<>();
             CustomMultipartRequest request = new CustomMultipartRequest(method, url, adapter, adapter);
             String auth = UserManager.getInstance().getAuth();
-            request.addHeader("Authentication", "Bearer " + auth);
+            request.addHeader("Authorization", "Bearer " + auth);
             request.addDataMap(data);
             request.addFiles(files);
             request.addJsonsArray(arrays);
@@ -104,7 +104,8 @@ public class RequestManager {
 
     public Observable<JSONObject> editProfile(HashMap<String, String> data, String image) {
         HashMap<String, String> images = new HashMap<>();
-        images.put("image", image);
+        if (image != null && !image.isEmpty())
+            images.put("image", image);
         return multipartRequest(Request.Method.PUT, urlBase + Urls.USER_PROFILE, data, images, null, null);
     }
 
@@ -183,5 +184,9 @@ public class RequestManager {
 
     public Observable<JSONObject> getCompanies(String query) {
         return request(Request.Method.GET, urlBase + Urls.COMPANIES + "?query=" + query, null);
+    }
+
+    public String getUrl() {
+        return "https://visitme1.herokuapp.com";
     }
 }
