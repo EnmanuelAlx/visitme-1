@@ -85,7 +85,7 @@ public class RequestManager {
             return new Observable<JSONObject>() {
                 @Override
                 protected void subscribeActual(Observer<? super JSONObject> observer) {
-                    observer.onError(new Throwable("Undefined Error!"));
+                    observer.onError(new Throwable("Error Inesperado"));
                 }
             };
         }

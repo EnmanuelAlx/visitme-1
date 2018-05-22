@@ -23,28 +23,26 @@ import visit.me.gil.mota.visitme.views.activities.RegisterActivity;
  * Created by Slaush on 22/05/2017.
  */
 
-public class LoginViewModel extends Observable implements Login.Result
-{
-    public  ObservableField<String> username;
-    public  ObservableField<String> password;
+public class LoginViewModel extends Observable implements Login.Result {
+    public ObservableField<String> username;
+    public ObservableField<String> password;
 
     private Context context;
     private Login login;
     private Contract contract;
 
-    public LoginViewModel(@NonNull Context context, Contract contract)
-    {
+    public LoginViewModel(@NonNull Context context, Contract contract) {
         this.context = context;
+        this.contract = contract;
         this.username = new ObservableField<>("");
         this.password = new ObservableField<>("");
         login = new Login(this, context);
-        this.contract = contract;
+
     }
 
-    public void onClickLogin(View view)
-    {
+    public void onClickLogin(View view) {
         try {
-            login.setParams(username.get(),password.get());
+            login.setParams(username.get(), password.get());
             login.run();
             contract.setLoading(true);
         } catch (JSONException e) {
@@ -52,14 +50,12 @@ public class LoginViewModel extends Observable implements Login.Result
         }
     }
 
-    public void register(View view)
-    {
+    public void register(View view) {
         Intent i = new Intent(context, RegisterActivity.class);
         context.startActivity(i);
     }
 
-    public void forgotPassword(View view)
-    {
+    public void forgotPassword(View view) {
         Intent i = new Intent(context, ForgotPasswordActivity.class);
         context.startActivity(i);
     }
@@ -67,7 +63,7 @@ public class LoginViewModel extends Observable implements Login.Result
     @Override
     public void onError(String errorStr) {
         contract.setLoading(false);
-        Pnotify.makeText(context,errorStr, Toast.LENGTH_SHORT,Pnotify.ERROR).show();
+        Pnotify.makeText(context, errorStr, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
     }
 
     @Override
