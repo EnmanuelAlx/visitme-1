@@ -66,7 +66,7 @@
                     android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:text="@={viewModel.name}"
-                    android:hint="Nombre y Apellido"
+                    android:hint="Nombre y Apellido *"
                     android:inputType="textPersonName" />
 
                 <EditText
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:ems="10"
-                    android:hint="Correo Electronico"
+                    android:hint="Correo Electronico *"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}" />
 
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:ems="10"
-                    android:hint="Cedula de Identidad"
+                    android:hint="Cedula de Identidad *"
                     android:inputType="number"
                     android:text="@={viewModel.cedula}" />
 
@@ -118,7 +118,7 @@
                     android:text="@={viewModel.password}"
                     android:layout_marginBottom="5dp"
                     android:ems="10"
-                    android:hint="Contraseña"
+                    android:hint="Contraseña *"
                     android:inputType="textPassword" />
 
                 <EditText
@@ -128,7 +128,7 @@
                     android:layout_marginBottom="15dp"
                     android:text="@={viewModel.confirmPassword}"
                     android:ems="10"
-                    android:hint="Confirmar Contraseña"
+                    android:hint="Confirmar Contraseña *"
                     android:inputType="textPassword" />
 
                 <Button
