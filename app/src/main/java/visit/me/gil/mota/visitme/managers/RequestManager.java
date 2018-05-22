@@ -102,6 +102,12 @@ public class RequestManager {
         return multipartRequest(Request.Method.POST, urlBase + Urls.REGISTER, data, images, null, null);
     }
 
+    public Observable<JSONObject> editProfile(HashMap<String, String> data, String image) {
+        HashMap<String, String> images = new HashMap<>();
+        images.put("image", image);
+        return multipartRequest(Request.Method.PUT, urlBase + Urls.USER_PROFILE, data, images, null, null);
+    }
+
     public Observable<JSONObject> getScheduledVisits(int skip, int limit) {
         return request(Request.Method.GET, urlBase + Urls.USER_VISITS_SCHEDULED + "?skip=" + skip + "&limit=" + limit, null);
     }

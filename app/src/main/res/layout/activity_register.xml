@@ -136,7 +136,7 @@
                     style="@style/VisitMeButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="@{viewModel::register}"
+                    android:onClick="@{viewModel.edit ? viewModel::editProfile : viewModel::register}"
                     android:layout_marginBottom="15dp"
                     android:text='@{viewModel.edit ? "Editar" : "Registrarse"}'
                     android:textColor="@color/white" />

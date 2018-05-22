@@ -50,6 +50,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     private Uri imageSelected;
     private Context context;
     private Register register;
+    private User user;
 
     public RegisterViewModel(@NonNull Context context, Contract contract) {
         this.context = context;
@@ -75,7 +76,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.cellPhone = new ObservableField<>(user.getCellPhone());
         this.name = new ObservableField<>(user.getName());
         this.email = new ObservableField<>(user.getEmail());
-
+        this.user = user;
         this.edit = new ObservableField<>(true);
         this.contract = contract;
         contract.changeImage(user.getImage());
@@ -107,6 +108,32 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
                     homePhone.get(),
                     FilePath.getPath(context, imageSelected));
             register.run();
+        }
+
+    }
+
+    public void editProfile(View view) {
+        /*if (imageSelected == null) {
+            Pnotify.makeText(context, "No has seleccionado una imagen de Perfil", Toast.LENGTH_SHORT, Pnotify.WARNING).show();
+            return;
+        }*/
+
+        if (!password.get().equals(confirmPassword.get())) {
+            Pnotify.makeText(context, "Las contraseñas no Coinciden", Toast.LENGTH_SHORT, Pnotify.WARNING).show();
+            return;
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            register.setParams(
+                    cedula.get().isEmpty() ? user.getIdentification() : cedula.get(),
+                    name.get().isEmpty() ? user.getName() : name.get(),
+                    email.get().isEmpty() ? user.getEmail() : email.get(),
+                    password.get().isEmpty() ? user.getPassword() : password.get(),
+                    cellPhone.get().isEmpty() ? user.getCellPhone() : cellPhone.get(),
+                    homePhone.get().isEmpty() ? user.getHomePhone() : homePhone.get(),
+                    "");
+            register.runEdit();
         }
 
     }
