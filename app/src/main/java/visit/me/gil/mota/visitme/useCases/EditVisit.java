@@ -6,12 +6,15 @@ import org.json.JSONObject;
 import java.util.List;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import visit.me.gil.mota.visitme.models.Interval;
+import io.reactivex.schedulers.Schedulers;
+import visit.me.gil.mota.visitme.managers.RequestManager;
+
 
 public class EditVisit extends UseCase implements Observer<JSONObject> {
 
-    JSONObject params;
+    private JSONObject params;
     private String visitId;
 
     public EditVisit(Result result) {
@@ -31,7 +34,7 @@ public class EditVisit extends UseCase implements Observer<JSONObject> {
 
     @Override
     public void onError(Throwable e) {
-
+        resultSetter.onError(e.getMessage());
     }
 
     @Override
@@ -41,7 +44,10 @@ public class EditVisit extends UseCase implements Observer<JSONObject> {
 
     @Override
     public void run() {
-
+        RequestManager.getInstance().editVisit(visitId, params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this);
     }
 
     public void setParam(String name, Object[] arry) throws JSONException {

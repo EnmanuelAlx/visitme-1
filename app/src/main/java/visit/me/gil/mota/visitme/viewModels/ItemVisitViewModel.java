@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
@@ -87,14 +88,15 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
     }
 
     private void edit() {
-        if (visit.getKind().equals("FREQUET"))
+        if (visit.getKind().equals("FREQUENT"))
             showIntervalsDialog();
         else if(visit.getKind().equals("SCHEDULED"))
             showDaySelectDialog();
     }
 
     private void showIntervalsDialog() {
-        IntervalsDialog dialog = new IntervalsDialog(context, intervalsResult, Arrays.asList(visit.getIntervals()));
+        ArrayList<Interval> intervals = new ArrayList<>( Arrays.asList(visit.getIntervals()));
+        IntervalsDialog dialog = new IntervalsDialog(context, intervalsResult,intervals);
         dialog.show();
     }
 

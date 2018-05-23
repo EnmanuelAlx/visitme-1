@@ -189,4 +189,8 @@ public class RequestManager {
     public String getUrl() {
         return "https://visitme1.herokuapp.com";
     }
+
+    public Observable<JSONObject> editVisit(String visitId, JSONObject params) {
+        return request(Request.Method.PUT, urlBase + Urls.VISITS + "/" + visitId, params);
+    }
 }
