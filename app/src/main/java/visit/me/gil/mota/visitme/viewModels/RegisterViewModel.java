@@ -53,7 +53,6 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     private Context context;
     private Register register;
     private EditProfile editProfile;
-    private User user;
 
     public RegisterViewModel(@NonNull Context context, Contract contract) {
         this.context = context;
@@ -81,7 +80,6 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
         this.cellPhone = new ObservableField<>(user.getCellPhone());
         this.name = new ObservableField<>(user.getName());
         this.email = new ObservableField<>(user.getEmail());
-        this.user = user;
         this.edit = new ObservableField<>(true);
         this.contract = contract;
         contract.changeImage(user.getImage());
@@ -139,7 +137,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
                 "");
         editProfile.run();
 
-
+        contract.setLoading(true);
     }
 
     public void selectImage(View view) {
@@ -164,18 +162,20 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
 
     public interface Contract {
         void changeImage(String image);
-
         void select();
+        void setLoading(boolean loading);
     }
 
     private final UseCase.Result onEditResult = new UseCase.Result() {
         @Override
         public void onError(String error) {
+            contract.setLoading(false);
             Pnotify.makeText(context,error,Toast.LENGTH_SHORT, Pnotify.ERROR).show();
         }
 
         @Override
         public void onSuccess() {
+            contract.setLoading(false);
             Pnotify.makeText(context,"Actualizacion Satisfactoria",Toast.LENGTH_SHORT, Pnotify.INFO).show();
         }
     };
