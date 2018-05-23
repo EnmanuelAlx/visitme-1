@@ -9,14 +9,21 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Observable;
 
 import visit.me.gil.mota.visitme.R;
+import visit.me.gil.mota.visitme.models.Interval;
 import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.useCases.DeleteVisit;
+import visit.me.gil.mota.visitme.useCases.EditVisit;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.Functions;
 import visit.me.gil.mota.visitme.utils.Pnotify;
+import visit.me.gil.mota.visitme.views.dialogs.IntervalsDialog;
 import visit.me.gil.mota.visitme.views.dialogs.VisitDialog;
 
 /**
@@ -31,6 +38,7 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
     public ObservableField<String> time;
     public ObservableField<String> community;
     private Contract contract;
+
     public ItemVisitViewModel(Visit visit, Context context, Contract contract) {
         this.context = context;
         username = new ObservableField<>("");
@@ -69,13 +77,29 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
     public boolean onMenuItemClick(MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.edit:
-
+                edit();
                 return true;
             case R.id.delete:
                 delete();
                 return true;
         }
         return false;
+    }
+
+    private void edit() {
+        if (visit.getKind().equals("FREQUET"))
+            showIntervalsDialog();
+        else if(visit.getKind().equals("SCHEDULED"))
+            showDaySelectDialog();
+    }
+
+    private void showIntervalsDialog() {
+        IntervalsDialog dialog = new IntervalsDialog(context, intervalsResult, Arrays.asList(visit.getIntervals()));
+        dialog.show();
+    }
+
+    private void showDaySelectDialog() {
+
     }
 
     private void delete() {
@@ -103,4 +127,37 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
     public interface Contract {
         void remove(Visit visit);
     }
+
+    private IntervalsDialog.Result intervalsResult = new IntervalsDialog.Result() {
+        @Override
+        public void onClose(final List<Interval> intervals) {
+            final Interval[] arry = intervals.toArray(new Interval[intervals.size()]);
+
+            EditVisit useCase = new EditVisit(new UseCase.Result() {
+                @Override
+                public void onError(String error) {
+                    showError(error);
+                }
+
+                @Override
+                public void onSuccess() {
+                    visit.setIntervals(arry);
+                }
+            });
+            try {
+                useCase.setParam("intervals",arry);
+                useCase.setVisitId(visit.get_id());
+                useCase.run();
+            } catch (JSONException e) {
+                onError("Error Inesperado");
+            }
+
+        }
+
+        @Override
+        public void showError(String err) {
+            onError(err);
+        }
+    };
+
 }
