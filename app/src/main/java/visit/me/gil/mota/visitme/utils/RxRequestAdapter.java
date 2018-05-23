@@ -5,12 +5,15 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import org.json.JSONObject;
+
 import java.util.concurrent.CountDownLatch;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
+import visit.me.gil.mota.visitme.managers.ErrorManager;
 
 /**
  * Created by Slaush on 22/05/2017.
@@ -41,7 +44,11 @@ public class RxRequestAdapter<T> implements Response.Listener<T>, Response.Error
 
                 if (mVolleyError != null)
                 {
-                    e.onError(mVolleyError);
+                    String data = new String(mVolleyError.networkResponse.data);
+                    Log.i("ERROR ON ADAPTER","Error Getted:"+data);
+                    JSONObject obj = new JSONObject(data);
+                    Throwable error = ErrorManager.getInstance().getError(obj);
+                    e.onError(error);
                 } else {
                     e.onNext(mResponse);
                     e.onComplete();

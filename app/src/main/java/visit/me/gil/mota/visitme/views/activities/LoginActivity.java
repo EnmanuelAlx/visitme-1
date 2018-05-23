@@ -18,9 +18,9 @@ import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityLoginBinding;
 import visit.me.gil.mota.visitme.viewModels.LoginViewModel;
 
-public class LoginActivity extends BindeableActivity {
+public class LoginActivity extends BindeableActivity implements LoginViewModel.Contract {
     private LoginViewModel loginViewModel;
-
+    private ActivityLoginBinding binding;
     @Override
     protected void onCreate( Bundle savedInstanceState)
     {
@@ -31,8 +31,8 @@ public class LoginActivity extends BindeableActivity {
 
     @Override public void initDataBinding()
     {
-        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        loginViewModel = new LoginViewModel(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        loginViewModel = new LoginViewModel(this, this);
         binding.setViewModel(loginViewModel);
     }
 
@@ -43,5 +43,10 @@ public class LoginActivity extends BindeableActivity {
         {
             LoginViewModel viewModel = (LoginViewModel) observable;
         }
+    }
+
+    @Override
+    public void setLoading(boolean loading) {
+        binding.loader.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 }
