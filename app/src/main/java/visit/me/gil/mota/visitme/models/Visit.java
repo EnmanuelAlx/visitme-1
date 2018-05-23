@@ -211,4 +211,20 @@ public class Visit implements Parcelable {
                     return "Mañana";
         }
     }
+
+    public Date getDayOfVisitAsDate() {
+        return dayOfVisit;
+    }
+
+    public int getCompanions() {
+        return companions;
+    }
+
+    public void setCompanions(int companions) {
+        this.companions = companions;
+    }
+
+    public void setPartOfDay(String partOfDay) {
+        this.partOfDay = partOfDay;
+    }
 }

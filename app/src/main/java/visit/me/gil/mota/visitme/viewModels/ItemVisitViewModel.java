@@ -13,6 +13,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 
@@ -25,6 +26,7 @@ import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.Functions;
 import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.views.dialogs.IntervalsDialog;
+import visit.me.gil.mota.visitme.views.dialogs.ScheduledEditDialog;
 import visit.me.gil.mota.visitme.views.dialogs.VisitDialog;
 
 /**
@@ -101,7 +103,9 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
     }
 
     private void showDaySelectDialog() {
-
+        ScheduledEditDialog dialog = new ScheduledEditDialog(context, scheduledResult,
+                visit.getDayOfVisitAsDate(),visit.getCompanions(), visit.getDayPartString());
+        dialog.show();
     }
 
     private void delete() {
@@ -143,6 +147,7 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
 
                 @Override
                 public void onSuccess() {
+                    Pnotify.makeText(context,"Actualizacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
                     visit.setIntervals(arry);
                 }
             });
@@ -162,4 +167,40 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
         }
     };
 
+
+    private ScheduledEditDialog.Result scheduledResult = new ScheduledEditDialog.Result() {
+        @Override
+        public void onClose(final Date dayOfVisit, final int companions, final String partOfDay) {
+            EditVisit e = new EditVisit(new UseCase.Result() {
+                @Override
+                public void onError(String error) {
+                    showError(error);
+                }
+
+                @Override
+                public void onSuccess() {
+                    visit.setCompanions(companions);
+                    visit.setPartOfDay(partOfDay.toLowerCase());
+                    visit.setDayOfVisit(dayOfVisit);
+                    Pnotify.makeText(context,"Actualizacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
+                }
+            });
+
+            try {
+                e.setVisitId(visit.get_id());
+                e.setParam("dayOfVisit",dayOfVisit.toString());
+                e.setParam("companions",companions);
+                e.setParam("partOfDay",partOfDay.toUpperCase());
+                e.run();
+            } catch (JSONException e1) {
+                onError("Error Inesperado");
+            }
+
+        }
+
+        @Override
+        public void showError(String err) {
+            onError(err);
+        }
+    };
 }
