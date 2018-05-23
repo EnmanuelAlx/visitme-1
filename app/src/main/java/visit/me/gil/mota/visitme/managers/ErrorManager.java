@@ -32,22 +32,6 @@ public class ErrorManager
         return instance;
     }
 
-    public Throwable handleLoginError(Throwable e)
-    {
-        if(e instanceof NoConnectionError)
-        {
-            return new Throwable("Error de Conexion");
-        }
-        else if(e instanceof AuthFailureError)
-        {
-            return new Throwable("Credenciales Invalidas");
-        }
-        else
-        {
-            return new Throwable("Error de Conexion");
-        }
-    }
-
     public Throwable getError(JSONObject jsonObject)
     {
         if (jsonObject.has("error"))

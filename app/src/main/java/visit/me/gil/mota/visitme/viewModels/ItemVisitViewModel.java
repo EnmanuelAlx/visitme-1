@@ -149,6 +149,7 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
                 public void onSuccess() {
                     Pnotify.makeText(context,"Actualizacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
                     visit.setIntervals(arry);
+                    setVisit(visit);
                 }
             });
             try {
@@ -182,6 +183,7 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
                     visit.setCompanions(companions);
                     visit.setPartOfDay(partOfDay.toLowerCase());
                     visit.setDayOfVisit(dayOfVisit);
+                    setVisit(visit);
                     Pnotify.makeText(context,"Actualizacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
                 }
             });

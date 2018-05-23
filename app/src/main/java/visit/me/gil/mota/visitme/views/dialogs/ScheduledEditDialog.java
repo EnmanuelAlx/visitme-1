@@ -19,15 +19,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 import visit.me.gil.mota.visitme.R;
-import visit.me.gil.mota.visitme.utils.Functions;
+
 
 public class ScheduledEditDialog implements DatePickerDialog.OnDateSetListener {
+
     private Context context;
     private Result result;
     private Date dayOfVisit;
     private int companions;
     private String partOfDay;
     private TextView day;
+
+
     public ScheduledEditDialog(Context contxt, Result result, Date dayOfVisit,
                                int companions,
                                String partOfDay) {
@@ -75,8 +78,6 @@ public class ScheduledEditDialog implements DatePickerDialog.OnDateSetListener {
                         result.onClose(dayOfVisit, Integer.valueOf(edit.getText().toString()),
                                 getPartOfDay(spinner.getSelectedItem().toString()));
                         d.dismiss();
-
-
                     }
                 });
             }
@@ -127,11 +128,6 @@ public class ScheduledEditDialog implements DatePickerDialog.OnDateSetListener {
                 return i;
         }
         return -1;
-    }
-
-
-    private boolean validateIntervals() {
-        return true;
     }
 
     @Override

@@ -19,7 +19,7 @@ import visit.me.gil.mota.visitme.managers.ErrorManager;
  * Created by Slaush on 22/05/2017.
  */
 
-public class RxRequestAdapter<T> implements Response.Listener<T>, Response.ErrorListener{
+public class RxRequestAdapter<T> implements Response.Listener<T>, Response.ErrorListener {
 
     private final CountDownLatch mLatch;
     private final Observable<T> mObservable;
@@ -29,32 +29,35 @@ public class RxRequestAdapter<T> implements Response.Listener<T>, Response.Error
 
     public RxRequestAdapter() {
         mLatch = new CountDownLatch(1);
-        mObservable = Observable.create(new ObservableOnSubscribe<T>()
-        {
+        mObservable = Observable.create(new ObservableOnSubscribe<T>() {
             @Override
-            public void subscribe(@NonNull ObservableEmitter<T> e) throws Exception
-            {
-                try
-                {
+            public void subscribe(@NonNull ObservableEmitter<T> e) throws Exception {
+                try {
                     mLatch.await();
-                } catch (InterruptedException ex)
-                {
+                } catch (InterruptedException ex) {
                     mVolleyError = new VolleyError(ex);
                 }
 
-                if (mVolleyError != null)
-                {
-                    String data = new String(mVolleyError.networkResponse.data);
-                    Log.i("ERROR ON ADAPTER","Error Getted:"+data);
-                    JSONObject obj = new JSONObject(data);
-                    Throwable error = ErrorManager.getInstance().getError(obj);
-                    e.onError(error);
+                if (mVolleyError != null) {
+                    handleError(e, mVolleyError);
                 } else {
                     e.onNext(mResponse);
                     e.onComplete();
                 }
             }
         });
+    }
+
+    private void handleError(ObservableEmitter<T> e, VolleyError mVolleyError) {
+        Throwable error;
+        try {
+            String data = new String(mVolleyError.networkResponse.data);
+            JSONObject obj = new JSONObject(data);
+            error = ErrorManager.getInstance().getError(obj);
+        } catch (Exception ex) {
+            error = new Throwable("Error inesperado");
+        }
+        e.onError(error);
     }
 
     public Observable<T> getObservable() {
