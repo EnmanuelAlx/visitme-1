@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class CreateVisitActivity extends BindeableActivity implements CreateVisi
     private CreateVisitViewModel viewModel;
     private Fragment[] steps;
     private int currentStep;
+    private ActivityCreateVisitBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +50,7 @@ public class CreateVisitActivity extends BindeableActivity implements CreateVisi
 
     @Override
     public void initDataBinding() {
-        ActivityCreateVisitBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_create_visit);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_visit);
         viewModel = new CreateVisitViewModel(this);
         binding.setViewModel(viewModel);
         selectStep(0);
@@ -98,6 +100,11 @@ public class CreateVisitActivity extends BindeableActivity implements CreateVisi
         data.putExtra("visit",visit);
         setResult(MainActivity.UPDATE_VISITS,data);
         finish();
+    }
+
+    @Override
+    public void setLoading(boolean loading) {
+        binding.loader.setVisibility(loading ? View.VISIBLE : View.GONE);
     }
 
     @Override

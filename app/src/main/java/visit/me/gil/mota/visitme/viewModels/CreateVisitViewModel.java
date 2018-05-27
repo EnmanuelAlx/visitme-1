@@ -70,15 +70,18 @@ public class CreateVisitViewModel extends Observable implements CreateVisit.Resu
     public void fillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
         createVisit.setParams(cedula, name, dayOfVisit, intervals, partOfDay, companions, community, visitType);
         createVisit.run();
+        contract.setLoading(true);
     }
 
     @Override
     public void onError(String error) {
+        contract.setLoading(false);
         contract.setError(error);
     }
 
     @Override
     public void onSuccess() {
+        contract.setLoading(false);
 
     }
 
@@ -96,5 +99,8 @@ public class CreateVisitViewModel extends Observable implements CreateVisit.Resu
         void setError(String error);
 
         void finishSuccess(Visit visit);
+
+        void setLoading(boolean loading);
     }
+    
 }
