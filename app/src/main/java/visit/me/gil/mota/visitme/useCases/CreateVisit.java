@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,6 +60,9 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
                 params.put("companions", companions);
                 params.put("dayOfVisit", dayOfVisit);
             }
+
+            params.put("timezone", TimeZone.getDefault().getID());
+            Log.i("VISIT","VISIT AS JSON" + params.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

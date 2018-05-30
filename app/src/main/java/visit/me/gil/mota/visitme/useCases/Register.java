@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -54,6 +55,8 @@ public class Register extends Auth {
             data.put("cellPhone", cellPhone);
         if (homePhone != null)
             data.put("homePhone", homePhone);
+
+        data.put("timezone", TimeZone.getDefault().getID());
         this.image = image;
         Log.i("REGISTER", "SET PARAMS" + data.toString() + image);
     }
