@@ -11,12 +11,35 @@
             type="visit.me.gil.mota.visitme.viewModels.CreateVisitViewModel" />
     </data>
 
-    <FrameLayout
-        android:id="@+id/content"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="visit.me.gil.mota.visitme.views.activities.CreateVisitActivity">
+        android:layout_height="match_parent">
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="visit.me.gil.mota.visitme.views.activities.CreateVisitActivity">
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CCFFFFFF"
+            android:visibility="gone"
+            >
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:layout_centerInParent="true"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.Large.CubeGrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorAccent" />
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </layout>

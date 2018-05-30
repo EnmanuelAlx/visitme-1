@@ -87,6 +87,11 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
     }
 
     @Override
+    public void setLoading(boolean loading) {
+        binding.loader.setVisibility(loading ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 222 && resultCode == Activity.RESULT_OK) {
             Uri u = data.getData();
