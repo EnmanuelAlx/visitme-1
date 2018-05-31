@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.otaliastudios.autocomplete.Autocomplete;
 import com.otaliastudios.autocomplete.AutocompletePolicy;
 import com.otaliastudios.autocomplete.AutocompletePresenter;
@@ -43,6 +44,7 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
     private GuestDataViewModel viewModel;
     private Contract contract;
     private IntervalAdapter adapter;
+
     public GuestDataFragment() {
         // Required empty public constructor
     }
@@ -57,14 +59,14 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
         viewModel.setArguments(getArguments());
         binding.setViewModel(viewModel);
         setupAdapter(binding);
-        if(viewModel.isSporadic())
+        if (viewModel.isSporadic())
             setupAutoComplete();
         return binding.getRoot();
     }
 
     private void setupAutoComplete() {
-        CompaniesPresenter  presenter = new CompaniesPresenter(this.getActivity(), viewModel);
-        Autocomplete c =  Autocomplete.on(binding.nameField).with(presenter).build();
+        CompaniesPresenter presenter = new CompaniesPresenter(this.getActivity(), viewModel);
+        Autocomplete c = Autocomplete.on(binding.nameField).with(presenter).build();
         viewModel.setAutoComplete(c);
     }
 
@@ -80,7 +82,7 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            contract = (Contract ) activity;
+            contract = (Contract) activity;
 
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
@@ -90,7 +92,7 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
 
     @Override
     public void setError(String error) {
-        Pnotify.makeText(getActivity(),error, Toast.LENGTH_SHORT,Pnotify.ERROR).show();
+        Pnotify.makeText(getActivity(), error, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
     }
 
     @Override
@@ -112,13 +114,13 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
         Calendar now = Calendar.getInstance();
         TimePickerDialog dialog = TimePickerDialog.newInstance(this,
                 now.get(Calendar.HOUR_OF_DAY),
-                now.get(Calendar.MINUTE),true);
-        dialog.show(getFragmentManager(),"timeDialog");
+                now.get(Calendar.MINUTE), true);
+        dialog.show(getFragmentManager(), "timeDialog");
     }
 
     @Override
     public void register(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
-        contract.onFillGuestData(cedula,name,dayOfVisit,partOfDay, companions, intervals);
+        contract.onFillGuestData(cedula, name, dayOfVisit, partOfDay, companions, intervals);
     }
 
     @Override
@@ -132,8 +134,13 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
     }
 
     @Override
+    public void setImage(String image) {
+        Glide.with(getActivity()).load(image).placeholder(R.drawable.guy).error(R.drawable.guy).into(binding.image);
+    }
+
+    @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        viewModel.setDay(year, monthOfYear,dayOfMonth);
+        viewModel.setDay(year, monthOfYear, dayOfMonth);
     }
 
     @Override

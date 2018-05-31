@@ -24,9 +24,9 @@ public class Interval implements Parcelable {
     }
 
     protected Interval(Parcel in) {
+        day = in.readInt();
         from = in.readInt();
         to = in.readInt();
-        day = in.readInt();
     }
 
     public static final Creator<Interval> CREATOR = new Creator<Interval>() {

@@ -193,4 +193,8 @@ public class RequestManager {
     public Observable<JSONObject> editVisit(String visitId, JSONObject params) {
         return request(Request.Method.PUT, urlBase + Urls.VISITS + "/" + visitId, params);
     }
+
+    public Observable<JSONObject> findFirstUserThatMatch(String identification) {
+        return request(Request.Method.GET, urlBase + Urls.FIND_FIRST_USER + "?identification=" + identification, null);
+    }
 }

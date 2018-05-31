@@ -17,13 +17,14 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.Consts;
 import visit.me.gil.mota.visitme.models.Interval;
 import visit.me.gil.mota.visitme.models.User;
+import visit.me.gil.mota.visitme.useCases.FindFirstUserThatMatch;
 import visit.me.gil.mota.visitme.views.dialogs.IntervalsDialog;
 
 /**
  * Created by mota on 17/4/2018.
  */
 
-public class GuestDataViewModel extends Observable implements IntervalsDialog.Result, ItemUserViewModel.Contract {
+public class GuestDataViewModel extends Observable implements IntervalsDialog.Result, ItemUserViewModel.Contract, FindFirstUserThatMatch.Result {
 
     private Contract contract;
     public ObservableField<String> cedula;
@@ -37,7 +38,7 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
     private Bundle arguments;
     private List<Interval> intervals;
     private Autocomplete autoComplete;
-
+    private FindFirstUserThatMatch findFirst;
 
     public GuestDataViewModel(Contract contract) {
         this.contract = contract;
@@ -51,6 +52,7 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
         cedula.addOnPropertyChangedCallback(cedulaChanged);
         intervals = new ArrayList<>();
         intervals.add(new Interval(0, 0, 2400));
+        findFirst = new FindFirstUserThatMatch(this);
 
     }
 
@@ -117,13 +119,28 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
 
     @Override
     public void onClick(User u) {
-        name.set(u.getName());
+        setUser(u);
         if (autoComplete != null)
             autoComplete.dismissPopup();
     }
 
     public void setAutoComplete(Autocomplete autoComplete) {
         this.autoComplete = autoComplete;
+    }
+
+    @Override
+    public void onUserFinded(User user) {
+        setUser(user);
+    }
+
+    private void setUser(User user) {
+        contract.setImage(user.getImage());
+        name.set(user.getName());
+    }
+
+    @Override
+    public void onError(String error) {
+
     }
 
     public interface Contract {
@@ -138,6 +155,8 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
         Context giveContext();
 
         void refreshIntervalsData();
+
+        void setImage(String image);
     }
 
     private android.databinding.Observable.OnPropertyChangedCallback cedulaChanged =
@@ -149,6 +168,11 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
             };
 
     private void onCedulaChanged() {
-
+        String cedula = this.cedula.get();
+        if (cedula.length() > 4 && !findFirst.isRunning())
+        {
+            findFirst.setIdentification(cedula);
+            findFirst.run();
+        }
     }
 }
