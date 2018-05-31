@@ -91,6 +91,7 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
         Result result = (Result) resultSetter;
         Log.i("CREATE VISIT","JS "+jsonObject);
         Visit v = Functions.parse(jsonObject, Visit.class);
+        Log.i("CREATE VISIT", "VISIT_ "+v.toString());
         result.onVisitCreated(v);
     }
 

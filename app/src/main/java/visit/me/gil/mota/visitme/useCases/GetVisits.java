@@ -56,6 +56,7 @@ public class GetVisits extends FillListByType<Visit> {
         JSONArray arry = obj.getJSONArray("visits");
         Log.i("MOTA","VISIT JSON"+  obj.toString());
         Visit[] visits = Functions.parse(arry, Visit[].class);
+        Log.i("MOTA","VISIT OBJ"+ Arrays.toString(visits));
         return Arrays.asList(visits);
     }
 

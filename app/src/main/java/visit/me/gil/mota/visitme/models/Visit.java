@@ -4,12 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.function.Predicate;
 
 import visit.me.gil.mota.visitme.utils.Functions;
@@ -21,7 +24,7 @@ import visit.me.gil.mota.visitme.utils.Functions;
 public class Visit implements Parcelable {
     private String _id;
     private String kind;
-    private Date dayOfVisit;
+    private String dayOfVisit;
     private User guest;
     private User resident;
     private int companions;
@@ -32,6 +35,9 @@ public class Visit implements Parcelable {
     protected Visit(Parcel in) {
         _id = in.readString();
         kind = in.readString();
+        dayOfVisit = in.readString();
+        partOfDay = in.readString();
+        companions = in.readInt();
         guest = in.readParcelable(User.class.getClassLoader());
         resident = in.readParcelable(User.class.getClassLoader());
         community = in.readParcelable(Community.class.getClassLoader());
@@ -70,11 +76,13 @@ public class Visit implements Parcelable {
         if (kind.equals("SPORADIC"))
             return "";
         int day  = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        return dayOfVisit != null ? showAsScheduled() : getNextInterval(day);
+        return kind.equals("SCHEDULED") ? showAsScheduled() : getNextInterval(day);
     }
 
     private String showAsScheduled() {
-        return new SimpleDateFormat("dd/MM/yyyy").format(dayOfVisit) + " " +  getDayPartString();
+        DateFormat formated = SimpleDateFormat.getDateInstance();
+        formated.setTimeZone(TimeZone.getDefault());
+        return formated.format(new Date(dayOfVisit.substring(0,10).replace("-","/"))) + " " + getDayPartString();
     }
 
 
@@ -119,7 +127,7 @@ public class Visit implements Parcelable {
         return intrvls;
     }
 
-    public void setDayOfVisit(Date dayOfVisit) {
+    public void setDayOfVisit(String dayOfVisit) {
         this.dayOfVisit = dayOfVisit;
     }
 
@@ -190,6 +198,9 @@ public class Visit implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(_id);
         parcel.writeString(kind);
+        parcel.writeString(dayOfVisit);
+        parcel.writeString(partOfDay);
+        parcel.writeInt(companions);
         parcel.writeParcelable(guest, i);
         parcel.writeParcelable(resident, i);
         parcel.writeParcelable(community, i);
@@ -213,7 +224,7 @@ public class Visit implements Parcelable {
     }
 
     public Date getDayOfVisitAsDate() {
-        return dayOfVisit;
+        return new Date(dayOfVisit);
     }
 
     public int getCompanions() {

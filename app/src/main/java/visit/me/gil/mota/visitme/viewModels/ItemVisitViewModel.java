@@ -182,7 +182,7 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
                 public void onSuccess() {
                     visit.setCompanions(companions);
                     visit.setPartOfDay(partOfDay.toLowerCase());
-                    visit.setDayOfVisit(dayOfVisit);
+                    visit.setDayOfVisit(dayOfVisit.toString());
                     setVisit(visit);
                     Pnotify.makeText(context,"Actualizacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
                 }
