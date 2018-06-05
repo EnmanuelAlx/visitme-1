@@ -63,7 +63,7 @@ public class NotificationManager implements OneSignal.NotificationOpenedHandler 
         if (notification != null && !auth.isEmpty())
         {
             String type = notification.getString("type");
-            if (type.equals("UNEXPECTED_VISITOR"))
+            if (type.equals("UNEXPECTED VISIT"))
                 onUnexpectedVisitor(notification);
             else
                 displayNotification(notification);

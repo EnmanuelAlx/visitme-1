@@ -197,4 +197,8 @@ public class RequestManager {
     public Observable<JSONObject> findFirstUserThatMatch(String identification) {
         return request(Request.Method.GET, urlBase + Urls.FIND_FIRST_USER + "?identification=" + identification, null);
     }
+
+    public Observable<JSONObject> giveAccess(String visit, boolean access) {
+        return request(Request.Method.PUT, urlBase + Urls.GIVE_ACCESS.replace(":visit", visit) + "?access="+access, null);
+    }
 }
