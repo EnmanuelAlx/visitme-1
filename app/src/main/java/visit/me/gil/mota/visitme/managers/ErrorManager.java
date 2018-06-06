@@ -4,6 +4,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.VolleyError;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -32,10 +33,10 @@ public class ErrorManager
         return instance;
     }
 
-    public Throwable getError(JSONObject jsonObject)
-    {
-        if (jsonObject.has("error"))
-            return new Error(ErrorType.CUSTOM,jsonObject.optString("error"));
+    public Throwable getError(JSONObject jsonObject) throws JSONException {
+        String error = jsonObject.getJSONObject("error").getString("name");
+        if (!error.isEmpty())
+            return new Error(ErrorType.CUSTOM,error);
         else
             return new Throwable("Error Desconocido");
     }
