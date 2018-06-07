@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="@{viewModel::register}"
-                    android:text="Régistrate"
+                    android:text="Regístrate"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -88,8 +88,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                style="@style/VisitMeButtonText"
                 android:onClick="@{viewModel::forgotPassword}"
-                android:text="Olvide mi Contraseña"
+                android:text="Olvidé mi Contraseña"
                 android:textAlignment="center" />
         </LinearLayout>
         <RelativeLayout

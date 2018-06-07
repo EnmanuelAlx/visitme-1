@@ -112,6 +112,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
                     FilePath.getPath(context, imageSelected));
             register.run();
         }
+        contract.setLoading(true);
 
     }
 
@@ -150,11 +151,13 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
 
     @Override
     public void onError(String error) {
+        contract.setLoading(false);
         Pnotify.makeText(context, error, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
     }
 
     @Override
     public void onSuccess() {
+        contract.setLoading(false);
         Intent i = new Intent(context, MainActivity.class);
         context.startActivity(i);
     }

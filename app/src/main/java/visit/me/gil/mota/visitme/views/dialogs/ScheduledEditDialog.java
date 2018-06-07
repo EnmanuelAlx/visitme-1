@@ -75,7 +75,7 @@ public class ScheduledEditDialog implements DatePickerDialog.OnDateSetListener {
                     @Override
                     public void onClick(View v) {
                         Log.i("DIALOG","ON CLICK OK!");
-                        result.onClose(dayOfVisit, Integer.valueOf(edit.getText().toString()),
+                        result.onClose(day.getText().toString(),dayOfVisit, Integer.valueOf(edit.getText().toString()),
                                 getPartOfDay(spinner.getSelectedItem().toString()));
                         d.dismiss();
                     }
@@ -141,7 +141,8 @@ public class ScheduledEditDialog implements DatePickerDialog.OnDateSetListener {
 
 
     public interface Result {
-        void onClose(Date dayOfVisit,
+        void onClose(String dayOfVisit,
+                     Date date,
                      int companions,
                      String partOfDay);
 

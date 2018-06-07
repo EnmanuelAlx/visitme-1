@@ -17,9 +17,10 @@ import visit.me.gil.mota.visitme.databinding.ActivityLoginBinding;
 import visit.me.gil.mota.visitme.viewModels.ForgotPasswordViewModel;
 import visit.me.gil.mota.visitme.viewModels.LoginViewModel;
 
-public class ForgotPasswordActivity extends BindeableActivity{
+public class ForgotPasswordActivity extends BindeableActivity implements ForgotPasswordViewModel.Contract {
 
     public ForgotPasswordViewModel viewModel;
+    ActivityForgotPasswordBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +29,8 @@ public class ForgotPasswordActivity extends BindeableActivity{
 
     @Override public void initDataBinding()
     {
-        ActivityForgotPasswordBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
-        viewModel = new ForgotPasswordViewModel(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
+        viewModel = new ForgotPasswordViewModel(this, this);
         binding.setViewModel(viewModel);
     }
 
@@ -52,5 +53,10 @@ public class ForgotPasswordActivity extends BindeableActivity{
     private void finishSuccessful() {
         setResult(ChangePasswordActivity.CLOSE);
         finish();
+    }
+
+    @Override
+    public void loading(boolean loading) {
+        binding.loader.setVisibility(loading ? View.VISIBLE: View.GONE);
     }
 }

@@ -75,22 +75,26 @@ public class Visit implements Parcelable {
     public String getDayOfVisit() {
         if (kind.equals("SPORADIC"))
             return "";
-        int day  = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         return kind.equals("SCHEDULED") ? showAsScheduled() : getNextInterval(day);
     }
 
     private String showAsScheduled() {
         DateFormat formated = SimpleDateFormat.getDateInstance();
         formated.setTimeZone(TimeZone.getDefault());
-        return formated.format(new Date(dayOfVisit.substring(0,10).replace("-","/"))) + " " + getDayPartString();
-    }
+        try {
+            return formated.format(new Date(dayOfVisit.substring(0, 10).replace("-", "/"))) + " " + getDayPartString();
 
+        } catch (Exception e) {
+            return formated.format(new Date(dayOfVisit)) + " " + getDayPartString();
+        }
+    }
 
 
     private String getNextInterval(int day) {
         List<Interval> intrvl = findIntervalsInDay(day);
 
-        if(intrvl.isEmpty())
+        if (intrvl.isEmpty())
             return getNextInterval(day >= 6 ? 0 : ++day);
         else
             return intrvl.size() == 1 ? intrvl.get(0).toString() : findNearIntervalWithHours(intrvl);
@@ -98,30 +102,27 @@ public class Visit implements Parcelable {
     }
 
     private String findNearIntervalWithHours(List<Interval> intrvl) {
-        int hour  = Calendar.getInstance().get(Calendar.HOUR);
+        int hour = Calendar.getInstance().get(Calendar.HOUR);
         int min = Calendar.getInstance().get(Calendar.MINUTE);
         Interval minimun = null;
         int rest = 100;
         int op = 0;
-        for (Interval i : intrvl)
-        {
-           op = i.getTo() - (hour * 100 + min);
-           if(op >= 0 && op <= rest)
-           {
-               rest = op;
-               minimun = i;
-           }
+        for (Interval i : intrvl) {
+            op = i.getTo() - (hour * 100 + min);
+            if (op >= 0 && op <= rest) {
+                rest = op;
+                minimun = i;
+            }
 
         }
         return minimun != null ? minimun.toString() : intrvl.get(0).toString();
     }
 
-    private List<Interval> findIntervalsInDay(int day)
-    {
+    private List<Interval> findIntervalsInDay(int day) {
         List<Interval> intrvls = new ArrayList<>();
 
         for (Interval i : intervals)
-            if(i.getDay() == day)
+            if (i.getDay() == day)
                 intrvls.add(i);
 
         return intrvls;
@@ -168,8 +169,7 @@ public class Visit implements Parcelable {
     }
 
     public String getKindString() {
-        switch (kind)
-        {
+        switch (kind) {
             case "SPORADIC":
                 return "Esporadica";
             case "FREQUENT":
@@ -209,8 +209,7 @@ public class Visit implements Parcelable {
 
     public String getDayPartString() {
 
-        switch (partOfDay)
-        {
+        switch (partOfDay) {
             case "AFTERNOON":
                 return "Tarde";
             case "MORNING":
@@ -218,13 +217,13 @@ public class Visit implements Parcelable {
             case "NIGHT":
                 return "Noche";
 
-                default:
-                    return "Mañana";
+            default:
+                return "Mañana";
         }
     }
 
     public Date getDayOfVisitAsDate() {
-        return new Date(dayOfVisit);
+        return new Date(dayOfVisit.substring(0, 10).replace("-", "/"));
     }
 
     public int getCompanions() {
@@ -237,5 +236,11 @@ public class Visit implements Parcelable {
 
     public void setPartOfDay(String partOfDay) {
         this.partOfDay = partOfDay;
+    }
+
+    public void setDayOfVisit(Date dayAsDate) {
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+        this.dayOfVisit = dt.format(dayAsDate);
+        Log.i("CHANGE DATE", "RESULT"+dayOfVisit);
     }
 }

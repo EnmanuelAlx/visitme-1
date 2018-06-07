@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -171,7 +172,7 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
 
     private ScheduledEditDialog.Result scheduledResult = new ScheduledEditDialog.Result() {
         @Override
-        public void onClose(final Date dayOfVisit, final int companions, final String partOfDay) {
+        public void onClose(final String dayOfVisit,final Date date, final int companions, final String partOfDay) {
             EditVisit e = new EditVisit(new UseCase.Result() {
                 @Override
                 public void onError(String error) {
@@ -182,15 +183,17 @@ public class ItemVisitViewModel extends Observable implements PopupMenu.OnMenuIt
                 public void onSuccess() {
                     visit.setCompanions(companions);
                     visit.setPartOfDay(partOfDay.toLowerCase());
-                    visit.setDayOfVisit(dayOfVisit.toString());
+                    SimpleDateFormat dt = new SimpleDateFormat("yyyy-dd-MM");
+                    visit.setDayOfVisit(dt.format(date));
                     setVisit(visit);
                     Pnotify.makeText(context,"Actualizacion Satisfactoria", Toast.LENGTH_SHORT, Pnotify.INFO).show();
                 }
             });
 
             try {
+                SimpleDateFormat dt = new SimpleDateFormat("yyyy-dd-MM");
                 e.setVisitId(visit.get_id());
-                e.setParam("dayOfVisit",dayOfVisit.toString());
+                e.setParam("dayOfVisit",dt.format(date));
                 e.setParam("companions",companions);
                 e.setParam("partOfDay",partOfDay.toUpperCase());
                 e.run();

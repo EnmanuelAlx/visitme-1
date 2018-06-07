@@ -24,16 +24,18 @@ public class ForgotPasswordViewModel extends Observable implements UseCase.Resul
 
     public ObservableField<String> email;
     private Context context;
-
-    public ForgotPasswordViewModel(Context context) {
+    private Contract contract;
+    public ForgotPasswordViewModel(Context context, Contract contract) {
         this.context = context;
         this.email = new ObservableField<>("");
+        this.contract = contract;
     }
 
     public void enviar(View view) {
         ForgotPassword forgotPassword = new ForgotPassword(this);
         forgotPassword.setEmail(email.get());
         forgotPassword.run();
+        contract.loading(true);
     }
 
     private void goToCodeActivity() {
@@ -44,11 +46,18 @@ public class ForgotPasswordViewModel extends Observable implements UseCase.Resul
 
     @Override
     public void onError(String error) {
+        contract.loading(false);
         Pnotify.makeText(context, error, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
     }
 
     @Override
     public void onSuccess() {
+        contract.loading(false);
         goToCodeActivity();
+    }
+
+    public interface Contract
+    {
+        void loading(boolean loading);
     }
 }
