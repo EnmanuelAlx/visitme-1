@@ -42,7 +42,7 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
     public void setParams(String cedula, String name,
                           String dayOfVisit, List<Interval> intervals,
-                          String partOfDay, int companions, Community community, String visitType) {
+                          String partOfDay, Community community, String visitType) {
         try {
             if (visitType.equals("FREQUENT") || visitType.equals("SCHEDULED"))
                 params.put("identification", cedula);
@@ -57,7 +57,6 @@ public class CreateVisit extends UseCase implements Observer<JSONObject> {
 
             if (visitType.equals("SCHEDULED")) {
                 params.put("partOfDay", partOfDay);
-                params.put("companions", companions);
                 params.put("dayOfVisit", dayOfVisit);
             }
 

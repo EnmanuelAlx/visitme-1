@@ -119,8 +119,8 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
     }
 
     @Override
-    public void register(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
-        contract.onFillGuestData(cedula, name, dayOfVisit, partOfDay, companions, intervals);
+    public void register(String cedula, String name, String dayOfVisit, String partOfDay, List<Interval> intervals) {
+        contract.onFillGuestData(cedula, name, dayOfVisit, partOfDay,  intervals);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
 
 
     public interface Contract {
-        void onFillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals);
+        void onFillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, List<Interval> intervals);
     }
 
 }

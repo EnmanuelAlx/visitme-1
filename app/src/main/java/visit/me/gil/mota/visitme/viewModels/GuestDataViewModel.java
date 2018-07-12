@@ -33,7 +33,6 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
     public ObservableField<String> hour;
     public ObservableField<String> visitType;
     public ObservableField<Integer> partOfDay;
-    public ObservableField<String> companions;
     private String dayF;
     private Bundle arguments;
     private List<Interval> intervals;
@@ -47,7 +46,6 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
         day = new ObservableField<>("Dia");
         hour = new ObservableField<>("Hora");
         partOfDay = new ObservableField<>(0);
-        companions = new ObservableField<>("");
         visitType = new ObservableField<>("");
         cedula.addOnPropertyChangedCallback(cedulaChanged);
         intervals = new ArrayList<>();
@@ -59,7 +57,6 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
     public void register(View view) {
         contract.register(cedula.get(), name.get(), dayF,
                 Consts.PART_OF_DAYS[partOfDay.get()],
-                Integer.valueOf(companions.get().equals("") ? "0" : companions.get()),
                 intervals);
     }
 
@@ -150,7 +147,7 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
 
         void showGetTime();
 
-        void register(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals);
+        void register(String cedula, String name, String dayOfVisit, String partOfDay, List<Interval> intervals);
 
         Context giveContext();
 

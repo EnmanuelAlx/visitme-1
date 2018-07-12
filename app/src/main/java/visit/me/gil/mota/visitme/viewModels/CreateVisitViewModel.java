@@ -67,8 +67,8 @@ public class CreateVisitViewModel extends Observable implements CreateVisit.Resu
         return actualInfo;
     }
 
-    public void fillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
-        createVisit.setParams(cedula, name, dayOfVisit, intervals, partOfDay, companions, community, visitType);
+    public void fillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, List<Interval> intervals) {
+        createVisit.setParams(cedula, name, dayOfVisit, intervals, partOfDay,  community, visitType);
         createVisit.run();
         contract.setLoading(true);
     }

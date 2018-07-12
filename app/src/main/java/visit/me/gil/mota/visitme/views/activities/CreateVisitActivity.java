@@ -119,7 +119,7 @@ public class CreateVisitActivity extends BindeableActivity implements CreateVisi
 
 
     @Override
-    public void onFillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, int companions, List<Interval> intervals) {
-        viewModel.fillGuestData(cedula, name, dayOfVisit,partOfDay, companions, intervals);
+    public void onFillGuestData(String cedula, String name, String dayOfVisit, String partOfDay, List<Interval> intervals) {
+        viewModel.fillGuestData(cedula, name, dayOfVisit,partOfDay, intervals);
     }
 }
