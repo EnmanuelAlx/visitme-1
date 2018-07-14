@@ -135,7 +135,7 @@ public class GuestDataFragment extends Fragment implements GuestDataViewModel.Co
 
     @Override
     public void setImage(String image) {
-        Glide.with(getActivity()).load(image).placeholder(R.drawable.guy).error(R.drawable.guy).into(binding.image);
+        Glide.with(getActivity()).load(image).placeholder(R.drawable.guy).error(R.drawable.guy).dontAnimate().into(binding.image);
     }
 
     @Override

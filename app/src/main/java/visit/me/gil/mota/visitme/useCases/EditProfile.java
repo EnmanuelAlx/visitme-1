@@ -48,6 +48,7 @@ public class EditProfile  extends UseCase implements Observer<JSONObject> {
         User u = null;
         try {
             u = Functions.parse(obj.getJSONObject("user"),User.class);
+            Log.i("USER UPDATED", "U>"+u.toString());
             UserManager.getInstance().saveUserCredentials(u);
             resultSetter.onSuccess();
         } catch (JSONException e) {

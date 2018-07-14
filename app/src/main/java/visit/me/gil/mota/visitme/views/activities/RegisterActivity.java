@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.json.JSONException;
 
@@ -57,11 +58,10 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
             User user = null;
             try {
                 user = UserManager.getInstance().getUser(this);
+                viewModel = new RegisterViewModel(this, this, user);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            viewModel = new RegisterViewModel(this, this, user);
-
         } else {
             viewModel = new RegisterViewModel(this, this);
         }
@@ -71,7 +71,10 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
 
     @Override
     public void changeImage(String image) {
-        Glide.with(this).load(image).placeholder(R.drawable.guy)
+
+        Glide.with(this).load(image)
+                .dontAnimate()
+                .placeholder(R.drawable.guy)
                 .error(R.drawable.guy).into(binding.profileImage);
     }
 
@@ -98,7 +101,12 @@ public class RegisterActivity extends BindeableActivity implements RegisterViewM
             if (u != null) {
                 image = u.getPath();
 
-                Glide.with(this).load(u).into(binding.profileImage);
+                Glide.with(this)
+                        .load(u)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .skipMemoryCache(true)
+                        .dontAnimate()
+                        .into(binding.profileImage);
                 viewModel.changeImage(u);
 
             }
