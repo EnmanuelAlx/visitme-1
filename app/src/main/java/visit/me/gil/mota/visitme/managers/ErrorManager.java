@@ -33,10 +33,10 @@ public class ErrorManager
         return instance;
     }
 
-    public Throwable getError(JSONObject jsonObject) throws JSONException {
-        String error = jsonObject.getJSONObject("error").getString("name");
-        if (!error.isEmpty())
-            return new Error(ErrorType.CUSTOM,error);
+    public Throwable getError(JSONObject jsonObject)
+    {
+        if (jsonObject.has("status"))
+            return new Error(ErrorType.CUSTOM,jsonObject.optString("name"), jsonObject.optInt("status"));
         else
             return new Throwable("Error Desconocido");
     }
@@ -44,10 +44,12 @@ public class ErrorManager
     public class Error extends Throwable
     {
         ErrorType type;
-        public Error(ErrorType type, String message)
+        int status;
+        public Error(ErrorType type, String message, int status)
         {
             super(message);
             this.type = type;
+            this.status = status;
         }
 
         public ErrorType getType()

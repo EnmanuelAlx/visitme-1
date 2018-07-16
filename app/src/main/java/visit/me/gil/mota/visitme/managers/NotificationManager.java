@@ -100,8 +100,10 @@ public class NotificationManager implements OneSignal.NotificationOpenedHandler 
                 return buildVisitArrive(data);
             case "INVITATION":
                 return buildInvitation(data);
+                default:
+                    return buildAlert(data);
         }
-        return null;
+
     }
 
     private NotificationCompat.Extender buildInvitation(JSONObject data) throws JSONException {
