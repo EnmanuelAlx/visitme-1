@@ -34,7 +34,7 @@
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
-
+                android:id="@+id/communityLogo"
                 android:src="@drawable/house"/>
             <LinearLayout
                 android:layout_width="match_parent"

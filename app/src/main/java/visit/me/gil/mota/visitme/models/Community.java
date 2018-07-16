@@ -11,6 +11,7 @@ public class Community implements Parcelable {
     private String _id;
     private String name;
     private String kind;
+    private String image;
 
     protected Community(Parcel in) {
         _id = in.readString();
@@ -69,5 +70,13 @@ public class Community implements Parcelable {
         parcel.writeString(_id);
         parcel.writeString(name);
         parcel.writeString(kind);
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
