@@ -23,6 +23,7 @@ public class Urls
     public static final String FORGOT_PASSWORD_CODE = "/forgotPassword/code";
     public static final String CHANGE_PASSWORD = "/forgotPassword/changePassword";
     public static final String COMPANIES = "/companies";
+    public static final String COMMUNITIES = "/communities";
     public static final String FIND_FIRST_USER = "/user/findFirstUser";
     public static final String GIVE_ACCESS = "/visits/:visit/giveAccess";
 }

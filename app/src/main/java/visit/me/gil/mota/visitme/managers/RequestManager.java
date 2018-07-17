@@ -3,6 +3,7 @@ package visit.me.gil.mota.visitme.managers;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.functions.Function;
 import visit.me.gil.mota.visitme.MyApplication;
 import visit.me.gil.mota.visitme.Urls;
 import visit.me.gil.mota.visitme.utils.CustomMultipartRequest;
@@ -29,8 +32,8 @@ public class RequestManager {
     private String url, urlApi;
     
     private RequestManager() {
-        url = "https://51291386.ngrok.io";
-        urlApi = "https://51291386.ngrok.io/api";
+        url = "http://9ff68804.ngrok.io";
+        urlApi = "http://9ff68804.ngrok.io/api";
     }
 
     public static RequestManager getInstance() {
@@ -122,7 +125,7 @@ public class RequestManager {
         return request(Request.Method.GET, urlApi + Urls.USER_VISITS_SPORADIC + "?skip=" + skip + "&limit=" + limit, null);
     }
 
-    public Observable<JSONObject> getCommunities() {
+    public Observable<JSONObject> getUserCommunities() {
         return request(Request.Method.GET, urlApi + Urls.USER_COMMUNITIES, null);
     }
 
@@ -201,5 +204,51 @@ public class RequestManager {
 
     public Observable<JSONObject> giveAccess(String visit, boolean access) {
         return request(Request.Method.PUT, urlApi + Urls.GIVE_ACCESS.replace(":visit", visit) + "?access="+access, null);
+    }
+
+    public Observable<JSONArray> getCommunities() {
+        return requestArray(Request.Method.GET, urlApi + Urls.COMMUNITIES);
+    }
+
+    private Observable<JSONArray> requestArray(int method, String url) {
+        try {
+            final RxRequestAdapter<String> adapter = new RxRequestAdapter<>();
+            StringRequest request = new StringRequest(method, url, adapter, adapter) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    String auth = UserManager.getInstance().getAuth();
+                    if (!auth.equals(""))
+                        headers.put("Authorization", "Bearer " + auth);
+                    return headers;
+                }
+            };
+            SingletonRequester.getInstance(MyApplication.getInstance()).addToRequestQueue(request);
+
+
+            return adapter.getObservable().flatMap(new Function<String, ObservableSource<JSONArray>>() {
+                @Override
+                public ObservableSource<JSONArray> apply(final String s) {
+                    return new Observable<JSONArray>() {
+                        @Override
+                        protected void subscribeActual(Observer<? super JSONArray> observer) {
+                            try {
+                                observer.onNext(new JSONArray(s));
+                                observer.onComplete();
+                            } catch (JSONException e) {
+                                observer.onError(new Throwable("error inesperado"));
+                            }
+                        }
+                    };
+                }
+            });
+        } catch (Exception e) {
+            return new Observable<JSONArray>() {
+                @Override
+                protected void subscribeActual(Observer<? super JSONArray> observer) {
+                    observer.onError(new Throwable("Error Inesperado!"));
+                }
+            };
+        }
     }
 }

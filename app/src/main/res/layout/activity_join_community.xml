@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="visit.me.gil.mota.visitme.viewModels.JoinViewModel" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center"
+                android:src="@drawable/full_logo" />
+
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/VisitMeButtonText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" Actualmente, no te encuentras registrado a ninguna comunidad. Selecciona una opción para continuar: Si aún no has sido aprobado por tu administrador, ponte en contacto con éste."
+                 />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/list"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button"
+            style="@style/VisitMeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:onClick="@{viewModel::onClickJoin}"
+            android:text="Unirse"
+            android:textColor="@color/white" />
+
+        <RelativeLayout
+            android:id="@+id/loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CCFFFFFF"
+            android:visibility="gone"
+            >
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:layout_centerInParent="true"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/spin_kit"
+                style="@style/SpinKitView.Large.CubeGrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorAccent" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</layout>
+

@@ -26,13 +26,14 @@ import visit.me.gil.mota.visitme.viewModels.MainViewModel;
 import visit.me.gil.mota.visitme.views.adapters.PageAdapter;
 
 public class MainActivity extends BindeableActivity implements TabLayout.OnTabSelectedListener,
-                                        ViewPager.OnPageChangeListener, MainViewModel.Contract {
+        ViewPager.OnPageChangeListener, MainViewModel.Contract {
     public static final int UPDATE_VISITS = 777;
     private MainViewModel viewModel;
     private ViewPager pager;
     private TabLayout tabLayout;
     private TabLayout.Tab lastTab;
     private PageAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +51,7 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     @Override
     public void initDataBinding() {
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        viewModel = new MainViewModel(this,this);
+        viewModel = new MainViewModel(this, this);
         binding.setViewModel(viewModel);
         initFragments(binding);
     }
@@ -80,13 +81,12 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
         if (tab.getPosition() == 3) {
             viewModel.signOut();
             lastTab.select();
-        } else if(tab.getPosition() == 2) {
+        } else if (tab.getPosition() == 2) {
             lastTab.select();
             Intent i = new Intent(MainActivity.this, RegisterActivity.class);
             i.putExtra("edit", true);
             MainActivity.this.startActivity(i);
-        }
-        else {
+        } else {
             pager.setCurrentItem(tab.getPosition());
             lastTab = tab;
         }
@@ -120,9 +120,9 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void createVisit(){
+    public void createVisit() {
         Intent i = new Intent(this, CreateVisitActivity.class);
-        startActivityForResult(i,UPDATE_VISITS);
+        startActivityForResult(i, UPDATE_VISITS);
     }
 
     @Override
@@ -137,9 +137,15 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     }
 
     @Override
+    public void goToJoinCommunity() {
+        Intent i = new Intent(this, JoinCommunityActivity.class);
+        startActivity(i);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == UPDATE_VISITS)
+        if (resultCode == UPDATE_VISITS)
             viewModel.addVisit(createVisitFromData(data));
     }
 

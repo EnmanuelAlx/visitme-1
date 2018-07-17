@@ -12,6 +12,9 @@ public class Community implements Parcelable {
     private String name;
     private String kind;
     private String image;
+    private String status;
+    private String fullAddress;
+
 
     protected Community(Parcel in) {
         _id = in.readString();
@@ -78,5 +81,21 @@ public class Community implements Parcelable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getStatus() {
+        return status != null ? status : "PENDING";
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
     }
 }

@@ -117,10 +117,6 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
     }
 
     public void editProfile(View view) {
-        /*if (imageSelected == null) {
-            Pnotify.makeText(context, "No has seleccionado una imagen de Perfil", Toast.LENGTH_SHORT, Pnotify.WARNING).show();
-            return;
-        }*/
 
         if (!password.get().equals(confirmPassword.get())) {
             Pnotify.makeText(context, "Las contraseñas no Coinciden", Toast.LENGTH_SHORT, Pnotify.WARNING).show();

@@ -2,9 +2,7 @@ package visit.me.gil.mota.visitme.viewModels;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,34 +10,35 @@ import org.json.JSONException;
 
 import java.util.Observable;
 
+import visit.me.gil.mota.visitme.managers.UserManager;
 import visit.me.gil.mota.visitme.models.Alert;
 import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.useCases.CreateAlert;
 import visit.me.gil.mota.visitme.useCases.GetCommunities;
+import visit.me.gil.mota.visitme.useCases.GetUserCommunities;
 import visit.me.gil.mota.visitme.useCases.SignOut;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.Functions;
 import visit.me.gil.mota.visitme.utils.Pnotify;
-import visit.me.gil.mota.visitme.views.activities.CreateVisitActivity;
 import visit.me.gil.mota.visitme.views.dialogs.CreateAlertDialog;
 
 /**
  * Created by mota on 14/4/2018.
  */
 
-public class MainViewModel extends Observable implements DialogInterface.OnClickListener, CreateAlertDialog.Result {
+public class MainViewModel extends Observable implements DialogInterface.OnClickListener, CreateAlertDialog.Result, UseCase.Result {
 
 
     private Context context;
     private SignOut signOut;
-    private GetCommunities getCommunities;
+    private GetUserCommunities getUserCommunities;
     private CreateAlert createAlert;
     private Contract contract;
     public MainViewModel(@NonNull Context context, Contract contract) {
         this.context = context;
         signOut = new SignOut(context);
-        getCommunities = new GetCommunities(null);
-        getCommunities.run();
+        getUserCommunities = new GetUserCommunities(this);
+        getUserCommunities.run();
         createAlert = new CreateAlert(createAlertResult);
         this.contract = contract;
     }
@@ -77,10 +76,29 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
         contract.addVisit(visit);
     }
 
+    @Override
+    public void onError(String error) {
+
+    }
+
+    @Override
+    public void onSuccess() {
+        try {
+            if(UserManager.getInstance().getCommunities().isEmpty())
+                contract.goToJoinCommunity();
+        } catch (JSONException e) {
+
+        }
+    }
+
+
+
     public interface Contract {
         void createVisit();
         void addVisit(Visit visit);
         void updateAlerts();
+
+        void goToJoinCommunity();
     }
 
     private final UseCase.Result createAlertResult = new UseCase.Result() {

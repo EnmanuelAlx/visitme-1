@@ -5,9 +5,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,17 +16,19 @@ import visit.me.gil.mota.visitme.managers.UserManager;
 import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.utils.Functions;
 
-public class GetCommunities extends UseCase implements Observer<JSONArray> {
+/**
+ * Created by mota on 17/4/2018.
+ */
 
-    private Result result;
-    public GetCommunities(Result result) {
-        super(null);
-        this.result = result;
+public class GetUserCommunities extends UseCase implements Observer<JSONObject> {
+
+    public GetUserCommunities(Result result) {
+        super(result);
     }
 
     @Override
     public void run() {
-        RequestManager.getInstance().getCommunities().subscribeOn(Schedulers.io())
+        RequestManager.getInstance().getUserCommunities().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this);
     }
@@ -39,11 +39,27 @@ public class GetCommunities extends UseCase implements Observer<JSONArray> {
     }
 
     @Override
-    public void onNext(JSONArray arry) {
-        Community [] asArry = Functions.parse(arry, Community[].class);
-        result.onCommunities(Arrays.asList(asArry));
+    public void onNext(JSONObject jsonObject) {
+        onSuccess(jsonObject);
     }
 
+    private void onSuccess(JSONObject obj)
+    {
+        if (obj.has("communities"))
+        {
+            Log.i("COM","GET COM " + obj.toString());
+            UserManager.getInstance().saveCommunities(obj);
+            if (resultSetter != null)
+                resultSetter.onSuccess();
+        }
+        else
+        {
+            if (resultSetter != null)
+                resultSetter.onError("Error inesperado");
+        }
+
+
+    }
 
     @Override
     public void onError(Throwable e) {
@@ -53,10 +69,5 @@ public class GetCommunities extends UseCase implements Observer<JSONArray> {
     @Override
     public void onComplete() {
 
-    }
-
-    public interface Result extends UseCase.Result
-    {
-        void onCommunities(List<Community> communities);
     }
 }

@@ -6,8 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import visit.me.gil.mota.visitme.Consts;
 import visit.me.gil.mota.visitme.MyApplication;
@@ -16,25 +18,24 @@ import visit.me.gil.mota.visitme.models.User;
 import visit.me.gil.mota.visitme.utils.Functions;
 import visit.me.gil.mota.visitme.utils.PreferencesHelper;
 
+import static java.util.Arrays.asList;
+
 
 /**
  * Created by Slaush on 22/05/2017.
  */
 
-public class UserManager
-{
+public class UserManager {
     private static UserManager instance;
 
-    private UserManager()
-    {
+    private UserManager() {
 
     }
 
-    public static UserManager getInstance()
-    {
-        if(instance == null )
+    public static UserManager getInstance() {
+        if (instance == null)
             instance = new UserManager();
-        return  instance;
+        return instance;
     }
 
 
@@ -49,21 +50,18 @@ public class UserManager
     }
 
 
-
     public User getUser(Context context) throws JSONException {
-        String jsonStr = PreferencesHelper.readString(context,Consts.USER,"");
+        String jsonStr = PreferencesHelper.readString(context, Consts.USER, "");
         return Functions.parse(new JSONObject(jsonStr), User.class);
     }
 
-    public String getAuth()
-    {
-        return PreferencesHelper.readString(MyApplication.getInstance(), Consts.AUTH,"");
+    public String getAuth() {
+        return PreferencesHelper.readString(MyApplication.getInstance(), Consts.AUTH, "");
     }
 
-    public void logout()
-    {
-        PreferencesHelper.deleteKey(MyApplication.getInstance(),Consts.USERNAME);
-        PreferencesHelper.deleteKey(MyApplication.getInstance(),Consts.PASSWORD);
+    public void logout() {
+        PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.USERNAME);
+        PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.PASSWORD);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.USER_ID);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.AUTH);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.DEVICE_ID);
@@ -75,14 +73,20 @@ public class UserManager
     }
 
     public List<Community> getCommunities() throws JSONException {
-        String jsonStr = PreferencesHelper.readString(MyApplication.getInstance(),Consts.COMMUNITIES,"");
+        String jsonStr = PreferencesHelper.readString(MyApplication.getInstance(), Consts.COMMUNITIES, "");
         JSONObject obj = new JSONObject(jsonStr);
         JSONArray arry = obj.getJSONArray(Consts.COMMUNITIES);
-        Community [] communities = Functions.parse(arry,Community[].class);
-        return Arrays.asList(communities);
+        Community[] communities = Functions.parse(arry, Community[].class);
+        ArrayList<Community> communityArrayList = new ArrayList<>();
+        for (Community c :
+                Arrays.asList(communities)) {
+            if(c.getStatus().equals("APPROVED"))
+                communityArrayList.add(c);
+        }
+        return communityArrayList;
     }
 
     public String getDevice() {
-        return PreferencesHelper.readString(MyApplication.getInstance(), Consts.DEVICE_ID,"");
+        return PreferencesHelper.readString(MyApplication.getInstance(), Consts.DEVICE_ID, "");
     }
 }
