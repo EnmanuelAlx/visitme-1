@@ -86,11 +86,16 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
         try {
             if(UserManager.getInstance().getCommunities().isEmpty())
                 contract.goToJoinCommunity();
+            else if(UserManager.getInstance().isWaitingForApprove())
+                contract.goToWaitApprove();
         } catch (JSONException e) {
 
         }
     }
 
+    public void goToWait() {
+        contract.goToWaitApprove();
+    }
 
 
     public interface Contract {
@@ -99,6 +104,8 @@ public class MainViewModel extends Observable implements DialogInterface.OnClick
         void updateAlerts();
 
         void goToJoinCommunity();
+
+        void goToWaitApprove();
     }
 
     private final UseCase.Result createAlertResult = new UseCase.Result() {

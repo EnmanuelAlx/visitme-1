@@ -72,21 +72,36 @@ public class UserManager {
         PreferencesHelper.writeString(MyApplication.getInstance(), Consts.COMMUNITIES, obj.toString());
     }
 
-    public List<Community> getCommunities() throws JSONException {
+
+    public ArrayList<Community> getCommunities() throws JSONException {
         String jsonStr = PreferencesHelper.readString(MyApplication.getInstance(), Consts.COMMUNITIES, "");
         JSONObject obj = new JSONObject(jsonStr);
         JSONArray arry = obj.getJSONArray(Consts.COMMUNITIES);
         Community[] communities = Functions.parse(arry, Community[].class);
-        ArrayList<Community> communityArrayList = new ArrayList<>();
-        for (Community c :
-                Arrays.asList(communities)) {
-            if(c.getStatus().equals("APPROVED"))
-                communityArrayList.add(c);
-        }
-        return communityArrayList;
+        return new ArrayList<>(Arrays.asList(communities));
     }
 
     public String getDevice() {
         return PreferencesHelper.readString(MyApplication.getInstance(), Consts.DEVICE_ID, "");
+    }
+
+    public void addCommunity(Community community) throws JSONException {
+        ArrayList<Community> communities = getCommunities();
+        communities.add(community);
+        JSONObject obj = new JSONObject();
+        JSONArray arry = Functions.toJSONArray(communities);
+        obj.put(Consts.COMMUNITIES, arry);
+        saveCommunities(obj);
+    }
+
+    public boolean isWaitingForApprove() throws JSONException {
+        boolean waitingForApprove = true;
+        List<Community> communities = getCommunities();
+        for (Community c:
+             communities) {
+            if(!c.getStatus().equals("PENDING"))
+                waitingForApprove = false;
+        }
+        return waitingForApprove;
     }
 }

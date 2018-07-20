@@ -131,7 +131,7 @@ public class RegisterViewModel extends Observable implements UseCase.Result {
                     password.get().isEmpty() ? null : password.get(),
                     cellPhone.get().isEmpty() ? null : cellPhone.get(),
                     homePhone.get().isEmpty() ? null : homePhone.get(),
-                    FilePath.getPath(context, imageSelected));
+                    imageSelected != null ? FilePath.getPath(context, imageSelected) : null);
         }
         editProfile.run();
 

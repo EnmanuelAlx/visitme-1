@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import java.util.Observable;
 
@@ -21,6 +22,7 @@ import visit.me.gil.mota.visitme.databinding.ActivityLoginBinding;
 import visit.me.gil.mota.visitme.databinding.ActivityMainBinding;
 import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.useCases.CreateVisit;
+import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.viewModels.LoginViewModel;
 import visit.me.gil.mota.visitme.viewModels.MainViewModel;
 import visit.me.gil.mota.visitme.views.adapters.PageAdapter;
@@ -139,6 +141,12 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
     @Override
     public void goToJoinCommunity() {
         Intent i = new Intent(this, JoinCommunityActivity.class);
+        startActivityForResult(i, JoinCommunityActivity.GO_TO_WAIT_APPROVE);
+    }
+
+    @Override
+    public void goToWaitApprove() {
+        Intent i = new Intent(this, WaitForApproveActivity.class);
         startActivity(i);
     }
 
@@ -147,6 +155,8 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == UPDATE_VISITS)
             viewModel.addVisit(createVisitFromData(data));
+        if(resultCode == JoinCommunityActivity.GO_TO_WAIT_APPROVE)
+            viewModel.goToWait();
     }
 
     private Visit createVisitFromData(Intent data) {

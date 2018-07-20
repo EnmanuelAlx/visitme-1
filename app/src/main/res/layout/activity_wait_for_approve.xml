@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.activities.WaitForApproveActivity">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/full_logo" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/VisitMeButtonText"
+            android:layout_width="match_parent"
+            android:textSize="22dp"
+            android:layout_height="wrap_content"
+            android:text=" Actualmente no has sido aprobado en ninguna comunidad, vuelve mas tarde para ver si ya te aprobaron." />
+    </LinearLayout>
+
+</RelativeLayout>

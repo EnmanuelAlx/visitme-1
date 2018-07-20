@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Observable;
@@ -11,21 +12,29 @@ import java.util.Observable;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.databinding.ActivityJoinCommunityBinding;
 import visit.me.gil.mota.visitme.models.Community;
+import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.viewModels.JoinViewModel;
 import visit.me.gil.mota.visitme.views.adapters.CommunityAdapter;
+import visit.me.gil.mota.visitme.views.dialogs.AskFieldDialog;
 
 public class JoinCommunityActivity extends BindeableActivity implements JoinViewModel.Contract {
+    public static final int GO_TO_WAIT_APPROVE = 1245;
     private JoinViewModel viewModel;
     private ActivityJoinCommunityBinding binding;
     private CommunityAdapter adapter;
+    private AskFieldDialog askReferenceDialog;
 
     @Override
-    protected void onCreate( Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDataBinding();
         setupObserver(viewModel);
         setupAdapter();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //BLOCKED
     }
 
     private void setupAdapter() {
@@ -35,8 +44,8 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
         binding.list.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    @Override public void initDataBinding()
-    {
+    @Override
+    public void initDataBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_join_community);
         viewModel = new JoinViewModel(this);
         binding.setViewModel(viewModel);
@@ -44,10 +53,9 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
     }
 
 
-    @Override public void update(Observable observable, Object o)
-    {
-        if(observable instanceof JoinViewModel)
-        {
+    @Override
+    public void update(Observable observable, Object o) {
+        if (observable instanceof JoinViewModel) {
             JoinViewModel viewModel = (JoinViewModel) observable;
         }
     }
@@ -58,7 +66,25 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
     }
 
     @Override
+    public void showAskReferenceDialog(AskFieldDialog.Result result) {
+        askReferenceDialog = new AskFieldDialog(this, "¿en que numero de oficina/apto/casa de esta comunidad?", result);
+        askReferenceDialog.show();
+    }
+
+    @Override
+    public void onError(String error) {
+        Pnotify.makeText(this, error, Toast.LENGTH_SHORT, Pnotify.ERROR).show();
+    }
+
+    @Override
     public void loadCommunities(List<Community> communities) {
         adapter.setList(communities);
     }
+
+    @Override
+    public void goToWaitApprove() {
+        setResult(GO_TO_WAIT_APPROVE);
+        finish();
+    }
+
 }

@@ -79,7 +79,8 @@
             android:name=".views.activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.activities.JoinCommunityActivity"></activity>
+        <activity android:name=".views.activities.JoinCommunityActivity" />
+        <activity android:name=".views.activities.WaitForApproveActivity"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,8 @@ public class ItemCommunityViewModel extends Observable {
     private final Contract contract;
     private Community community;
     public ObservableField<String> name, address;
+
+
     public ItemCommunityViewModel(Community community, Contract contract) {
         name = new ObservableField<>();
         address = new ObservableField<>();
@@ -22,6 +24,7 @@ public class ItemCommunityViewModel extends Observable {
 
     public void select(View view) {
 
+        contract.onItemClick(community);
     }
 
     public void setCommunity(Community community) {
@@ -31,6 +34,6 @@ public class ItemCommunityViewModel extends Observable {
     }
 
     public interface  Contract {
-
+        void onItemClick(Community community);
     }
 }

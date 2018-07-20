@@ -47,7 +47,6 @@ public class GetUserCommunities extends UseCase implements Observer<JSONObject> 
     {
         if (obj.has("communities"))
         {
-            Log.i("COM","GET COM " + obj.toString());
             UserManager.getInstance().saveCommunities(obj);
             if (resultSetter != null)
                 resultSetter.onSuccess();

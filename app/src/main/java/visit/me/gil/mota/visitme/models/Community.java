@@ -3,6 +3,10 @@ package visit.me.gil.mota.visitme.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashMap;
+
 /**
  * Created by mota on 16/4/2018.
  */
@@ -13,13 +17,18 @@ public class Community implements Parcelable {
     private String kind;
     private String image;
     private String status;
-    private String fullAddress;
+    private Address address;
+    private HashMap<String, Boolean> state;
 
+    public Community() {
+        state = new HashMap<>();
+    }
 
     protected Community(Parcel in) {
         _id = in.readString();
         name = in.readString();
         kind = in.readString();
+        state = new HashMap<>();
     }
 
     public static final Creator<Community> CREATOR = new Creator<Community>() {
@@ -92,10 +101,18 @@ public class Community implements Parcelable {
     }
 
     public String getAddress() {
-        return fullAddress;
+        return address.getFullAddress();
     }
 
-    public void setFullAddress(String fullAddress) {
-        this.fullAddress = fullAddress;
+    public void setState(String state, boolean value) {
+        if (this.state == null)
+            this.state = new HashMap<>();
+        this.state.put(state, value);
+    }
+
+    public boolean is(String state) {
+        if(this.state == null)
+            this.state = new HashMap<>();
+        return this.state.containsKey(state) ? this.state.get(state) : false;
     }
 }

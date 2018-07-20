@@ -42,15 +42,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button"
-            style="@style/VisitMeButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:onClick="@{viewModel::onClickJoin}"
-            android:text="Unirse"
-            android:textColor="@color/white" />
 
         <RelativeLayout
             android:id="@+id/loader"

@@ -18,6 +18,7 @@ import io.reactivex.Observer;
 import io.reactivex.functions.Function;
 import visit.me.gil.mota.visitme.MyApplication;
 import visit.me.gil.mota.visitme.Urls;
+import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.utils.CustomMultipartRequest;
 import visit.me.gil.mota.visitme.utils.RxRequestAdapter;
 import visit.me.gil.mota.visitme.utils.SingletonRequester;
@@ -32,8 +33,8 @@ public class RequestManager {
     private String url, urlApi;
     
     private RequestManager() {
-        url = "http://9ff68804.ngrok.io";
-        urlApi = "http://9ff68804.ngrok.io/api";
+        url = "http://dd01139a.ngrok.io";
+        urlApi = "http://dd01139a.ngrok.io/api";
     }
 
     public static RequestManager getInstance() {
@@ -250,5 +251,11 @@ public class RequestManager {
                 }
             };
         }
+    }
+
+    public Observable<JSONObject> joinCommunity(Community community, String reference) throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("reference",reference);
+        return request(Request.Method.POST, urlApi + Urls.JOIN_COMMUNITY.replace(":community",community.get_id()), obj);
     }
 }

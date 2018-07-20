@@ -44,7 +44,6 @@
                     android:textSize="18dp" />
 
                 <TextView
-                    style="@style/VisitMeButtonText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.address}"

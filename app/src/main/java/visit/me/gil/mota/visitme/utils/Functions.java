@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import visit.me.gil.mota.visitme.models.Community;
 import visit.me.gil.mota.visitme.models.User;
 
 /**
@@ -124,6 +125,15 @@ public class Functions {
         while (str.length() != i)
             str.insert(0, "0");
         return str;
+    }
+
+    public static JSONArray toJSONArray(List objs) throws JSONException {
+        Gson gson = new Gson();
+        JSONArray arry = new JSONArray();
+        for (Object o : objs) {
+            arry.put(new JSONObject(gson.toJson(o)));
+        }
+        return arry;
     }
 }
 
