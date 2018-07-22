@@ -19,7 +19,7 @@ public class Consts
     public static final String USER = "user";
     public static final String COMMUNITIES = "communities";
     public static final String DEVICE_ID = "device_id";
-    public static final String[] PART_OF_DAYS = new String[]{"MORNING", "AFTERNOON", "NIGHT"};
+    public static final String[] PART_OF_DAYS = new String[]{"MORNING", "AFTERNOON", "NIGHT", "ALL DAY"};
     public static final String COMPANIES = "companies";
     public static String SHARED_PREF_NAME = "visit_me_pref";
 }

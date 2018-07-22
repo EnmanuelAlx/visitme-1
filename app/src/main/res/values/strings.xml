@@ -30,6 +30,7 @@
         <item>Mañana</item>
         <item>Tarde</item>
         <item>Noche</item>
+        <item>Todo el Dia</item>
     </string-array>
 
     <string name="title_activity_unexpected_visitor">UnexpectedVisitorActivity</string>
