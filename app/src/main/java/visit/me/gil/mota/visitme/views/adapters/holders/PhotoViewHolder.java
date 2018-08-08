@@ -26,7 +26,7 @@ public class PhotoViewHolder extends BaseViewHolder<String> {
             binding.getViewModel().setPhoto(item);
 
         Glide.with(itemView.getContext())
-                .load(RequestManager.getInstance().getUrl()+item)
+                .load(item)
                 .placeholder(R.drawable.guy)
                 .error(R.drawable.guy)
                 .dontAnimate()

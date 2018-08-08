@@ -40,7 +40,8 @@ public class ItemAlertViewModel extends Observable {
 
     public void setAlert(Alert alert) {
         this.alert = alert;
-        community.set(alert.getCommunity().getName());
+        if(alert.getCommunity() != null)
+            community.set(alert.getCommunity().getName());
         title.set(alert.getMessage());
         time.set(alert.getCreated_at());
         autor.set(alert.getAuthor().getName());
