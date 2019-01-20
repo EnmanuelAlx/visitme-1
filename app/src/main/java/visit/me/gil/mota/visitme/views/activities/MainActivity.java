@@ -63,6 +63,7 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
         tabLayout = binding.tabs;
         pager = binding.content;
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.invitation));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.hashtag));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.edit_profile));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.off));
@@ -80,10 +81,10 @@ public class MainActivity extends BindeableActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        if (tab.getPosition() == 3) {
+        if (tab.getPosition() == 4) {
             viewModel.signOut();
             lastTab.select();
-        } else if (tab.getPosition() == 2) {
+        } else if (tab.getPosition() == 3) {
             lastTab.select();
             Intent i = new Intent(MainActivity.this, RegisterActivity.class);
             i.putExtra("edit", true);

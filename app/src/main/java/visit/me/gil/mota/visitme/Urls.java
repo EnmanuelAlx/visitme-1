@@ -27,4 +27,5 @@ public class Urls
     public static final String FIND_FIRST_USER = "/user/findFirstUser";
     public static final String GIVE_ACCESS = "/visits/:visit/giveAccess";
     public static final String JOIN_COMMUNITY = "/communities/:community/join";
+    public static final String GUESTS_VISITS = "/user/me/guests";
 }

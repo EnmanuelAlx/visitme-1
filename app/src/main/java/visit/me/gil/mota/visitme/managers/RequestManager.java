@@ -118,6 +118,10 @@ public class RequestManager {
         return request(Request.Method.GET, urlApi + Urls.USER_VISITS_SCHEDULED + "?skip=" + skip + "&limit=" + limit, null);
     }
 
+    public Observable<JSONObject> getGuestsVisits(int skip, int limit) {
+        return request(Request.Method.GET, urlApi + Urls.GUESTS_VISITS + "?skip=" + skip + "&limit=" + limit, null);
+    }
+
     public Observable<JSONObject> getFrequentVisits(int skip, int limit) {
         return request(Request.Method.GET, urlApi + Urls.USER_VISITS_FREQUENT + "?skip=" + skip + "&limit=" + limit, null);
     }
@@ -168,21 +172,21 @@ public class RequestManager {
 
     public Observable<JSONObject> forgotPassword(String email) throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("email",email);
+        obj.put("email", email);
         return request(Request.Method.POST, urlApi + Urls.FORGOT_PASSWORD, obj);
     }
 
     public Observable<JSONObject> sendPasswordCode(String code, String email) throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("email",email);
+        obj.put("email", email);
         obj.put("code", code);
         return request(Request.Method.POST, urlApi + Urls.FORGOT_PASSWORD_CODE, obj);
     }
 
     public Observable<JSONObject> changePassword(String password, String email, String code) throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("email",email);
-        obj.put("password",password);
+        obj.put("email", email);
+        obj.put("password", password);
         obj.put("code", code);
         return request(Request.Method.POST, urlApi + Urls.CHANGE_PASSWORD, obj);
     }
@@ -204,7 +208,7 @@ public class RequestManager {
     }
 
     public Observable<JSONObject> giveAccess(String visit, boolean access) {
-        return request(Request.Method.PUT, urlApi + Urls.GIVE_ACCESS.replace(":visit", visit) + "?access="+access, null);
+        return request(Request.Method.PUT, urlApi + Urls.GIVE_ACCESS.replace(":visit", visit) + "?access=" + access, null);
     }
 
     public Observable<JSONArray> getCommunities() {
@@ -255,7 +259,7 @@ public class RequestManager {
 
     public Observable<JSONObject> joinCommunity(Community community, String reference) throws JSONException {
         JSONObject obj = new JSONObject();
-        obj.put("reference",reference);
-        return request(Request.Method.POST, urlApi + Urls.JOIN_COMMUNITY.replace(":community",community.get_id()), obj);
+        obj.put("reference", reference);
+        return request(Request.Method.POST, urlApi + Urls.JOIN_COMMUNITY.replace(":community", community.get_id()), obj);
     }
 }

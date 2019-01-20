@@ -20,7 +20,6 @@ import visit.me.gil.mota.visitme.utils.Functions;
 /**
  * Created by mota on 16/4/2018.
  */
-
 public class Visit implements Parcelable {
     private String _id;
     private String kind;
@@ -30,6 +29,8 @@ public class Visit implements Parcelable {
     private int companions;
     private Community community;
     private String partOfDay;
+    private String limit;
+    private String token;
     private Interval[] intervals;
 
     protected Visit(Parcel in) {
@@ -42,6 +43,8 @@ public class Visit implements Parcelable {
         resident = in.readParcelable(User.class.getClassLoader());
         community = in.readParcelable(Community.class.getClassLoader());
         intervals = in.createTypedArray(Interval.CREATOR);
+        limit = in.readString();
+        token = in.readString();
     }
 
     public static final Creator<Visit> CREATOR = new Creator<Visit>() {
@@ -72,6 +75,14 @@ public class Visit implements Parcelable {
         this.kind = kind;
     }
 
+    public String getLimit() {
+        return limit;
+    }
+
+    public String getToken() {
+        return token.split("-")[1];
+    }
+
     public String getDayOfVisit() {
         if (kind.equals("SPORADIC"))
             return "";
@@ -79,17 +90,19 @@ public class Visit implements Parcelable {
         return kind.equals("SCHEDULED") ? showAsScheduled() : getNextInterval(day);
     }
 
-    private String showAsScheduled() {
+    private String parseDate(String date) {
         DateFormat formated = SimpleDateFormat.getDateInstance();
         formated.setTimeZone(TimeZone.getDefault());
         try {
-            return formated.format(new Date(dayOfVisit.substring(0, 10).replace("-", "/"))) + " " + getDayPartString();
-
+            return formated.format(new Date(date.substring(0, 10).replace("-", "/")));
         } catch (Exception e) {
-            return formated.format(new Date(dayOfVisit)) + " " + getDayPartString();
+            return formated.format(new Date(date));
         }
     }
 
+    private String showAsScheduled() {
+        return parseDate(dayOfVisit) + " " + getDayPartString();
+    }
 
     private String getNextInterval(int day) {
         List<Interval> intrvl = findIntervalsInDay(day);
@@ -205,6 +218,8 @@ public class Visit implements Parcelable {
         parcel.writeParcelable(resident, i);
         parcel.writeParcelable(community, i);
         parcel.writeTypedArray(intervals, i);
+        parcel.writeString(limit);
+        parcel.writeString(token);
     }
 
     public String getDayPartString() {
@@ -216,7 +231,8 @@ public class Visit implements Parcelable {
                 return "Mañana";
             case "NIGHT":
                 return "Noche";
-
+            case "ALL DAY":
+                return "Todo El dia";
             default:
                 return "Mañana";
         }
@@ -241,6 +257,9 @@ public class Visit implements Parcelable {
     public void setDayOfVisit(Date dayAsDate) {
         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
         this.dayOfVisit = dt.format(dayAsDate);
-        Log.i("CHANGE DATE", "RESULT"+dayOfVisit);
+    }
+
+    public String getValidTill() {
+        return kind.equals("SCHEDULED") ? parseDate(dayOfVisit) : parseDate(limit);
     }
 }

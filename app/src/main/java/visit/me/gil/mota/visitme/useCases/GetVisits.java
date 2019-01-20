@@ -27,6 +27,8 @@ import visit.me.gil.mota.visitme.utils.Functions;
 
 public class GetVisits extends FillListByType<Visit> {
 
+    private static int VISITS_LIMIT = 30;
+
     public GetVisits(Result result) {
         super(result);
     }
@@ -35,13 +37,14 @@ public class GetVisits extends FillListByType<Visit> {
     protected Observable<JSONObject> getPromiseByType() {
         switch (type) {
             case 0:
-                return RequestManager.getInstance().getScheduledVisits(skip, 30);
-
+                return RequestManager.getInstance().getScheduledVisits(skip, VISITS_LIMIT);
             case 1:
-                return RequestManager.getInstance().getFrequentVisits(skip, 30);
+                return RequestManager.getInstance().getFrequentVisits(skip, VISITS_LIMIT);
 
             case 2:
-                return RequestManager.getInstance().getSporadicVisits(skip, 30);
+                return RequestManager.getInstance().getSporadicVisits(skip, VISITS_LIMIT);
+            case 3:
+                return RequestManager.getInstance().getGuestsVisits(skip, VISITS_LIMIT);
         }
         return new Observable<JSONObject>() {
             @Override
@@ -54,9 +57,9 @@ public class GetVisits extends FillListByType<Visit> {
     @Override
     protected Collection<? extends Visit> parseList(JSONObject obj) throws JSONException {
         JSONArray arry = obj.getJSONArray("visits");
-        Log.i("MOTA","VISIT JSON"+  obj.toString());
+        Log.e("MOTA","VISIT JSON"+  obj.toString());
         Visit[] visits = Functions.parse(arry, Visit[].class);
-        Log.i("MOTA","VISIT OBJ"+ Arrays.toString(visits));
+        Log.e("MOTA","VISIT OBJ"+ Arrays.toString(visits));
         return Arrays.asList(visits);
     }
 

@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import visit.me.gil.mota.visitme.models.Visit;
 import visit.me.gil.mota.visitme.views.fragments.DashboardFragment;
+import visit.me.gil.mota.visitme.views.fragments.InvitationsFragment;
 import visit.me.gil.mota.visitme.views.fragments.VisitsFragment;
-
 /**
  * Created by mota on 15/4/2018.
  */
@@ -18,6 +18,7 @@ public class PageAdapter extends FragmentStatePagerAdapter {
     private int tabCount;
     private VisitsFragment visits;
     private DashboardFragment alerts;
+    private InvitationsFragment invitations;
     //Constructor to the class
     public PageAdapter(FragmentManager fm, int tabCount) {
         super(fm);
@@ -25,6 +26,7 @@ public class PageAdapter extends FragmentStatePagerAdapter {
         this.tabCount = tabCount;
         visits = new VisitsFragment();
         alerts = new DashboardFragment();
+        invitations = new InvitationsFragment();
     }
 
     //Overriding method getItem
@@ -34,8 +36,10 @@ public class PageAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 return visits;
-            case 1:
+            case 2:
                 return alerts;
+            case 1:
+                return invitations;
             default:
                 return null;
         }

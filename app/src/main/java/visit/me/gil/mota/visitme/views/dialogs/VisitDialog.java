@@ -2,10 +2,13 @@ package visit.me.gil.mota.visitme.views.dialogs;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -65,13 +68,19 @@ public class VisitDialog {
         communityActual.setText(visit.getCommunity().getName());
         TextView actualType = view.findViewById(R.id.type_actual);
         actualType.setText(visit.getKindString());
-        /*
-        TextView lastTime = view.findViewById(R.id.time_last);
-        lastTime.setText(visit.getDayOfVisit());
-        TextView lastCommunity = view.findViewById(R.id.community_last);
-        communityActual.setText(visit.getCommunity().getName());
-        TextView lastType = view.findViewById(R.id.type_last);
-        lastType.setText(visit.getKindString());*/
+        TextView token = view.findViewById(R.id.token);
+        token.setText(visit.getToken());
+        View tokenAccess = view.findViewById(R.id.tokenAccess);
+        tokenAccess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Con Este Token puedes, visitarme");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, visit.getToken());
+                context.startActivity(Intent.createChooser(sharingIntent, "Token de Visita"));
+            }
+        });
     }
 
 
