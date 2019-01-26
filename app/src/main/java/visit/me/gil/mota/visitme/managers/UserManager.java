@@ -65,6 +65,7 @@ public class UserManager {
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.USER_ID);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.AUTH);
         PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.DEVICE_ID);
+        PreferencesHelper.deleteKey(MyApplication.getInstance(), Consts.COMMUNITIES);
     }
 
 
@@ -80,6 +81,7 @@ public class UserManager {
         Community[] communities = Functions.parse(arry, Community[].class);
         return new ArrayList<>(Arrays.asList(communities));
     }
+
 
     public String getDevice() {
         return PreferencesHelper.readString(MyApplication.getInstance(), Consts.DEVICE_ID, "");
@@ -97,9 +99,9 @@ public class UserManager {
     public boolean isWaitingForApprove() throws JSONException {
         boolean waitingForApprove = true;
         List<Community> communities = getCommunities();
-        for (Community c:
-             communities) {
-            if(!c.getStatus().equals("PENDING"))
+        for (Community c :
+                communities) {
+            if (!c.getStatus().equals("PENDING"))
                 waitingForApprove = false;
         }
         return waitingForApprove;

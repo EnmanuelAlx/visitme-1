@@ -11,6 +11,7 @@ import org.json.JSONException;
 
 import java.util.Observable;
 
+import visit.me.gil.mota.visitme.useCases.GetUserCommunities;
 import visit.me.gil.mota.visitme.useCases.Login;
 import visit.me.gil.mota.visitme.useCases.UseCase;
 import visit.me.gil.mota.visitme.utils.Pnotify;
@@ -26,7 +27,7 @@ import visit.me.gil.mota.visitme.views.activities.RegisterActivity;
 public class LoginViewModel extends Observable implements Login.Result {
     public ObservableField<String> username;
     public ObservableField<String> password;
-
+    private GetUserCommunities getUserCommunities;
     private Context context;
     private Login login;
     private Contract contract;
@@ -36,6 +37,7 @@ public class LoginViewModel extends Observable implements Login.Result {
         this.contract = contract;
         this.username = new ObservableField<>("");
         this.password = new ObservableField<>("");
+        getUserCommunities = new GetUserCommunities(communityCallback);
         login = new Login(this, context);
 
     }
@@ -68,12 +70,29 @@ public class LoginViewModel extends Observable implements Login.Result {
 
     @Override
     public void onSuccess() {
-        contract.setLoading(false);
+        contract.setLoading(true);
+        getUserCommunities.run();
+    }
+
+    private void goToMainActivity() {
         Intent i = new Intent(context, MainActivity.class);
         context.startActivity(i);
+        contract.setLoading(false);
     }
 
     public interface Contract {
         void setLoading(boolean loading);
     }
+
+    private UseCase.Result communityCallback = new UseCase.Result() {
+        @Override
+        public void onError(String error) {
+            goToMainActivity();
+        }
+
+        @Override
+        public void onSuccess() {
+            goToMainActivity();
+        }
+    };
 }

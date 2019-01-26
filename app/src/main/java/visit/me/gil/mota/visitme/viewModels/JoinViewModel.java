@@ -1,6 +1,6 @@
 package visit.me.gil.mota.visitme.viewModels;
 
-import android.view.View;
+import android.databinding.ObservableField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +19,25 @@ public class JoinViewModel extends Observable implements GetCommunities.Result, 
     private List<Community> communities;
     private Community selected;
     private JoinCommunity joinCommunity;
+    public ObservableField<String> search;
+
     public JoinViewModel(Contract contract) {
         getCommunities = new GetCommunities(this);
         joinCommunity = new JoinCommunity(joinResult);
+        search = new ObservableField<>("");
         this.contract = contract;
         contract.setLoading(true);
+        communities = new ArrayList<>();
+        getCommunities.setParams(search.get());
         getCommunities.run();
     }
 
     @Override
     public void onCommunities(List<Community> communities) {
-        this.communities = communities;
-        contract.loadCommunities(communities);
+
+        this.communities.clear();
+        this.communities.addAll(communities);
+        contract.loadCommunities();
         contract.setLoading(false);
     }
 
@@ -41,10 +48,6 @@ public class JoinViewModel extends Observable implements GetCommunities.Result, 
 
     @Override
     public void onSuccess() {
-
-    }
-
-    public void onClickJoin(View view) {
 
     }
 
@@ -76,16 +79,28 @@ public class JoinViewModel extends Observable implements GetCommunities.Result, 
         @Override
         public void onSuccess() {
             contract.setLoading(false);
-            contract.goToWaitApprove();
-
+            contract.onJoin();
         }
     };
 
+    public List<Community> getList() {
+        return communities;
+    }
+
+    public void search() {
+        getCommunities.setParams(search.get());
+        getCommunities.run();
+    }
+
     public interface Contract {
-        void loadCommunities(List<Community> communities);
-        void goToWaitApprove();
+        void loadCommunities();
+
         void setLoading(boolean loading);
+
+        void onJoin();
+
         void showAskReferenceDialog(AskFieldDialog.Result result);
+
         void onError(String error);
     }
 }

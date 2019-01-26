@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-
-    >
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
 
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="visit.me.gil.mota.visitme.viewModels.MainViewModel" />
@@ -29,7 +27,8 @@
                 android:layout_weight="10"
                 android:layout_height="40dp"
                 android:src="@drawable/alert"
-                android:onClick="@{viewModel::createAlert}"/>
+                android:onClick="@{viewModel::createAlert}"
+                android:visibility="@{viewModel.waiting ? View.INVISIBLE : View.VISIBLE}"/>
             <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="80"
@@ -40,7 +39,8 @@
                 android:layout_weight="10"
                 android:layout_height="40dp"
                 android:src="@drawable/add"
-                android:onClick="@{viewModel::createVisit}"/>
+                android:onClick="@{viewModel::createVisit}"
+                android:visibility="@{viewModel.waiting ? View.GONE : View.VISIBLE}"/>
         </LinearLayout>
 
         <android.support.v4.view.ViewPager

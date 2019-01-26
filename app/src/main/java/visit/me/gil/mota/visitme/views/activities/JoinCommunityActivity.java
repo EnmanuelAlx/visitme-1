@@ -39,6 +39,7 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
 
     private void setupAdapter() {
         adapter = new CommunityAdapter(viewModel.getItemContract());
+        adapter.setList(viewModel.getList());
         adapter.setHasStableIds(true);
         binding.list.setAdapter(adapter);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
@@ -66,6 +67,11 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
     }
 
     @Override
+    public void onJoin() {
+        Pnotify.makeText(this, "Solicitud Creada satisfactoriamente", Toast.LENGTH_SHORT, Pnotify.INFO).show();
+    }
+
+    @Override
     public void showAskReferenceDialog(AskFieldDialog.Result result) {
         askReferenceDialog = new AskFieldDialog(this, "¿en que numero de oficina/apto/casa de esta comunidad?", result);
         askReferenceDialog.show();
@@ -77,14 +83,8 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
     }
 
     @Override
-    public void loadCommunities(List<Community> communities) {
-        adapter.setList(communities);
-    }
-
-    @Override
-    public void goToWaitApprove() {
-        setResult(GO_TO_WAIT_APPROVE);
-        finish();
+    public void loadCommunities() {
+        adapter.notifyDataSetChanged();
     }
 
 }

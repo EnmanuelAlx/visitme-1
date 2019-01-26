@@ -20,12 +20,6 @@
             android:orientation="vertical"
             >
 
-            <ImageView
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_gravity="center"
-                android:src="@drawable/full_logo" />
-
 
             <TextView
                 android:id="@+id/textView5"
@@ -35,11 +29,18 @@
                 android:text=" Actualmente, no te encuentras registrado a ninguna comunidad. Selecciona una opción para continuar: Si aún no has sido aprobado por tu administrador, ponte en contacto con éste."
                  />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:hint="Nombre o direccion de la comunidad"
+                android:inputType="textAutoComplete"
+                />
+
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/list"/>
-
         </LinearLayout>
 
 

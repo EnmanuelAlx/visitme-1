@@ -211,8 +211,8 @@ public class RequestManager {
         return request(Request.Method.PUT, urlApi + Urls.GIVE_ACCESS.replace(":visit", visit) + "?access=" + access, null);
     }
 
-    public Observable<JSONArray> getCommunities() {
-        return requestArray(Request.Method.GET, urlApi + Urls.COMMUNITIES);
+    public Observable<JSONArray> getCommunities(String search) {
+        return requestArray(Request.Method.GET, urlApi + Urls.COMMUNITIES + "?query=" + search);
     }
 
     private Observable<JSONArray> requestArray(int method, String url) {
