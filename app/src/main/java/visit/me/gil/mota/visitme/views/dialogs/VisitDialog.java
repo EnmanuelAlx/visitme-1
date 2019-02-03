@@ -77,10 +77,22 @@ public class VisitDialog {
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Con Este Token puedes, visitarme");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, visit.getToken());
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, buildString(visit.getToken()));
                 context.startActivity(Intent.createChooser(sharingIntent, "Token de Visita"));
             }
         });
+    }
+
+    private String buildString(String token) {
+
+        return "Con Este Token: *" + token.toUpperCase() +
+                "* puedes visitarme en "+visit.getCommunity().getAddress() + ", "+
+                "el dia: "+ visit.getDayOfVisit() +
+                ", ademas puedes descargar la aplicacion *VisitMe* " +
+                "en este link goo.gl/QdnrR8," +
+                " o accediendo a la web visitme.netlify.com, " +
+                "de esta manera puedes ver tus invitaciones y administrar las visitas de tu comunidad. \n\n" +
+                "Este token es valido hasta: "+visit.getValidTill();
     }
 
 

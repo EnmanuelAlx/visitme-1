@@ -11,6 +11,7 @@ import com.otaliastudios.autocomplete.Autocomplete;
 import com.otaliastudios.autocomplete.AutocompleteCallback;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Observable;
 
@@ -51,6 +52,8 @@ public class GuestDataViewModel extends Observable implements IntervalsDialog.Re
         intervals = new ArrayList<>();
         intervals.add(new Interval(0, 0, 2400));
         findFirst = new FindFirstUserThatMatch(this);
+        Calendar calendar = Calendar.getInstance();
+        setDay(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
     }
 
