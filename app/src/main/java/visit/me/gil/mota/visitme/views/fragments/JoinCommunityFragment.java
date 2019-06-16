@@ -89,7 +89,7 @@ public class JoinCommunityFragment extends Fragment implements Observer, JoinVie
 
     @Override
     public void showAskReferenceDialog(AskFieldDialog.Result result) {
-        askReferenceDialog = new AskFieldDialog(getContext(), "¿en que numero de oficina/apto/casa de esta comunidad?", result);
+        askReferenceDialog = new AskFieldDialog(getContext(), "¿En que numero de oficina/apto/casa de esta comunidad?", result);
         askReferenceDialog.show();
     }
 

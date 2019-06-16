@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.util.Arrays;
+
 import visit.me.gil.mota.visitme.MyApplication;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.utils.Functions;
@@ -76,8 +78,7 @@ public class Interval implements Parcelable {
 
     @Override
     public String toString() {
-        return MyApplication.getInstance().getResources().getStringArray(R.array.days)[day] + " "
-                                                                + getFromStr() + " - " + getToStr();
+        return day + " " + getFromStr() + " - " + getToStr();
     }
 
     public void setTo(String s) {

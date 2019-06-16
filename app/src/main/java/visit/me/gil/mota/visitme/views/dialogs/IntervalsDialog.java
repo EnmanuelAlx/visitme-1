@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -20,13 +21,13 @@ import java.util.List;
 import visit.me.gil.mota.visitme.R;
 import visit.me.gil.mota.visitme.models.Alert;
 import visit.me.gil.mota.visitme.models.Interval;
+import visit.me.gil.mota.visitme.utils.Pnotify;
 import visit.me.gil.mota.visitme.viewModels.ItemIntervalViewModel;
 import visit.me.gil.mota.visitme.views.adapters.IntervalAdapter;
 
 /**
  * Created by mota on 29/4/2018.
  */
-
 public class IntervalsDialog implements ItemIntervalViewModel.IntervalItemInteractor {
     private Context context;
     private Result result;
@@ -77,7 +78,7 @@ public class IntervalsDialog implements ItemIntervalViewModel.IntervalItemIntera
     }
 
     private void addInterval() {
-        intervals.add(new Interval(0,0,2400));
+        intervals.add(new Interval(0, 0, 2400));
         adapter.notifyDataSetChanged();
     }
 
@@ -97,8 +98,12 @@ public class IntervalsDialog implements ItemIntervalViewModel.IntervalItemIntera
 
     @Override
     public void remove(Interval interval) {
-        this.intervals.remove(interval);
-        this.adapter.notifyDataSetChanged();
+        if (this.intervals.size() > 1) {
+            this.intervals.remove(interval);
+            this.adapter.notifyDataSetChanged();
+        } else {
+            Pnotify.makeText(context, "No puede haber una visita frequentes sin horarios", Toast.LENGTH_SHORT, Pnotify.ERROR).show();
+        }
     }
 
     @Override

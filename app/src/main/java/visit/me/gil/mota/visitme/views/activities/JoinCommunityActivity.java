@@ -68,12 +68,12 @@ public class JoinCommunityActivity extends BindeableActivity implements JoinView
 
     @Override
     public void onJoin() {
-        Pnotify.makeText(this, "Solicitud Creada satisfactoriamente", Toast.LENGTH_SHORT, Pnotify.INFO).show();
+        Pnotify.makeText(this, "Solicitud creada satisfactoriamente", Toast.LENGTH_SHORT, Pnotify.INFO).show();
     }
 
     @Override
     public void showAskReferenceDialog(AskFieldDialog.Result result) {
-        askReferenceDialog = new AskFieldDialog(this, "¿en que numero de oficina/apto/casa de esta comunidad?", result);
+        askReferenceDialog = new AskFieldDialog(this, "¿En que numero de oficina/apto/casa de esta comunidad?", result);
         askReferenceDialog.show();
     }
 

@@ -21,6 +21,9 @@ import visit.me.gil.mota.visitme.utils.Functions;
  * Created by mota on 16/4/2018.
  */
 public class Visit implements Parcelable {
+
+    private static final String[] days = {"Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"};
+
     private String _id;
     private String kind;
     private String dayOfVisit;
@@ -87,7 +90,7 @@ public class Visit implements Parcelable {
         if (kind.equals("SPORADIC"))
             return "";
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        return kind.equals("SCHEDULED") ? showAsScheduled() : getNextInterval(day);
+        return kind.equals("SCHEDULED") ? showAsScheduled() : showAsFrequent();
     }
 
     private String parseDate(String date) {
@@ -104,41 +107,12 @@ public class Visit implements Parcelable {
         return parseDate(dayOfVisit) + " " + getDayPartString();
     }
 
-    private String getNextInterval(int day) {
-        List<Interval> intrvl = findIntervalsInDay(day);
-
-        if (intrvl.isEmpty())
-            return getNextInterval(day >= 6 ? 0 : ++day);
-        else
-            return intrvl.size() == 1 ? intrvl.get(0).toString() : findNearIntervalWithHours(intrvl);
-
-    }
-
-    private String findNearIntervalWithHours(List<Interval> intrvl) {
-        int hour = Calendar.getInstance().get(Calendar.HOUR);
-        int min = Calendar.getInstance().get(Calendar.MINUTE);
-        Interval minimun = null;
-        int rest = 100;
-        int op = 0;
-        for (Interval i : intrvl) {
-            op = i.getTo() - (hour * 100 + min);
-            if (op >= 0 && op <= rest) {
-                rest = op;
-                minimun = i;
-            }
-
+    private String showAsFrequent() {
+        StringBuilder str = new StringBuilder();
+        for (Interval i : intervals) {
+            str.append(days[i.getDay()]).append(" ");
         }
-        return minimun != null ? minimun.toString() : intrvl.get(0).toString();
-    }
-
-    private List<Interval> findIntervalsInDay(int day) {
-        List<Interval> intrvls = new ArrayList<>();
-
-        for (Interval i : intervals)
-            if (i.getDay() == day)
-                intrvls.add(i);
-
-        return intrvls;
+        return str.toString();
     }
 
     public void setDayOfVisit(String dayOfVisit) {

@@ -1,20 +1,19 @@
 package visit.me.gil.mota.visitme.useCases;
 
-import android.content.Context;
+        import android.content.Context;
 
-import com.onesignal.OneSignal;
+        import com.onesignal.OneSignal;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+        import org.apache.http.HttpStatus;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import visit.me.gil.mota.visitme.managers.RequestManager;
-import visit.me.gil.mota.visitme.managers.UserManager;
-import visit.me.gil.mota.visitme.models.User;
-import visit.me.gil.mota.visitme.utils.Functions;
+        import io.reactivex.Observer;
+        import io.reactivex.disposables.Disposable;
+        import visit.me.gil.mota.visitme.managers.ErrorManager;
+        import visit.me.gil.mota.visitme.managers.UserManager;
+        import visit.me.gil.mota.visitme.models.User;
+        import visit.me.gil.mota.visitme.utils.Functions;
 
 /**
  * Created by mota on 14/4/2018.
@@ -23,6 +22,7 @@ import visit.me.gil.mota.visitme.utils.Functions;
 public abstract class Auth extends UseCase implements Observer<JSONObject> {
 
     private Context context;
+
     public Auth(Result result, Context context) {
         super(result);
         this.context = context;
@@ -50,7 +50,15 @@ public abstract class Auth extends UseCase implements Observer<JSONObject> {
 
     @Override
     public void onError(Throwable e) {
-        resultSetter.onError(e.getMessage());
+        try {
+            ErrorManager.Error error = (ErrorManager.Error) e;
+            if (error.getStatus() >= HttpStatus.SC_BAD_REQUEST && error.getStatus() < HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                resultSetter.onError("Error en los Parametros de Ingreso");
+            else
+                resultSetter.onError("Error inesperado");
+        } catch (Exception ex) {
+            resultSetter.onError("Error inesperado");
+        }
     }
 
     @Override
@@ -62,10 +70,10 @@ public abstract class Auth extends UseCase implements Observer<JSONObject> {
     abstract public void run();
 
     public void onSuccess(JSONObject obj) throws JSONException {
-        User u = Functions.parse(obj.getJSONObject("user"),User.class);
+        User u = Functions.parse(obj.getJSONObject("user"), User.class);
         String deviceId = OneSignal.getPermissionSubscriptionState()
-                                   .getSubscriptionStatus()
-                                   .getUserId();
+                .getSubscriptionStatus()
+                .getUserId();
         UserManager.getInstance().saveUserCredentials(u, obj.getString("token"), deviceId);
         resultSetter.onSuccess();
     }

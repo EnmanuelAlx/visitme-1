@@ -50,12 +50,13 @@ public class RxRequestAdapter<T> implements Response.Listener<T>, Response.Error
 
     private void handleError(ObservableEmitter<T> e, VolleyError mVolleyError) {
         Throwable error;
+        int status = mVolleyError.networkResponse.statusCode;
         try {
             String data = new String(mVolleyError.networkResponse.data);
             JSONObject obj = new JSONObject(data);
             error = ErrorManager.getInstance().getError(obj);
         } catch (Exception ex) {
-            error = new Throwable("Error inesperado");
+            error = ErrorManager.getInstance().createWithStatus(status);
         }
         e.onError(error);
     }
